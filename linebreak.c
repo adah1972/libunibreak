@@ -37,7 +37,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * 5.0.0 Standard Annex 14.
  *
- * @version	0.6, 2008/02/23
+ * @version	0.7, 2008/02/23
  * @author	Wu Yongwei
  */
 
@@ -355,6 +355,44 @@ static struct LineBreakProperties lbpEnglish[] = {
 };
 
 /**
+ * German-specifc data over the default Unicode rules.
+ */
+static struct LineBreakProperties lbpGerman[] = {
+	{ 0xAB,   0xAB,   LBP_CL },	/* Left double angle quotation mark: closing */
+	{ 0xBB,   0xBB,   LBP_OP },	/* Right double angle quotation mark: opening */
+	{ 0x2018, 0x2018, LBP_CL }, /* Left single quotation mark: closing */
+	{ 0x201C, 0x201C, LBP_CL }, /* Left double quotation mark: closing */
+	{ 0x2039, 0x2039, LBP_CL }, /* Left single angle quotation mark: closing */
+	{ 0x203A, 0x203A, LBP_OP }, /* Right single angle quotation mark: opening */
+	{ 0, 0, LBP_Undefined }
+};
+
+/**
+ * French-specifc data over the default Unicode rules.
+ */
+static struct LineBreakProperties lbpFrench[] = {
+	{ 0xAB,   0xAB,   LBP_OP },	/* Left double angle quotation mark: opening */
+	{ 0xBB,   0xBB,   LBP_CL },	/* Right double angle quotation mark: closing */
+	{ 0x2018, 0x2018, LBP_OP },	/* Left single quotation mark: opening */
+	{ 0x2019, 0x2019, LBP_CL },	/* Right single quotation mark: closing */
+	{ 0x201C, 0x201C, LBP_OP },	/* Left double quotation mark: opening */
+	{ 0x201D, 0x201D, LBP_CL },	/* Right double quotation mark: closing */
+	{ 0x2039, 0x2039, LBP_OP }, /* Left single angle quotation mark: opening */
+	{ 0x203A, 0x203A, LBP_CL }, /* Right single angle quotation mark: closing */
+	{ 0, 0, LBP_Undefined }
+};
+
+/**
+ * Russian-specifc data over the default Unicode rules.
+ */
+static struct LineBreakProperties lbpRussian[] = {
+	{ 0xAB,   0xAB,   LBP_OP },	/* Left double angle quotation mark: opening */
+	{ 0xBB,   0xBB,   LBP_CL },	/* Right double angle quotation mark: closing */
+	{ 0x201C, 0x201C, LBP_CL }, /* Left double quotation mark: closing */
+	{ 0, 0, LBP_Undefined }
+};
+
+/**
  * Chinese-specifc data over the default Unicode rules.
  */
 static struct LineBreakProperties lbpChinese[] = {
@@ -382,6 +420,10 @@ struct LineBreakPropertiesLang
  */
 struct LineBreakPropertiesLang lbpLangs[] = {
 	{ "en", 2, lbpEnglish },
+	{ "de", 2, lbpGerman },
+	{ "es", 2, lbpFrench },
+	{ "fr", 2, lbpFrench },
+	{ "ru", 2, lbpRussian },
 	{ "zh", 2, lbpChinese },
 	{ NULL, 0, lbpDefault }
 };
