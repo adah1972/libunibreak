@@ -1,0 +1,13 @@
+2008-02-23  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Add files for linebreak.
+	* LineBreak1.sed: New file.
+	* LineBreak2.sed: New file.
+	* Makefile: New file.
+	* filter_dup.c: New file.
+	* linebreak.c: New file.
+	* linebreak.h: New file.
+	* linebreakdata.c: New file.
+	* linebreakdata1.tmpl: New file.
+	* linebreakdata2.tmpl: New file.
+	* linebreakdata3.tmpl: New file.
