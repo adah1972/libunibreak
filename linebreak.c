@@ -37,7 +37,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * 5.0.0 Standard Annex 14.
  *
- * @version	0.7, 2008/02/23
+ * @version	0.7.1, 2008/02/26
  * @author	Wu Yongwei
  */
 
@@ -360,10 +360,27 @@ static struct LineBreakProperties lbpEnglish[] = {
 static struct LineBreakProperties lbpGerman[] = {
 	{ 0xAB,   0xAB,   LBP_CL },	/* Left double angle quotation mark: closing */
 	{ 0xBB,   0xBB,   LBP_OP },	/* Right double angle quotation mark: opening */
-	{ 0x2018, 0x2018, LBP_CL }, /* Left single quotation mark: closing */
-	{ 0x201C, 0x201C, LBP_CL }, /* Left double quotation mark: closing */
-	{ 0x2039, 0x2039, LBP_CL }, /* Left single angle quotation mark: closing */
-	{ 0x203A, 0x203A, LBP_OP }, /* Right single angle quotation mark: opening */
+	{ 0x2018, 0x2018, LBP_CL },	/* Left single quotation mark: closing */
+	{ 0x201C, 0x201C, LBP_CL },	/* Left double quotation mark: closing */
+	{ 0x2039, 0x2039, LBP_CL },	/* Left single angle quotation mark: closing */
+	{ 0x203A, 0x203A, LBP_OP },	/* Right single angle quotation mark: opening */
+	{ 0, 0, LBP_Undefined }
+};
+
+/**
+ * Spanish-specifc data over the default Unicode rules.
+ */
+static struct LineBreakProperties lbpSpanish[] = {
+	{ 0xA1,   0xA1,   LBP_OP },	/* Inverted exclamation mark: opening */
+	{ 0xAB,   0xAB,   LBP_OP },	/* Left double angle quotation mark: opening */
+	{ 0xBB,   0xBB,   LBP_CL },	/* Right double angle quotation mark: closing */
+	{ 0xBF,   0xBF,   LBP_OP },	/* Inverted question mark: opening */
+	{ 0x2018, 0x2018, LBP_OP },	/* Left single quotation mark: opening */
+	{ 0x2019, 0x2019, LBP_CL },	/* Right single quotation mark: closing */
+	{ 0x201C, 0x201C, LBP_OP },	/* Left double quotation mark: opening */
+	{ 0x201D, 0x201D, LBP_CL },	/* Right double quotation mark: closing */
+	{ 0x2039, 0x2039, LBP_OP },	/* Left single angle quotation mark: opening */
+	{ 0x203A, 0x203A, LBP_CL },	/* Right single angle quotation mark: closing */
 	{ 0, 0, LBP_Undefined }
 };
 
@@ -377,8 +394,8 @@ static struct LineBreakProperties lbpFrench[] = {
 	{ 0x2019, 0x2019, LBP_CL },	/* Right single quotation mark: closing */
 	{ 0x201C, 0x201C, LBP_OP },	/* Left double quotation mark: opening */
 	{ 0x201D, 0x201D, LBP_CL },	/* Right double quotation mark: closing */
-	{ 0x2039, 0x2039, LBP_OP }, /* Left single angle quotation mark: opening */
-	{ 0x203A, 0x203A, LBP_CL }, /* Right single angle quotation mark: closing */
+	{ 0x2039, 0x2039, LBP_OP },	/* Left single angle quotation mark: opening */
+	{ 0x203A, 0x203A, LBP_CL },	/* Right single angle quotation mark: closing */
 	{ 0, 0, LBP_Undefined }
 };
 
@@ -388,7 +405,7 @@ static struct LineBreakProperties lbpFrench[] = {
 static struct LineBreakProperties lbpRussian[] = {
 	{ 0xAB,   0xAB,   LBP_OP },	/* Left double angle quotation mark: opening */
 	{ 0xBB,   0xBB,   LBP_CL },	/* Right double angle quotation mark: closing */
-	{ 0x201C, 0x201C, LBP_CL }, /* Left double quotation mark: closing */
+	{ 0x201C, 0x201C, LBP_CL },	/* Left double quotation mark: closing */
 	{ 0, 0, LBP_Undefined }
 };
 
@@ -421,7 +438,7 @@ struct LineBreakPropertiesLang
 struct LineBreakPropertiesLang lbpLangs[] = {
 	{ "en", 2, lbpEnglish },
 	{ "de", 2, lbpGerman },
-	{ "es", 2, lbpFrench },
+	{ "es", 2, lbpSpanish },
 	{ "fr", 2, lbpFrench },
 	{ "ru", 2, lbpRussian },
 	{ "zh", 2, lbpChinese },
@@ -498,15 +515,19 @@ static enum LineBreakClass get_char_lb_class_lang(
  */
 static enum LineBreakClass resolve_lb_class(
 		enum LineBreakClass lbc,
-		const char *lang
-#ifdef __GNUC__
-		__attribute__((unused))
-#endif
-)
+		const char *lang)
 {
 	switch (lbc)
 	{
 	case LBP_AI:
+		if (lang != NULL &&
+				(strncmp(lang, "zh", 2) == 0 ||	/* Chinese */
+				 strncmp(lang, "ja", 2) == 0 ||	/* Japanese */
+				 strncmp(lang, "ko", 2) == 0))	/* Korean */
+		{
+			return LBP_ID;
+		}
+		/* Fall through */
 	case LBP_SA:
 	case LBP_SG:
 	case LBP_XX:

@@ -1,5 +1,12 @@
 2008-02-26  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* linebreak.c (lbpSpanish): New array for Spanish-specific data.
+	(lbpLangs): Update the index array for Spanish.
+	(resolve_lb_class): Resolve AmbIguous class to IDeographic in
+	Chinese, Japanese, and Korean.
+
+2008-02-26  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* Makefile (LineBreak.txt): Add new rule to retrieve it from the Web
 	if it is not already there.
 
