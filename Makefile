@@ -118,6 +118,9 @@ linebreakdata: filter_dup$(EXEEXT) LineBreak.txt
 filter_dup$(EXEEXT): filter_dup.c
 	gcc -O2 -o filter_dup$(EXEEXT) $<
 
+LineBreak.txt:
+	wget http://unicode.org/Public/UNIDATA/LineBreak.txt
+
 .PHONY: all debug release clean distclean linebreakdata
 
 clean:
