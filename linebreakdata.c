@@ -2,7 +2,12 @@
 # LineBreak-5.0.0.txt
 # Date: 2006-05-23, 11:43:00 PST [KW]
 */
-static struct LineBreakProperties lbpDefault[] = {
+
+#include "linebreak.h"
+#include "linebreakdef.h"
+
+/** Default line breaking properties as from the Unicode Web site. */
+struct LineBreakProperties lb_prop_default[] = {
 	{ 0x0000, 0x0008, LBP_CM },
 	{ 0x0009, 0x0009, LBP_BA },
 	{ 0x000A, 0x000A, LBP_LF },

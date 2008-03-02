@@ -1,3 +1,32 @@
+2008-03-02  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Split/refactor the code; add (doc) comments.
+	* Makefile (CFILES): Add linebreakdata.c and linebreakdef.c.
+	* linebreak.c: Add and adjust comments.
+	(linebreakdef.h): Add include file.
+	(linebreakdata.c): Remove include file.
+	(EOS): Remove (now in linebreakdef.h).
+	(enum LineBreakClass): Ditto.
+	(struct LineBreakProperties): Ditto.
+	(lbpEnglish): Remove (now in linebreakdef.c as lb_prop_English).
+	(lbpGerman): Remove (now in linebreakdef.c as lb_prop_German).
+	(lbpSpanish): Remove (now in linebreakdef.c as lb_prop_Spanish).
+	(lbpFrench): Remove (now in linebreakdef.c as lb_prop_French).
+	(lbpRussian): Remove (now in linebreakdef.c as lb_prop_Russian).
+	(lbpChinese): Remove (now in linebreakdef.c as lb_prop_Chinese).
+	(struct LineBreakPropertiesLang): Remove (now in linebreakdef.h).
+	(lbpLangs): Remove (now in linebreakdef.c as lb_prop_lang_map).
+	(get_next_char_utf16): Make sure memory access not go beyond len.
+	* linebreak.h: Add copyright information and adjust comments.
+	(stddef.h): Add include file.
+	* linebreakdata.c (linebreak.h): Add include file.
+	(linebreakdef.h): Add include file.
+	(lbpDefault): Make global and rename to lb_prop_default.
+	* linebreakdata2.tmpl: Add two include files, a comment line, and
+	remove `static'.
+	* linebreakdef.c: New file.
+	* linebreakdef.h: New file.
+
 2008-02-26  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* linebreak.c (lbpSpanish): New array for Spanish-specific data.

@@ -37,7 +37,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * 5.0.0 Standard Annex 14.
  *
- * @version	0.7.1, 2008/02/26
+ * @version	0.8.2, 2008/03/02
  * @author	Wu Yongwei
  */
 
@@ -45,62 +45,7 @@
 #include <stddef.h>
 #include <string.h>
 #include "linebreak.h"
-
-/**
- * Constant value to mark the end of string.  It is not a valid Unicode
- * character.
- */
-#define EOS 0xFFFF
-
-/**
- * Line break classes.  This is a direct mapping of Table 1 of Unicode
- * Standard Annex 14, Revision 19.
- */
-enum LineBreakClass
-{
-	/* This is used to signal an error condition. */
-	LBP_Undefined,	/**< Undefined */
-
-	/* The following break classes are treated in the pair table. */
-	LBP_OP,			/**< Opening punctuation */
-	LBP_CL,			/**< Closing punctuation */
-	LBP_QU,			/**< Ambiguous quotation */
-	LBP_GL,			/**< Glue */
-	LBP_NS,			/**< Non-starters */
-	LBP_EX,			/**< Exclamation/Interrogation */
-	LBP_SY,			/**< Symbols allowing break after */
-	LBP_IS,			/**< Infix separator */
-	LBP_PR,			/**< Prefix */
-	LBP_PO,			/**< Postfix */
-	LBP_NU,			/**< Numeric */
-	LBP_AL,			/**< Alphabetic */
-	LBP_ID,			/**< Ideographic */
-	LBP_IN,			/**< Inseparable characters */
-	LBP_HY,			/**< Hyphen */
-	LBP_BA,			/**< Break after */
-	LBP_BB,			/**< Break before */
-	LBP_B2,			/**< Break on either side (but not pair) */
-	LBP_ZW,			/**< Zero-width space */
-	LBP_CM,			/**< Combining marks */
-	LBP_WJ,			/**< Word joiner */
-	LBP_H2,			/**< Hangul LV */
-	LBP_H3,			/**< Hangul LVT */
-	LBP_JL,			/**< Hangul L Jamo */
-	LBP_JV,			/**< Hangul V Jamo */
-	LBP_JT,			/**< Hangul T Jamo */
-
-	/* The following break classes are not treated in the pair table */
-	LBP_AI,			/**< Ambiguous (alphabetic or ideograph) */
-	LBP_BK,			/**< Break (mandatory) */
-	LBP_CB,			/**< Contingent break */
-	LBP_CR,			/**< Carriage return */
-	LBP_LF,			/**< Line feed */
-	LBP_NL,			/**< Next line */
-	LBP_SA,			/**< South-East Asian */
-	LBP_SG,			/**< Surrogates */
-	LBP_SP,			/**< Space */
-	LBP_XX			/**< Unknown */
-};
+#include "linebreakdef.h"
 
 /**
  * Enumeration of break actions.  They are used in the break action
@@ -330,122 +275,6 @@ static enum BreakAction baTable[LBP_JT][LBP_JT] = {
 };
 
 /**
- * Struct for entries of line break properties.
- */
-struct LineBreakProperties
-{
-	utf32_t start;				/**< Starting coding point */
-	utf32_t end;				/**< End coding point */
-	enum LineBreakClass prop;	/**< The line break property */
-};
-
-#include "linebreakdata.c"
-
-/**
- * English-specifc data over the default Unicode rules.
- */
-static struct LineBreakProperties lbpEnglish[] = {
-	{ 0x2B,   0x2B,   LBP_AL },	/* Plus sign: no break inside "C++" */
-	{ 0x2F,   0x2F,   LBP_AL },	/* Solidus: no break inside "w/o" */
-	{ 0x2018, 0x2018, LBP_OP },	/* Left single quotation mark: opening */
-	{ 0x2019, 0x2019, LBP_CL },	/* Right single quotation mark: closing */
-	{ 0x201C, 0x201C, LBP_OP },	/* Left double quotation mark: opening */
-	{ 0x201D, 0x201D, LBP_CL },	/* Right double quotation mark: closing */
-	{ 0, 0, LBP_Undefined }
-};
-
-/**
- * German-specifc data over the default Unicode rules.
- */
-static struct LineBreakProperties lbpGerman[] = {
-	{ 0xAB,   0xAB,   LBP_CL },	/* Left double angle quotation mark: closing */
-	{ 0xBB,   0xBB,   LBP_OP },	/* Right double angle quotation mark: opening */
-	{ 0x2018, 0x2018, LBP_CL },	/* Left single quotation mark: closing */
-	{ 0x201C, 0x201C, LBP_CL },	/* Left double quotation mark: closing */
-	{ 0x2039, 0x2039, LBP_CL },	/* Left single angle quotation mark: closing */
-	{ 0x203A, 0x203A, LBP_OP },	/* Right single angle quotation mark: opening */
-	{ 0, 0, LBP_Undefined }
-};
-
-/**
- * Spanish-specifc data over the default Unicode rules.
- */
-static struct LineBreakProperties lbpSpanish[] = {
-	{ 0xA1,   0xA1,   LBP_OP },	/* Inverted exclamation mark: opening */
-	{ 0xAB,   0xAB,   LBP_OP },	/* Left double angle quotation mark: opening */
-	{ 0xBB,   0xBB,   LBP_CL },	/* Right double angle quotation mark: closing */
-	{ 0xBF,   0xBF,   LBP_OP },	/* Inverted question mark: opening */
-	{ 0x2018, 0x2018, LBP_OP },	/* Left single quotation mark: opening */
-	{ 0x2019, 0x2019, LBP_CL },	/* Right single quotation mark: closing */
-	{ 0x201C, 0x201C, LBP_OP },	/* Left double quotation mark: opening */
-	{ 0x201D, 0x201D, LBP_CL },	/* Right double quotation mark: closing */
-	{ 0x2039, 0x2039, LBP_OP },	/* Left single angle quotation mark: opening */
-	{ 0x203A, 0x203A, LBP_CL },	/* Right single angle quotation mark: closing */
-	{ 0, 0, LBP_Undefined }
-};
-
-/**
- * French-specifc data over the default Unicode rules.
- */
-static struct LineBreakProperties lbpFrench[] = {
-	{ 0xAB,   0xAB,   LBP_OP },	/* Left double angle quotation mark: opening */
-	{ 0xBB,   0xBB,   LBP_CL },	/* Right double angle quotation mark: closing */
-	{ 0x2018, 0x2018, LBP_OP },	/* Left single quotation mark: opening */
-	{ 0x2019, 0x2019, LBP_CL },	/* Right single quotation mark: closing */
-	{ 0x201C, 0x201C, LBP_OP },	/* Left double quotation mark: opening */
-	{ 0x201D, 0x201D, LBP_CL },	/* Right double quotation mark: closing */
-	{ 0x2039, 0x2039, LBP_OP },	/* Left single angle quotation mark: opening */
-	{ 0x203A, 0x203A, LBP_CL },	/* Right single angle quotation mark: closing */
-	{ 0, 0, LBP_Undefined }
-};
-
-/**
- * Russian-specifc data over the default Unicode rules.
- */
-static struct LineBreakProperties lbpRussian[] = {
-	{ 0xAB,   0xAB,   LBP_OP },	/* Left double angle quotation mark: opening */
-	{ 0xBB,   0xBB,   LBP_CL },	/* Right double angle quotation mark: closing */
-	{ 0x201C, 0x201C, LBP_CL },	/* Left double quotation mark: closing */
-	{ 0, 0, LBP_Undefined }
-};
-
-/**
- * Chinese-specifc data over the default Unicode rules.
- */
-static struct LineBreakProperties lbpChinese[] = {
-	{ 0x2018, 0x2018, LBP_OP },	/* Left single quotation mark: opening */
-	{ 0x2019, 0x2019, LBP_CL },	/* Right single quotation mark: closing */
-	{ 0x201C, 0x201C, LBP_OP },	/* Left double quotation mark: opening */
-	{ 0x201D, 0x201D, LBP_CL },	/* Right double quotation mark: closing */
-	{ 0, 0, LBP_Undefined }
-};
-
-/**
- * Struct for association of language-specific line breaking properties
- * with language names.
- */
-struct LineBreakPropertiesLang
-{
-	const char *lang;					/**< Language name */
-	size_t namelen;						/**< Length of name to match */
-	struct LineBreakProperties *lbp;	/**< Pointer to associated data */
-};
-
-/**
- * Association data of language-specific line breaking properties with
- * language names.
- */
-struct LineBreakPropertiesLang lbpLangs[] = {
-	{ "en", 2, lbpEnglish },
-	{ "de", 2, lbpGerman },
-	{ "es", 2, lbpSpanish },
-	{ "fr", 2, lbpFrench },
-	{ "ru", 2, lbpRussian },
-	{ "zh", 2, lbpChinese },
-	{ NULL, 0, lbpDefault }
-};
-
-/**
  * Gets the line breaking property of a character.
  *
  * @param ch	character to check
@@ -472,7 +301,7 @@ static enum LineBreakClass get_char_lb_class(
  * available for the character.
  *
  * @param ch	character to check
- * @param lbp	the language context
+ * @param lang	language of the text
  * @return		the line breaking class found; \c LBP_XX otherwise
  */
 static enum LineBreakClass get_char_lb_class_lang(
@@ -483,10 +312,11 @@ static enum LineBreakClass get_char_lb_class_lang(
 	struct LineBreakProperties *lbpPrimary;
 	enum LineBreakClass lbcResult;
 
+	/* Try to find language-specific line breaking properties */
 	lbpPrimary = NULL;
 	if (lang != NULL)
 	{
-		for (lbplIter = lbpLangs; lbplIter->lang != NULL; ++lbplIter)
+		for (lbplIter = lb_prop_lang_map; lbplIter->lang != NULL; ++lbplIter)
 		{
 			if (strncmp(lang, lbplIter->lang, lbplIter->namelen) == 0)
 			{
@@ -496,21 +326,27 @@ static enum LineBreakClass get_char_lb_class_lang(
 		}
 	}
 
+	/* Find the language-specific line breaking class for a character */
 	if (lbpPrimary)
 	{
 		lbcResult = get_char_lb_class(ch, lbpPrimary);
 		if (lbcResult != LBP_XX)
 			return lbcResult;
 	}
-	return get_char_lb_class(ch, lbpDefault);
+
+	/* Find the generic language-specific line breaking class, if no
+	 * language context is provided, or language-specific data are not
+	 * available for the specific character in the specified language */
+	return get_char_lb_class(ch, lb_prop_default);
 }
 
 /**
  * Resolves the line breaking class for certain ambiguous or complicated
- * characters.  Currently they are treated in a simplistic way.
+ * characters.  They are treated in a simplistic way in this
+ * implementation.
  *
- * @param lbc	the line breaking class to resolve
- * @param lang	the language context
+ * @param lbc	line breaking class to resolve
+ * @param lang	language of the text
  * @return		the resolved line breaking class
  */
 static enum LineBreakClass resolve_lb_class(
@@ -537,8 +373,22 @@ static enum LineBreakClass resolve_lb_class(
 	}
 }
 
+/**
+ * Abstract function interface for #get_next_char_utf8,
+ * #get_next_char_utf16, and #get_next_char_utf32.
+ */
 typedef utf32_t (*get_next_char_t)(const void *, size_t, size_t *);
 
+/**
+ * Gets the next Unicode character in a UTF-8 sequence.  The index will
+ * be advanced to the next complete character.
+ *
+ * @param s		input UTF-8 string
+ * @param len	length of the string in bytes
+ * @param ip	pointer to the index
+ * @return		the Unicode character beginning at the index; or #EOS if
+ *				end of input is encountered
+ */
 static utf32_t get_next_char_utf8(
 		const utf8_t *s,
 		size_t len,
@@ -546,10 +396,12 @@ static utf32_t get_next_char_utf8(
 {
 	utf8_t ch;
 	utf32_t res;
+
 	assert(*ip <= len);
 	if (*ip == len)
 		return EOS;
 	ch = s[(*ip)++];
+
 	if (ch < 0xC2 || ch > 0xF4)
 	{	/* One-byte sequence, tail (should not occur), or invalid */
 		return ch;
@@ -568,7 +420,7 @@ static utf32_t get_next_char_utf8(
 			return EOS;
 		res = ((ch & 0x0F) << 12) +
 			  ((s[*ip] & 0x3F) << 6) +
-			  (s[*ip + 1] & 0x3F);
+			  ((s[*ip + 1] & 0x3F));
 		*ip += 2;
 		return res;
 	}
@@ -579,29 +431,60 @@ static utf32_t get_next_char_utf8(
 		res = ((ch & 0x07) << 18) +
 			  ((s[*ip] & 0x3F) << 12) +
 			  ((s[*ip + 1] & 0x3F) << 12) +
-			  (s[*ip + 2] & 0x3F);
+			  ((s[*ip + 2] & 0x3F));
 		*ip += 3;
 		return res;
 	}
 }
 
+/**
+ * Gets the next Unicode character in a UTF-16 sequence.  The index will
+ * be advanced to the next complete character.
+ *
+ * @param s		input UTF-16 string
+ * @param len	length of the string in words
+ * @param ip	pointer to the index
+ * @return		the Unicode character beginning at the index; or #EOS if
+ *				end of input is encountered
+ */
 static utf32_t get_next_char_utf16(
 		const utf16_t *s,
 		size_t len,
 		size_t *ip)
 {
 	utf16_t ch;
+
 	assert(*ip <= len);
 	if (*ip == len)
 		return EOS;
 	ch = s[(*ip)++];
-	if (ch < 0xD800 || ch > 0xDBFF || s[*ip] < 0xDC00 || s[*ip] > 0xDFFF)
+
+	if (ch < 0xD800 || ch > 0xDBFF)
+	{	/* If the character is not a high surrogate */
 		return ch;
+	}
 	if (*ip == len)
+	{	/* If the input ends here (an error) */
 		return EOS;
+	}
+	if (s[*ip] < 0xDC00 || s[*ip] > 0xDFFF)
+	{	/* If the next character is not the low surrogate (an error) */
+		return ch;
+	}
+	/* Return the constructed character and advance the index again */
 	return (((utf32_t)ch & 0x3FF) << 10) + (s[(*ip)++] & 0x3FF) + 0x10000;
 }
 
+/**
+ * Gets the next Unicode character in a UTF-32 sequence.  The index will
+ * be advanced to the next character.
+ *
+ * @param s		input UTF-32 string
+ * @param len	length of the string in dwords
+ * @param ip	pointer to the index
+ * @return		the Unicode character beginning at the index; or #EOS if
+ *				end of input is encountered
+ */
 static utf32_t get_next_char_utf32(
 		const utf32_t *s,
 		size_t len,
@@ -616,7 +499,7 @@ static utf32_t get_next_char_utf32(
 /**
  * Sets the line breaking information for a generic input string.
  *
- * @param s		the input string
+ * @param s		input string
  * @param len	length of the input
  * @param lang	language of the input
  * @param brks	pointer to the output breaking data, containing \c
@@ -750,7 +633,7 @@ nextline:
 /**
  * Sets the line breaking information for a UTF-8 input string.
  *
- * @param s		the input string
+ * @param s		input UTF-8 string
  * @param len	length of the input
  * @param lang	language of the input
  * @param brks	pointer to the output breaking data, containing \c
@@ -769,7 +652,7 @@ void set_linebreaks_utf8(
 /**
  * Sets the line breaking information for a UTF-16 input string.
  *
- * @param s		the input string
+ * @param s		input UTF-16 string
  * @param len	length of the input
  * @param lang	language of the input
  * @param brks	pointer to the output breaking data, containing \c
@@ -788,7 +671,7 @@ void set_linebreaks_utf16(
 /**
  * Sets the line breaking information for a UTF-32 input string.
  *
- * @param s		the input string
+ * @param s		input UTF-32 string
  * @param len	length of the input
  * @param lang	language of the input
  * @param brks	pointer to the output breaking data, containing \c
@@ -806,10 +689,10 @@ void set_linebreaks_utf32(
 
 /**
  * Tells whether a line break can occur between two Unicode characters.
- * This is a wrapper function to expose a simple interface.  It is
- * better to use set_linebreaks_utf32 instead, since complicated cases
- * involving combining marks, spaces, etc. cannot be correctly
- * processed.
+ * This is a wrapper function to expose a simple interface.  Generally
+ * speaking, it is better to use #set_linebreaks_utf32 instead, since
+ * complicated cases involving combining marks, spaces, etc. cannot be
+ * correctly processed.
  *
  * @param char1 the first Unicode character
  * @param char2 the second Unicode character
