@@ -1,5 +1,13 @@
 2008-03-02  Wu Yongwei  <wuyongwei@gmail.com>
 
+	Change the values of enum BreakAction to more complete forms.
+	* linebreak.c (INDRCT_BRK): Rename to INDIRECT_BRK.
+	(CM_INDRCT_BRK): Rename to CM_INDIRECT_BRK.
+	(CM_PROHIBTD_BRK): Rename to CM_PROHIBITED_BRK.
+	(PROHIBTD_BRK): Rename to PROHIBITED_BRK.
+
+2008-03-02  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Implement a two-stage search in get_char_lb_class_default to
 	accelerate the overall performance, especially for non-Latin
 	languages.
