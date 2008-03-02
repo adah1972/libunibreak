@@ -1,5 +1,20 @@
 2008-03-02  Wu Yongwei  <wuyongwei@gmail.com>
 
+	Implement a two-stage search in get_char_lb_class_default to
+	accelerate the overall performance, especially for non-Latin
+	languages.
+	* linebreak.c (LINEBREAK_INDEX_SIZE): New constant macro.
+	(struct LineBreakPropertiesIndex): New struct.
+	(lb_prop_index): New static variable.
+	(init_linebreak_prop_index): New function.
+	(get_char_lb_class_default): New function.
+	(get_char_lb_class_lang): Use get_char_lb_class_default.
+	* linebreak.h: Detect C++ and add extern "C" guard if necessary.
+	(init_linebreak_prop_index): Add the prototype declaration.
+	* linebreakdef.h: Adjust a comment.
+
+2008-03-02  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Split/refactor the code; add (doc) comments.
 	* Makefile (CFILES): Add linebreakdata.c and linebreakdef.c.
 	* linebreak.c: Add and adjust comments.

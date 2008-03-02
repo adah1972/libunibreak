@@ -37,7 +37,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * 5.0.0 Standard Annex 14.
  *
- * @version	0.8.2, 2008/03/02
+ * @version	0.9, 2008/03/02
  * @author	Wu Yongwei
  */
 
@@ -46,6 +46,11 @@
 #include <string.h>
 #include "linebreak.h"
 #include "linebreakdef.h"
+
+/**
+ * Size of the second-level index to the line breaking properties.
+ */
+#define LINEBREAK_INDEX_SIZE 40
 
 /**
  * Enumeration of break actions.  They are used in the break action
@@ -275,11 +280,54 @@ static enum BreakAction baTable[LBP_JT][LBP_JT] = {
 };
 
 /**
+ * Struct for the second-level index to the line breaking properties.
+ */
+struct LineBreakPropertiesIndex
+{
+	utf32_t end;					/**< End coding point */
+	struct LineBreakProperties *lbp;/**< Pointer to line breaking properties */
+};
+
+/**
+ * Second-level index to the line breaking properties.
+ */
+static struct LineBreakPropertiesIndex lb_prop_index[LINEBREAK_INDEX_SIZE] = {
+	{ 0xFFFFFFFF, lb_prop_default }
+};
+
+/**
+ * Initializes the second-level index to the line breaking properties.
+ * If it is not called, the performance of #get_char_lb_class_lang (and
+ * thus the main functionality) can be pretty bad, especially for big
+ * code points like those of Chinese.
+ */
+void init_linebreak_prop_index(void)
+{
+	size_t i;
+	size_t iPropDefault;
+	size_t len;
+	size_t step;
+
+	len = 0;
+	while (lb_prop_default[len].start != 0xFFFFFFFF)
+		++len;
+	step = len / LINEBREAK_INDEX_SIZE;
+	iPropDefault = 0;
+	for (i = 0; i < LINEBREAK_INDEX_SIZE; ++i)
+	{
+		lb_prop_index[i].lbp = lb_prop_default + iPropDefault;
+		iPropDefault += step;
+		lb_prop_index[i].end = lb_prop_default[iPropDefault].start - 1;
+	}
+	lb_prop_index[--i].end = 0xFFFFFFFF;
+}
+
+/**
  * Gets the line breaking property of a character.
  *
  * @param ch	character to check
  * @param lbp	line breaking property array
- * @return		the line breaking class found; \c LBP_XX otherwise
+ * @return		the line breaking class if found; \c LBP_XX otherwise
  */
 static enum LineBreakClass get_char_lb_class(
 		utf32_t ch,
@@ -295,6 +343,22 @@ static enum LineBreakClass get_char_lb_class(
 }
 
 /**
+ * Gets the line breaking property of a character.
+ *
+ * @param ch	character to check
+ * @return		the line breaking class if found; \c LBP_XX otherwise
+ */
+static enum LineBreakClass get_char_lb_class_default(
+		utf32_t ch)
+{
+	size_t i = 0;
+	while (ch > lb_prop_index[i].end)
+		++i;
+	assert(i < LINEBREAK_INDEX_SIZE);
+	return get_char_lb_class(ch, lb_prop_index[i].lbp);
+}
+
+/**
  * Gets the line breaking property of a character for a specific
  * language.  This function will check the language-specific data first,
  * and then the default data if there is no language-specific property
@@ -302,7 +366,7 @@ static enum LineBreakClass get_char_lb_class(
  *
  * @param ch	character to check
  * @param lang	language of the text
- * @return		the line breaking class found; \c LBP_XX otherwise
+ * @return		the line breaking class if found; \c LBP_XX otherwise
  */
 static enum LineBreakClass get_char_lb_class_lang(
 		utf32_t ch,
@@ -337,7 +401,7 @@ static enum LineBreakClass get_char_lb_class_lang(
 	/* Find the generic language-specific line breaking class, if no
 	 * language context is provided, or language-specific data are not
 	 * available for the specific character in the specified language */
-	return get_char_lb_class(ch, lb_prop_default);
+	return get_char_lb_class_default(ch);
 }
 
 /**

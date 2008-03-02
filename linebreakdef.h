@@ -37,7 +37,7 @@
  * Definition of internal data structures and declaration of global
  * variables for the line breaking algorithm.
  *
- * @version	0.5, 2008/02/27
+ * @version	0.5.1, 2008/03/02
  * @author	Wu Yongwei
  */
 
@@ -104,7 +104,7 @@ struct LineBreakProperties
 {
 	utf32_t start;				/**< Starting coding point */
 	utf32_t end;				/**< End coding point */
-	enum LineBreakClass prop;	/**< The line break property */
+	enum LineBreakClass prop;	/**< The line breaking property */
 };
 
 /**
