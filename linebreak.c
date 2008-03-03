@@ -37,7 +37,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * 5.0.0 Standard Annex 14.
  *
- * @version	0.9.1, 2008/03/02
+ * @version	0.9.2, 2008/03/03
  * @author	Wu Yongwei
  */
 
@@ -335,9 +335,9 @@ static enum LineBreakClass get_char_lb_class(
 		utf32_t ch,
 		struct LineBreakProperties *lbp)
 {
-	while (lbp->prop != LBP_Undefined)
+	while (lbp->prop != LBP_Undefined && ch >= lbp->start)
 	{
-		if (ch >= lbp->start && ch <= lbp->end)
+		if (ch <= lbp->end)
 			return lbp->prop;
 		++lbp;
 	}

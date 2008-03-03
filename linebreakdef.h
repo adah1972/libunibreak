@@ -37,7 +37,7 @@
  * Definition of internal data structures and declaration of global
  * variables for the line breaking algorithm.
  *
- * @version	0.5.1, 2008/03/02
+ * @version	0.5.2, 2008/03/03
  * @author	Wu Yongwei
  */
 
@@ -98,7 +98,8 @@ enum LineBreakClass
 };
 
 /**
- * Struct for entries of line break properties.
+ * Struct for entries of line break properties.  The array of the
+ * entries \e must be sorted.
  */
 struct LineBreakProperties
 {

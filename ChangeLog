@@ -1,3 +1,13 @@
+2008-03-03  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Accelerate get_char_lb_class for invalid Unicode code points.
+	* linebreak.c (get_char_lb_class): Adjust the conditionals so that
+	getting the line breaking class for an invalid code point is much
+	faster, which requires the array of line breaking properties be
+	sorted.
+	* linebreakdef.h: Adjust a comment that the array of line break
+	properties must be sorted.
+
 2008-03-02  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Change the values of enum BreakAction to more complete forms.
