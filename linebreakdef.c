@@ -36,7 +36,7 @@
  *
  * Definition of language-specific data.
  *
- * @version	0.5, 2008/03/02
+ * @version	0.5.1, 2008/03/03
  * @author	Wu Yongwei
  */
 
@@ -135,5 +135,5 @@ struct LineBreakPropertiesLang lb_prop_lang_map[] = {
 	{ "fr", 2, lb_prop_French },
 	{ "ru", 2, lb_prop_Russian },
 	{ "zh", 2, lb_prop_Chinese },
-	{ NULL, 0, lb_prop_default }
+	{ NULL, 0, NULL }
 };

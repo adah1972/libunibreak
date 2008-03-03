@@ -1,5 +1,14 @@
 2008-03-03  Wu Yongwei  <wuyongwei@gmail.com>
 
+	Make minor adjustments in code and comments.
+	* linebreak.c: Adjust the doc comments.
+	(init_linebreak_prop_index): Modify a conditional to make it more
+	robust and consistent.
+	* linebreakdef.c (lb_prop_lang_map): Replace the pointer
+	lb_prop_default with NULL, since the value is never used.
+
+2008-03-03  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Accelerate get_char_lb_class for invalid Unicode code points.
 	* linebreak.c (get_char_lb_class): Adjust the conditionals so that
 	getting the line breaking class for an invalid code point is much

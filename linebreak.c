@@ -37,7 +37,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * 5.0.0 Standard Annex 14.
  *
- * @version	0.9.2, 2008/03/03
+ * @version	0.9.3, 2008/03/03
  * @author	Wu Yongwei
  */
 
@@ -311,7 +311,7 @@ void init_linebreak_prop_index(void)
 	size_t step;
 
 	len = 0;
-	while (lb_prop_default[len].start != 0xFFFFFFFF)
+	while (lb_prop_default[len].prop != LBP_Undefined)
 		++len;
 	step = len / LINEBREAK_INDEX_SIZE;
 	iPropDefault = 0;
@@ -449,11 +449,11 @@ typedef utf32_t (*get_next_char_t)(const void *, size_t, size_t *);
  * Gets the next Unicode character in a UTF-8 sequence.  The index will
  * be advanced to the next complete character.
  *
- * @param s		input UTF-8 string
- * @param len	length of the string in bytes
- * @param ip	pointer to the index
- * @return		the Unicode character beginning at the index; or #EOS if
- *				end of input is encountered
+ * @param[in]     s		input UTF-8 string
+ * @param[in]     len	length of the string in bytes
+ * @param[in,out] ip	pointer to the index
+ * @return				the Unicode character beginning at the index; or
+ *						#EOS if end of input is encountered
  */
 static utf32_t get_next_char_utf8(
 		const utf8_t *s,
@@ -507,11 +507,11 @@ static utf32_t get_next_char_utf8(
  * Gets the next Unicode character in a UTF-16 sequence.  The index will
  * be advanced to the next complete character.
  *
- * @param s		input UTF-16 string
- * @param len	length of the string in words
- * @param ip	pointer to the index
- * @return		the Unicode character beginning at the index; or #EOS if
- *				end of input is encountered
+ * @param[in]     s		input UTF-16 string
+ * @param[in]     len	length of the string in words
+ * @param[in,out] ip	pointer to the index
+ * @return				the Unicode character beginning at the index; or
+ *						#EOS if end of input is encountered
  */
 static utf32_t get_next_char_utf16(
 		const utf16_t *s,
@@ -545,11 +545,11 @@ static utf32_t get_next_char_utf16(
  * Gets the next Unicode character in a UTF-32 sequence.  The index will
  * be advanced to the next character.
  *
- * @param s		input UTF-32 string
- * @param len	length of the string in dwords
- * @param ip	pointer to the index
- * @return		the Unicode character beginning at the index; or #EOS if
- *				end of input is encountered
+ * @param[in]     s		input UTF-32 string
+ * @param[in]     len	length of the string in dwords
+ * @param[in,out] ip	pointer to the index
+ * @return				the Unicode character beginning at the index; or
+ *						#EOS if end of input is encountered
  */
 static utf32_t get_next_char_utf32(
 		const utf32_t *s,
@@ -565,13 +565,14 @@ static utf32_t get_next_char_utf32(
 /**
  * Sets the line breaking information for a generic input string.
  *
- * @param s		input string
- * @param len	length of the input
- * @param lang	language of the input
- * @param brks	pointer to the output breaking data, containing \c
- * 				LINEBREAK_MUSTBREAK, \c LINEBREAK_ALLOWBREAK, \c
- * 				LINEBREAK_NOBREAK, or \c LINEBREAK_INSIDEACHAR
- * @param get_next_char	function to get the next UTF-32 character
+ * @param[in]  s			input string
+ * @param[in]  len			length of the input
+ * @param[in]  lang			language of the input
+ * @param[out] brks			pointer to the output breaking data,
+ *							containing #LINEBREAK_MUSTBREAK,
+ *							#LINEBREAK_ALLOWBREAK, #LINEBREAK_NOBREAK,
+ *							or #LINEBREAK_INSIDEACHAR
+ * @param[in] get_next_char	function to get the next UTF-32 character
  */
 static void set_linebreaks(
 		const void *s,
@@ -699,12 +700,12 @@ nextline:
 /**
  * Sets the line breaking information for a UTF-8 input string.
  *
- * @param s		input UTF-8 string
- * @param len	length of the input
- * @param lang	language of the input
- * @param brks	pointer to the output breaking data, containing \c
- * 				LINEBREAK_MUSTBREAK, \c LINEBREAK_ALLOWBREAK, \c
- * 				LINEBREAK_NOBREAK, or \c LINEBREAK_INSIDEACHAR
+ * @param[in]  s	input UTF-8 string
+ * @param[in]  len	length of the input
+ * @param[in]  lang	language of the input
+ * @param[out] brks	pointer to the output breaking data, containing
+ *					#LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *					#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
  */
 void set_linebreaks_utf8(
 		const utf8_t *s,
@@ -718,12 +719,12 @@ void set_linebreaks_utf8(
 /**
  * Sets the line breaking information for a UTF-16 input string.
  *
- * @param s		input UTF-16 string
- * @param len	length of the input
- * @param lang	language of the input
- * @param brks	pointer to the output breaking data, containing \c
- * 				LINEBREAK_MUSTBREAK, \c LINEBREAK_ALLOWBREAK, \c
- * 				LINEBREAK_NOBREAK, or \c LINEBREAK_INSIDEACHAR
+ * @param[in]  s	input UTF-16 string
+ * @param[in]  len	length of the input
+ * @param[in]  lang	language of the input
+ * @param[out] brks	pointer to the output breaking data, containing
+ *					#LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *					#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
  */
 void set_linebreaks_utf16(
 		const utf16_t *s,
@@ -737,12 +738,12 @@ void set_linebreaks_utf16(
 /**
  * Sets the line breaking information for a UTF-32 input string.
  *
- * @param s		input UTF-32 string
- * @param len	length of the input
- * @param lang	language of the input
- * @param brks	pointer to the output breaking data, containing \c
- * 				LINEBREAK_MUSTBREAK, \c LINEBREAK_ALLOWBREAK, \c
- * 				LINEBREAK_NOBREAK, or \c LINEBREAK_INSIDEACHAR
+ * @param[in]  s	input UTF-32 string
+ * @param[in]  len	length of the input
+ * @param[in]  lang	language of the input
+ * @param[out] brks	pointer to the output breaking data, containing
+ *					#LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *					#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
  */
 void set_linebreaks_utf32(
 		const utf32_t *s,
@@ -762,9 +763,9 @@ void set_linebreaks_utf32(
  *
  * @param char1 the first Unicode character
  * @param char2 the second Unicode character
- * @param lang  language contexts to make better judgements
- * @return      one of \c LINEBREAK_MUSTBREAK, \c LINEBREAK_ALLOWBREAK,
- *				\c LINEBREAK_NOBREAK, or \c LINEBREAK_INSIDEACHAR
+ * @param lang  language of the input
+ * @return      one of #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *				#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
  */
 int is_breakable(
 		utf32_t char1,
