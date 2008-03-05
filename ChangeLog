@@ -1,3 +1,15 @@
+2008-03-05  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Improve the performance by reducing the look-ups of the
+	language-specific line breaking properties array from the language
+	name (thanks to Nikolay Pultsin).
+	* linebreak.c (get_lb_prop_lang): New function.
+	(get_char_lb_class_lang): Change the second parameter from the
+	language name to the line breaking properties array.
+	(set_linebreaks): Look up the language-specific line breaking
+	properties array from the language name only once in one function
+	call.
+
 2008-03-03  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Make minor adjustments in code and comments.

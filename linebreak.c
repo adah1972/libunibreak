@@ -37,7 +37,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * 5.0.0 Standard Annex 14.
  *
- * @version	0.9.3, 2008/03/03
+ * @version	0.9.4, 2008/03/05
  * @author	Wu Yongwei
  */
 
@@ -325,10 +325,34 @@ void init_linebreak_prop_index(void)
 }
 
 /**
- * Gets the line breaking property of a character.
+ * Gets the language-specific line breaking properties.
+ *
+ * @param lang	language of the text
+ * @return		pointer to the language-specific line breaking
+ *				properties array if found; \c NULL otherwise
+ */
+struct LineBreakProperties *get_lb_prop_lang(const char *lang)
+{
+	struct LineBreakPropertiesLang *lbplIter;
+	if (lang != NULL)
+	{
+		for (lbplIter = lb_prop_lang_map; lbplIter->lang != NULL; ++lbplIter)
+		{
+			if (strncmp(lang, lbplIter->lang, lbplIter->namelen) == 0)
+			{
+				return lbplIter->lbp;
+			}
+		}
+	}
+	return NULL;
+}
+
+/**
+ * Gets the line breaking class of a character from a line breaking
+ * properties array.
  *
  * @param ch	character to check
- * @param lbp	line breaking property array
+ * @param lbp	pointer to the line breaking properties array
  * @return		the line breaking class if found; \c LBP_XX otherwise
  */
 static enum LineBreakClass get_char_lb_class(
@@ -345,7 +369,8 @@ static enum LineBreakClass get_char_lb_class(
 }
 
 /**
- * Gets the line breaking property of a character.
+ * Gets the line breaking class of a character from the default line
+ * breaking properties array.
  *
  * @param ch	character to check
  * @return		the line breaking class if found; \c LBP_XX otherwise
@@ -361,41 +386,27 @@ static enum LineBreakClass get_char_lb_class_default(
 }
 
 /**
- * Gets the line breaking property of a character for a specific
+ * Gets the line breaking class of a character for a specific
  * language.  This function will check the language-specific data first,
  * and then the default data if there is no language-specific property
  * available for the character.
  *
- * @param ch	character to check
- * @param lang	language of the text
- * @return		the line breaking class if found; \c LBP_XX otherwise
+ * @param ch		character to check
+ * @param lbpLang	pointer to the language-specific line breaking
+ *					properties array
+ * @return			the line breaking class if found; \c LBP_XX
+ *					otherwise
  */
 static enum LineBreakClass get_char_lb_class_lang(
 		utf32_t ch,
-		const char *lang)
+		struct LineBreakProperties *lbpLang)
 {
-	struct LineBreakPropertiesLang *lbplIter;
-	struct LineBreakProperties *lbpPrimary;
 	enum LineBreakClass lbcResult;
 
-	/* Try to find language-specific line breaking properties */
-	lbpPrimary = NULL;
-	if (lang != NULL)
-	{
-		for (lbplIter = lb_prop_lang_map; lbplIter->lang != NULL; ++lbplIter)
-		{
-			if (strncmp(lang, lbplIter->lang, lbplIter->namelen) == 0)
-			{
-				lbpPrimary = lbplIter->lbp;
-				break;
-			}
-		}
-	}
-
 	/* Find the language-specific line breaking class for a character */
-	if (lbpPrimary)
+	if (lbpLang)
 	{
-		lbcResult = get_char_lb_class(ch, lbpPrimary);
+		lbcResult = get_char_lb_class(ch, lbpLang);
 		if (lbcResult != LBP_XX)
 			return lbcResult;
 	}
@@ -585,6 +596,7 @@ static void set_linebreaks(
 	enum LineBreakClass lbcCur;
 	enum LineBreakClass lbcNew;
 	enum LineBreakClass lbcLast;
+	struct LineBreakProperties *lbpLang;
 	size_t posCur = 0;
 	size_t posLast = 0;
 
@@ -592,7 +604,8 @@ static void set_linebreaks(
 	ch = get_next_char(s, len, &posCur);
 	if (ch == EOS)
 		return;
-	lbcCur = resolve_lb_class(get_char_lb_class_lang(ch, lang), lang);
+	lbpLang = get_lb_prop_lang(lang);
+	lbcCur = resolve_lb_class(get_char_lb_class_lang(ch, lbpLang), lang);
 	lbcNew = LBP_Undefined;
 
 nextline:
@@ -623,7 +636,7 @@ nextline:
 		ch = get_next_char(s, len, &posCur);
 		if (ch == EOS)
 			break;
-		lbcNew = get_char_lb_class_lang(ch, lang);
+		lbcNew = get_char_lb_class_lang(ch, lbpLang);
 		if (lbcCur == LBP_BK || (lbcCur == LBP_CR && lbcNew != LBP_LF))
 		{
 			brks[posLast] = LINEBREAK_MUSTBREAK;
