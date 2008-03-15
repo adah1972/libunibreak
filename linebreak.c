@@ -37,7 +37,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * 5.0.0 Standard Annex 14.
  *
- * @version	0.9.4, 2008/03/05
+ * @version	0.9.5, 2008/03/15
  * @author	Wu Yongwei
  */
 
@@ -706,7 +706,7 @@ nextline:
 	/* When the input contains incomplete sequences */
 	while (posCur < len)
 	{
-		brks[posCur++] == LINEBREAK_INSIDEACHAR;
+		brks[posCur++] = LINEBREAK_INSIDEACHAR;
 	}
 }
 

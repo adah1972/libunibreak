@@ -1,3 +1,8 @@
+2008-03-15  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* linebreak.c (set_linebreaks): Fix a bug that `==' was wrongly used
+	for `='.
+
 2008-03-05  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Improve the performance by reducing the look-ups of the
