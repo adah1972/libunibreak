@@ -37,7 +37,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * 5.0.0 Standard Annex 14.
  *
- * @version	0.9.5, 2008/03/15
+ * @version	0.9.6, 2008/03/16
  * @author	Wu Yongwei
  */
 
@@ -303,7 +303,7 @@ static struct LineBreakPropertiesIndex lb_prop_index[LINEBREAK_INDEX_SIZE] = {
  * thus the main functionality) can be pretty bad, especially for big
  * code points like those of Chinese.
  */
-void init_linebreak_prop_index(void)
+void init_linebreak(void)
 {
 	size_t i;
 	size_t iPropDefault;
@@ -451,12 +451,6 @@ static enum LineBreakClass resolve_lb_class(
 }
 
 /**
- * Abstract function interface for #get_next_char_utf8,
- * #get_next_char_utf16, and #get_next_char_utf32.
- */
-typedef utf32_t (*get_next_char_t)(const void *, size_t, size_t *);
-
-/**
  * Gets the next Unicode character in a UTF-8 sequence.  The index will
  * be advanced to the next complete character.
  *
@@ -466,7 +460,7 @@ typedef utf32_t (*get_next_char_t)(const void *, size_t, size_t *);
  * @return				the Unicode character beginning at the index; or
  *						#EOS if end of input is encountered
  */
-static utf32_t get_next_char_utf8(
+utf32_t get_next_char_utf8(
 		const utf8_t *s,
 		size_t len,
 		size_t *ip)
@@ -524,7 +518,7 @@ static utf32_t get_next_char_utf8(
  * @return				the Unicode character beginning at the index; or
  *						#EOS if end of input is encountered
  */
-static utf32_t get_next_char_utf16(
+utf32_t get_next_char_utf16(
 		const utf16_t *s,
 		size_t len,
 		size_t *ip)
@@ -562,7 +556,7 @@ static utf32_t get_next_char_utf16(
  * @return				the Unicode character beginning at the index; or
  *						#EOS if end of input is encountered
  */
-static utf32_t get_next_char_utf32(
+utf32_t get_next_char_utf32(
 		const utf32_t *s,
 		size_t len,
 		size_t *ip)
@@ -585,7 +579,7 @@ static utf32_t get_next_char_utf32(
  *							or #LINEBREAK_INSIDEACHAR
  * @param[in] get_next_char	function to get the next UTF-32 character
  */
-static void set_linebreaks(
+void set_linebreaks(
 		const void *s,
 		size_t len,
 		const char *lang,

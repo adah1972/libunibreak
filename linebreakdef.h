@@ -34,10 +34,10 @@
 /**
  * @file	linebreakdef.h
  *
- * Definition of internal data structures and declaration of global
- * variables for the line breaking algorithm.
+ * Definitions of internal data structures, declarations of global
+ * variables, and function prototypes for the line breaking algorithm.
  *
- * @version	0.5.2, 2008/03/03
+ * @version	0.6, 2008/03/16
  * @author	Wu Yongwei
  */
 
@@ -119,6 +119,20 @@ struct LineBreakPropertiesLang
 	struct LineBreakProperties *lbp;	/**< Pointer to associated data */
 };
 
+/**
+ * Abstract function interface for #get_next_char_utf8,
+ * #get_next_char_utf16, and #get_next_char_utf32.
+ */
+typedef utf32_t (*get_next_char_t)(const void *, size_t, size_t *);
+
 /* Declarations */
 extern struct LineBreakProperties lb_prop_default[];
 extern struct LineBreakPropertiesLang lb_prop_lang_map[];
+
+/* Function Prototype */
+void set_linebreaks(
+		const void *s,
+		size_t len,
+		const char *lang,
+		char *brks,
+		get_next_char_t get_next_char);

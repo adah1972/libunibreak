@@ -1,5 +1,22 @@
 2008-03-16  Wu Yongwei  <wuyongwei@gmail.com>
 
+	Rename init_linebreak_prop_index to init_linebreak for future
+	safety; make visible certain functions that are potentially useful.
+	* linebreak.c (init_linebreak_prop_index): Rename to init_linebreak.
+	(get_next_char_t): Move to linebreakdef.h.
+	(get_next_char_utf8): Make non-static.
+	(get_next_char_utf16): Ditto.
+	(get_next_char_utf32): Ditto.
+	(set_linebreaks): Ditto.
+	* linebreak.h (init_linebreak_prop_index): Rename to init_linebreak.
+	(get_next_char_utf8): Add the function prototype.
+	(get_next_char_utf16): Ditto.
+	(get_next_char_utf32): Ditto.
+	* linebreakdef.c (get_next_char_t): Add the typedef.
+	(set_linebreaks): Add the function prototype.
+
+2008-03-16  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* Makefile (OLDGCC): Add support for GCC 2.95.3 (when OLDGCC=Y).
 
 2008-03-15  Wu Yongwei  <wuyongwei@gmail.com>

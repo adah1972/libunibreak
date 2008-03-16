@@ -36,7 +36,7 @@
  *
  * Header file for the line breaking algorithm.
  *
- * @version	0.9, 2008/03/02
+ * @version	0.9.1, 2008/03/16
  * @author	Wu Yongwei
  */
 
@@ -61,8 +61,11 @@ typedef unsigned int	utf32_t;	/**< Type for UTF-32 data points */
 #define LINEBREAK_NOBREAK		2	/**< No break is possible */
 #define LINEBREAK_INSIDEACHAR	3	/**< A UTF-8/16 sequence is unfinished */
 
-void init_linebreak_prop_index(void);
+void init_linebreak(void);
 int is_breakable(utf32_t char1, utf32_t char2, const char* lang);
+utf32_t get_next_char_utf8(const utf8_t *s, size_t len, size_t *ip);
+utf32_t get_next_char_utf16(const utf16_t *s, size_t len, size_t *ip);
+utf32_t get_next_char_utf32(const utf32_t *s, size_t len, size_t *ip);
 void set_linebreaks_utf8(
 		const utf8_t *s, size_t len, const char* lang, char *brks);
 void set_linebreaks_utf16(
