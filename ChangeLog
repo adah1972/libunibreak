@@ -12,7 +12,7 @@
 	(get_next_char_utf8): Add the function prototype.
 	(get_next_char_utf16): Ditto.
 	(get_next_char_utf32): Ditto.
-	* linebreakdef.c (get_next_char_t): Add the typedef.
+	* linebreakdef.h (get_next_char_t): Add the typedef.
 	(set_linebreaks): Add the function prototype.
 
 2008-03-16  Wu Yongwei  <wuyongwei@gmail.com>
