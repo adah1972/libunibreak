@@ -1,3 +1,7 @@
+2008-03-16  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* Makefile (OLDGCC): Add support for GCC 2.95.3 (when OLDGCC=Y).
+
 2008-03-15  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* linebreak.c (set_linebreaks): Fix a bug that `==' was wrongly used

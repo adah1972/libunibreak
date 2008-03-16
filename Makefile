@@ -33,6 +33,8 @@ else
     all: release
 endif
 
+OLDGCC ?= N
+
 DEBUG   := DebugDir
 RELEASE := ReleaseDir
 
@@ -48,6 +50,8 @@ $(DEBUG)/%.o: %.cpp
 $(RELEASE)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(RELFLAGS) $(TARGET_ARCH) -c -o $@ $<
 
+ifeq ($(OLDGCC),N)
+
 $(DEBUG)/%.dep: %.c
 	$(CC) -MM -MT $(patsubst %.dep,%.o,$@) $(CFLAGS) $(CPPFLAGS) $(DBGFLAGS) $(TARGET_ARCH) -o $@ $<
 
@@ -60,17 +64,37 @@ $(DEBUG)/%.dep: %.cpp
 $(RELEASE)/%.dep: %.cpp
 	$(CXX) -MM -MT $(patsubst %.dep,%.o,$@) $(CXXFLAGS) $(CPPFLAGS) $(RELFLAGS) $(TARGET_ARCH) -o $@ $<
 
+else
+
+$(DEBUG)/%.dep: %.c
+	$(CC) -MM $(CPPFLAGS) $(DBGFLAGS) $(TARGET_ARCH) $< | sed "s!^!$(DEBUG)/!" > $@
+
+$(RELEASE)/%.dep: %.c
+	$(CC) -MM $(CPPFLAGS) $(RELFLAGS) $(TARGET_ARCH) $< | sed "s!^!$(RELEASE)/!" > $@
+
+$(DEBUG)/%.dep: %.cpp
+	$(CXX) -MM $(CPPFLAGS) $(DBGFLAGS) $(TARGET_ARCH) $< | sed "s!^!$(DEBUG)/!" > $@
+
+$(RELEASE)/%.dep: %.cpp
+	$(CXX) -MM $(CPPFLAGS) $(RELFLAGS) $(TARGET_ARCH) $< | sed "s!^!$(RELEASE)/!" > $@
+
+endif
+
 CC  = gcc
 CXX = g++
 AR  = ar
 LD  = $(CXX) $(CXXFLAGS) $(TARGET_ARCH)
 
 INCLUDE  = -I. $(patsubst %,-I%,$(VPATH))
-CFLAGS   = -W -Wall -fmessage-length=0 $(INCLUDE)
+CFLAGS   = -W -Wall $(INCLUDE)
 CXXFLAGS = $(CFLAGS)
 DBGFLAGS = -D_DEBUG -g
 RELFLAGS = -DNDEBUG -O2
 CPPFLAGS =
+
+ifeq ($(OLDGCC),N)
+    CFLAGS += -fmessage-length=0
+endif
 
 HFILES   = $(wildcard $(patsubst -I%,%/*.h,$(INCLUDE)))
 OBJFILES = $(CFILES:.c=.o) $(CXXFILES:.cpp=.o)
