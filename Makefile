@@ -148,11 +148,11 @@ LineBreak.txt:
 .PHONY: all debug release clean distclean linebreakdata
 
 clean:
-	$(RM) $(DEBUG)/*.o $(DEBUG)/*.dep $(DEBUG_TARGET) *.exe tags
+	$(RM) $(DEBUG)/*.o $(DEBUG)/*.dep $(DEBUG_TARGET)
 	$(RM) $(RELEASE)/*.o $(RELEASE)/*.dep $(RELEASE_TARGET)
 
 distclean: clean
-	$(RM) $(DEBUG)/* $(RELEASE)/* LineBreak.txt
+	$(RM) $(DEBUG)/* $(RELEASE)/* *.exe tags LineBreak.txt
 	-rmdir $(DEBUG) 2> $(DEVNUL)
 	-rmdir $(RELEASE) 2> $(DEVNUL)
 

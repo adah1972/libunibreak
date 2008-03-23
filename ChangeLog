@@ -1,5 +1,10 @@
 2008-03-23  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* Makefile (clean): Do not remove *.exe and tags here.
+	(distclean): Remove *.exe and tags.
+
+2008-03-23  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Remove the English override for solidus: it is better treated in the
 	text breaking program (see ../breaktext/ for an example).
 	* linebreakdef.c (lb_prop_English): Remove the line for solidus.
