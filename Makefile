@@ -67,16 +67,16 @@ $(RELEASE)/%.dep: %.cpp
 else
 
 $(DEBUG)/%.dep: %.c
-	$(CC) -MM $(CPPFLAGS) $(DBGFLAGS) $(TARGET_ARCH) $< | sed "s!^!$(DEBUG)/!" > $@
+	$(CC) -MM $(CFLAGS) $(CPPFLAGS) $(DBGFLAGS) $(TARGET_ARCH) $< | sed "s!^!$(DEBUG)/!" > $@
 
 $(RELEASE)/%.dep: %.c
-	$(CC) -MM $(CPPFLAGS) $(RELFLAGS) $(TARGET_ARCH) $< | sed "s!^!$(RELEASE)/!" > $@
+	$(CC) -MM $(CFLAGS) $(CPPFLAGS) $(RELFLAGS) $(TARGET_ARCH) $< | sed "s!^!$(RELEASE)/!" > $@
 
 $(DEBUG)/%.dep: %.cpp
-	$(CXX) -MM $(CPPFLAGS) $(DBGFLAGS) $(TARGET_ARCH) $< | sed "s!^!$(DEBUG)/!" > $@
+	$(CXX) -MM $(CXXFLAGS) $(CPPFLAGS) $(DBGFLAGS) $(TARGET_ARCH) $< | sed "s!^!$(DEBUG)/!" > $@
 
 $(RELEASE)/%.dep: %.cpp
-	$(CXX) -MM $(CPPFLAGS) $(RELFLAGS) $(TARGET_ARCH) $< | sed "s!^!$(RELEASE)/!" > $@
+	$(CXX) -MM $(CXXFLAGS) $(CPPFLAGS) $(RELFLAGS) $(TARGET_ARCH) $< | sed "s!^!$(RELEASE)/!" > $@
 
 endif
 
