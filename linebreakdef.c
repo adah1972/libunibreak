@@ -47,7 +47,6 @@
  * English-specifc data over the default Unicode rules.
  */
 static struct LineBreakProperties lb_prop_English[] = {
-	{ 0x002B, 0x002B, LBP_AL },	/* Plus sign: no break inside "C++" */
 	{ 0x2018, 0x2018, LBP_OP },	/* Left single quotation mark: opening */
 	{ 0x2019, 0x2019, LBP_CL },	/* Right single quotation mark: closing */
 	{ 0x201C, 0x201C, LBP_OP },	/* Left double quotation mark: opening */

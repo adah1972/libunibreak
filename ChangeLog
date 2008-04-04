@@ -1,3 +1,9 @@
+2008-04-04  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Remove the English override for plus sign: it is better treated in
+	the text breaking program (see ../breaktext/ for an example).
+	* linebreakdef.c (lb_prop_English): Remove the line for plus sign.
+
 2008-03-29  Wu Yongwei <wuyongwei@gmail.com>
 
 	* Makefile: Correct the dependency-making rules when OLDGCC=Y.
