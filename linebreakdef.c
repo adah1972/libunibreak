@@ -36,7 +36,7 @@
  *
  * Definition of language-specific data.
  *
- * @version	0.5.2, 2008/03/23
+ * @version	0.5.3, 2008/04/04
  * @author	Wu Yongwei
  */
 
