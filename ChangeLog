@@ -1,3 +1,12 @@
+2008-04-20  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Add README and LICENCE files, as well as a Doxyfile to generate
+	documents.
+	* README: New file.
+	* LICENCE: New file.
+	* Doxyfile: New file.
+	* Makefile (doc): Add new phony target.
+
 2008-04-04  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Remove the English override for plus sign: it is better treated in

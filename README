@@ -1,0 +1,33 @@
+This is the README file for liblinebreak, an implementation of the line
+breaking algorithm as described in Unicode 5.0.0 Standard Annex 14,
+Revision 19, available at
+         <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
+
+This library is released under an open-source licence, the zlib/libpng
+licence.  Please check the file LICENCE for details.
+
+Apart from using the algorithm, part of the code is derived from the
+data provided under
+                  <URL:http://www.unicode.org/Public/>
+
+And the Unicode Terms of Use may apply:
+              <URL:http://www.unicode.org/copyright.html>
+
+This library is easy to build, and a Makefile is provided for the free
+software environments.  Just type 'make', and it should work in most
+cases.  I have tested only under Windows (MinGW and Cygwin).
+
+- To generate the library (default to the debug build), type 'make'.
+- To explicitly generate the debug or release build, type 'make debug'
+  or 'make release'.
+- To generate the doxygen documents, type 'make doc'.
+- To regenerate linebreakdata.c from LineBreak.txt, type 'make
+  linebreakdata'.
+
+Check the generated document html/linebreak_8h.html for the public
+interfaces exposed to applications.
+
+
+$Id$
+
+vim:autoindent:expandtab:formatoptions=tcqlm:textwidth=72:

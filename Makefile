@@ -132,6 +132,9 @@ $(DEBUG_TARGET): $(DEBUG_DEPS) $(DEBUG_OBJS)
 $(RELEASE_TARGET): $(RELEASE_DEPS) $(RELEASE_OBJS)
 	$(AR) -r $(RELEASE_TARGET) $(RELEASE_OBJS)
 
+doc:
+	doxygen
+
 linebreakdata: filter_dup$(EXEEXT) LineBreak.txt
 	sed -n -f LineBreak1.sed LineBreak.txt > tmp.txt
 	sed -f LineBreak2.sed tmp.txt | .$(PATHSEP)filter_dup > tmp.c
@@ -145,7 +148,7 @@ filter_dup$(EXEEXT): filter_dup.c
 LineBreak.txt:
 	wget http://unicode.org/Public/UNIDATA/LineBreak.txt
 
-.PHONY: all debug release clean distclean linebreakdata
+.PHONY: all debug release clean distclean doc linebreakdata
 
 clean:
 	$(RM) $(DEBUG)/*.o $(DEBUG)/*.dep $(DEBUG_TARGET)
