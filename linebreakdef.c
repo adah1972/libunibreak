@@ -23,8 +23,11 @@
  * 3. This notice may not be removed or altered from any source
  *    distribution.
  *
- * The main reference is Unicode 5.0.0 Standard Annex 14, Revision 19,
- * available at
+ * The main reference is Unicode Standard Annex 14 (UAX #14):
+ *		<URL:http://www.unicode.org/reports/tr14/>
+ *
+ * When this library was designed, this annex was at Revision 19, for
+ * Unicode 5.0.0:
  *		<URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
  * The Unicode Terms of Use are available at
@@ -36,7 +39,7 @@
  *
  * Definition of language-specific data.
  *
- * @version	0.5.3, 2008/04/04
+ * @version	0.9.6, 2008/12/07
  * @author	Wu Yongwei
  */
 

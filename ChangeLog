@@ -1,5 +1,12 @@
 2008-12-07  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* linebreak.c: Adjust the comment that refers to Unicode Annex 14.
+	* linebreak.h: Ditto.
+	* linebreakdef.c: Ditto.
+	* linebreakdef.h: Ditto.
+
+2008-12-07  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Use only POSIX basic regexp to ensure maximum portability (issues
 	have been found on Mac OS X, where GNU extensions do not work).
 	* LineBreak1.sed: Replace `[:xdigit:]' with `0-9A-F', and `\+' with
