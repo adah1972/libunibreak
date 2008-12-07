@@ -1,3 +1,8 @@
+2008-12-07  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* Makefile: Replace `*.exe' with 'filter_dup$(EXEEXT)', since the
+	extension `.exe' is specific to Windows.
+
 2008-04-20  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Add README and LICENCE files, as well as a Doxyfile to generate

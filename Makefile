@@ -155,7 +155,7 @@ clean:
 	$(RM) $(RELEASE)/*.o $(RELEASE)/*.dep $(RELEASE_TARGET)
 
 distclean: clean
-	$(RM) $(DEBUG)/* $(RELEASE)/* *.exe tags LineBreak.txt
+	$(RM) $(DEBUG)/* $(RELEASE)/* filter_dup$(EXEEXT) tags LineBreak.txt
 	-rmdir $(DEBUG) 2> $(DEVNUL)
 	-rmdir $(RELEASE) 2> $(DEVNUL)
 
