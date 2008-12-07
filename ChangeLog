@@ -1,6 +1,14 @@
 2008-12-07  Wu Yongwei  <wuyongwei@gmail.com>
 
-	* Makefile: Replace `*.exe' with 'filter_dup$(EXEEXT)', since the
+	Use only POSIX basic regexp to ensure maximum portability (issues
+	have been found on Mac OS X, where GNU extensions do not work).
+	* LineBreak1.sed: Replace `[:xdigit:]' with `0-9A-F', and `\+' with
+	`\{1,\}'.
+	* LineBreak2.sed: Ditto.
+
+2008-12-07  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* Makefile: Replace `*.exe' with `filter_dup$(EXEEXT)', since the
 	extension `.exe' is specific to Windows.
 
 2008-04-20  Wu Yongwei  <wuyongwei@gmail.com>
