@@ -1,3 +1,8 @@
+2008-12-09  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* Makefile: Remove (to become Makefile.gcc).
+	* Makefile.gcc: New file (was Makefile).
+
 2008-12-07  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* linebreak.c: Adjust the comment that refers to Unicode Annex 14.
