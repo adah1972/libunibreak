@@ -148,7 +148,7 @@ filter_dup$(EXEEXT): filter_dup.c
 LineBreak.txt:
 	wget http://unicode.org/Public/UNIDATA/LineBreak.txt
 
-.PHONY: all debug release clean distclean doc linebreakdata
+.PHONY: all debug release clean distclean purge doc linebreakdata
 
 clean:
 	$(RM) $(DEBUG)/*.o $(DEBUG)/*.dep $(DEBUG_TARGET)
@@ -158,5 +158,11 @@ distclean: clean
 	$(RM) $(DEBUG)/* $(RELEASE)/* filter_dup$(EXEEXT) tags LineBreak.txt
 	-rmdir $(DEBUG) 2> $(DEVNUL)
 	-rmdir $(RELEASE) 2> $(DEVNUL)
+
+purge: distclean
+	$(RM) Makefile.in aclocal.m4 autom4te.cache/* config.guess config.h.in config.sub configure depcomp doc/html/* install-sh ltmain.sh missing
+	-rmdir autom4te.cache 2> $(DEVNUL)
+	-rmdir doc/html 2> $(DEVNUL)
+	-rmdir doc 2> $(DEVNUL)
 
 -include $(wildcard $(DEBUG)/*.dep) $(wildcard $(RELEASE)/*.dep)
