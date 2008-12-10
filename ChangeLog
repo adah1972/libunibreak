@@ -1,3 +1,8 @@
+2008-12-10  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* Doxyfile (OUTPUT_DIRECTORY): Set to `doc'.
+	(ALPHABETICAL_INDEX): Set to `YES'.
+
 2008-12-09  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* Makefile.msvc: New file.
