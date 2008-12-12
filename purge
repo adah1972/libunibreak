@@ -1,0 +1,2 @@
+#! /bin/sh
+rm -rf Makefile.in aclocal.m4 autom4te.cache/ config.guess config.h.in config.sub configure depcomp doc/ install-sh ltmain.sh missing
