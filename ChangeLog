@@ -1,5 +1,9 @@
 2008-12-12  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* README: Update for the new build methods and better readability.
+
+2008-12-12  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* Makefile.msvc: Correct the inconsistent naming in the output
 	message.
 
