@@ -10,7 +10,7 @@ CFG=linebreak - Win32 Debug
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "linebreak.mak" CFG="linebreak - Win32 Debug"
+!MESSAGE NMAKE /f Makefile.msvc CFG="linebreak - Win32 Debug"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
