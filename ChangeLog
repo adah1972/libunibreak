@@ -1,3 +1,13 @@
+2008-12-13  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Update files according to UAX #14-22, for Unicode 5.1.0.
+	* linebreak.c (baTable): Update according to Table 2 of UAX #14-22.
+	* linebreakdef.c (lb_prop_Spanish): Remove the unnecessary
+	customization for inverted marks in Spanish.
+	* linebreakdata.c: Regenerate from LineBreak-5.1.0.txt.
+	* linebreak.h: Update comment only.
+	* linebreakdef.h: Ditto.
+
 2008-12-12  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* README: Update for the new build methods and better readability.

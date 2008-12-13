@@ -30,6 +30,10 @@
  * Unicode 5.0.0:
  *		<URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
+ * This library has been updated according to Revision 22, for
+ * Unicode 5.1.0:
+ *		<URL:http://www.unicode.org/reports/tr14/tr14-22.html>
+ *
  * The Unicode Terms of Use are available at
  *		<URL:http://www.unicode.org/copyright.html>
  */
@@ -39,7 +43,7 @@
  *
  * Header file for the line breaking algorithm.
  *
- * @version	0.9.6, 2008/12/07
+ * @version	0.9.7, 2008/12/13
  * @author	Wu Yongwei
  */
 
