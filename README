@@ -43,7 +43,7 @@ There are three ways to build the library:
    addition, one may
 
    - type `make doc' to generate the doxygen documentation; or
-   - type 'make linebreakdata' to regenerate linebreakdata.c from
+   - type `make linebreakdata' to regenerate linebreakdata.c from
      LineBreak.txt.
 
 
@@ -57,7 +57,7 @@ There are three ways to build the library:
    - type `make debug' or `make release' to explicitly generate the
      debug or release build;
    - type `make doc' to generate the doxygen documentation; or
-   - type 'make linebreakdata' to regenerate linebreakdata.c from
+   - type `make linebreakdata' to regenerate linebreakdata.c from
      LineBreak.txt.
 
 3) On Windows, apart from using method 1 (Cygwin/MSYS) and method 2
