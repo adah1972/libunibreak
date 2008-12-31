@@ -1,5 +1,12 @@
 2008-12-31  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* linebreak.c: Update the version number in comment to 1.0.
+	* linebreak.h: Ditto.
+	* linebreakdef.c: Ditto.
+	* linebreakdef.h: Ditto.
+
+2008-12-31  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* NEWS: Update for the 1.0 release.
 
 2008-12-31  Wu Yongwei  <wuyongwei@gmail.com>

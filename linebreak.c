@@ -44,7 +44,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version	0.9.7, 2008/12/13
+ * @version	1.0, 2008/12/31
  * @author	Wu Yongwei
  */
 
