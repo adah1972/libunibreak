@@ -14,6 +14,7 @@ EXTRA_DIST = \
 	linebreakdata1.tmpl \
 	linebreakdata2.tmpl \
 	linebreakdata3.tmpl \
+	LICENCE \
 	Doxyfile \
 	Makefile.gcc \
 	Makefile.msvc \
