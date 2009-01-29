@@ -1,5 +1,11 @@
 2009-01-29  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* linebreak.h: Copy function documentation comments from the
+	definition to the header file.
+	* linebreakdef.h: Ditto.
+
+2009-01-29  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Prepare to reduce namespace pollution.
 	* linebreak.c (get_lb_prop_lang): Mark as static.
 	(get_next_char_utf8): Add a comment that it will be renamed.

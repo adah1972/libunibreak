@@ -68,12 +68,68 @@ typedef unsigned int	utf32_t;	/**< Type for UTF-32 data points */
 #define LINEBREAK_NOBREAK		2	/**< No break is possible */
 #define LINEBREAK_INSIDEACHAR	3	/**< A UTF-8/16 sequence is unfinished */
 
+/**
+ * Initializes the second-level index to the line breaking properties.
+ * If it is not called, the performance of #get_char_lb_class_lang (and
+ * thus the main functionality) can be pretty bad, especially for big
+ * code points like those of Chinese.
+ */
 void init_linebreak(void);
+
+/**
+ * Tells whether a line break can occur between two Unicode characters.
+ * This is a wrapper function to expose a simple interface.  Generally
+ * speaking, it is better to use #set_linebreaks_utf32 instead, since
+ * complicated cases involving combining marks, spaces, etc. cannot be
+ * correctly processed.
+ * <p><b>Nota bene:</b> <em>This function will be renamed to
+ * #is_line_breakable in the future.  The name is already defined as a
+ * macro&mdash;please use it.</em></p>
+ *
+ * @param char1 the first Unicode character
+ * @param char2 the second Unicode character
+ * @param lang  language of the input
+ * @return      one of #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *				#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
+ */
 int is_breakable(utf32_t char1, utf32_t char2, const char* lang);
+
+/**
+ * Sets the line breaking information for a UTF-8 input string.
+ *
+ * @param[in]  s	input UTF-8 string
+ * @param[in]  len	length of the input
+ * @param[in]  lang	language of the input
+ * @param[out] brks	pointer to the output breaking data, containing
+ *					#LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *					#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
+ */
 void set_linebreaks_utf8(
 		const utf8_t *s, size_t len, const char* lang, char *brks);
+
+/**
+ * Sets the line breaking information for a UTF-16 input string.
+ *
+ * @param[in]  s	input UTF-16 string
+ * @param[in]  len	length of the input
+ * @param[in]  lang	language of the input
+ * @param[out] brks	pointer to the output breaking data, containing
+ *					#LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *					#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
+ */
 void set_linebreaks_utf16(
 		const utf16_t *s, size_t len, const char* lang, char *brks);
+
+/**
+ * Sets the line breaking information for a UTF-32 input string.
+ *
+ * @param[in]  s	input UTF-32 string
+ * @param[in]  len	length of the input
+ * @param[in]  lang	language of the input
+ * @param[out] brks	pointer to the output breaking data, containing
+ *					#LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *					#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
+ */
 void set_linebreaks_utf32(
 		const utf32_t *s, size_t len, const char* lang, char *brks);
 

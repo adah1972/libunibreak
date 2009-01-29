@@ -136,15 +136,65 @@ typedef utf32_t (*get_next_char_t)(const void *, size_t, size_t *);
 extern struct LineBreakProperties lb_prop_default[];
 extern struct LineBreakPropertiesLang lb_prop_lang_map[];
 
-/* Function Prototype */
+/* Function Prototypes */
+
+/**
+ * Sets the line breaking information for a generic input string.
+ *
+ * @param[in]  s			input string
+ * @param[in]  len			length of the input
+ * @param[in]  lang			language of the input
+ * @param[out] brks			pointer to the output breaking data,
+ *							containing #LINEBREAK_MUSTBREAK,
+ *							#LINEBREAK_ALLOWBREAK, #LINEBREAK_NOBREAK,
+ *							or #LINEBREAK_INSIDEACHAR
+ * @param[in] get_next_char	function to get the next UTF-32 character
+ */
 void set_linebreaks(
 		const void *s,
 		size_t len,
 		const char *lang,
 		char *brks,
 		get_next_char_t get_next_char);
-/* The following functions are deprecated, and will be prefixed with lb_
- * in the future. */
+
+/**
+ * Gets the next Unicode character in a UTF-8 sequence.  The index will
+ * be advanced to the next complete character.
+ * <p><b>Nota bene:</b> <em>This function will be prefixed with \c lb_
+ * in the future.</em></p>
+ *
+ * @param[in]     s		input UTF-8 string
+ * @param[in]     len	length of the string in bytes
+ * @param[in,out] ip	pointer to the index
+ * @return				the Unicode character beginning at the index; or
+ *						#EOS if end of input is encountered
+ */
 utf32_t get_next_char_utf8(const utf8_t *s, size_t len, size_t *ip);
+
+/**
+ * Gets the next Unicode character in a UTF-16 sequence.  The index will
+ * be advanced to the next complete character.
+ * <p><b>Nota bene:</b> <em>This function will be prefixed with \c lb_
+ * in the future.</em></p>
+ *
+ * @param[in]     s		input UTF-16 string
+ * @param[in]     len	length of the string in words
+ * @param[in,out] ip	pointer to the index
+ * @return				the Unicode character beginning at the index; or
+ *						#EOS if end of input is encountered
+ */
 utf32_t get_next_char_utf16(const utf16_t *s, size_t len, size_t *ip);
+
+/**
+ * Gets the next Unicode character in a UTF-32 sequence.  The index will
+ * be advanced to the next character.
+ * <p><b>Nota bene:</b> <em>This function will be prefixed with \c lb_
+ * in the future.</em></p>
+ *
+ * @param[in]     s		input UTF-32 string
+ * @param[in]     len	length of the string in dwords
+ * @param[in,out] ip	pointer to the index
+ * @return				the Unicode character beginning at the index; or
+ *						#EOS if end of input is encountered
+ */
 utf32_t get_next_char_utf32(const utf32_t *s, size_t len, size_t *ip);
