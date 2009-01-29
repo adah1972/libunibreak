@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2009 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -44,7 +44,7 @@
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the line breaking algorithm.
  *
- * @version	1.0, 2008/12/31
+ * @version	1.1, 2000/01/29
  * @author	Wu Yongwei
  */
 
@@ -143,3 +143,8 @@ void set_linebreaks(
 		const char *lang,
 		char *brks,
 		get_next_char_t get_next_char);
+/* The following functions are deprecated, and will be prefixed with lb_
+ * in the future. */
+utf32_t get_next_char_utf8(const utf8_t *s, size_t len, size_t *ip);
+utf32_t get_next_char_utf16(const utf16_t *s, size_t len, size_t *ip);
+utf32_t get_next_char_utf32(const utf32_t *s, size_t len, size_t *ip);

@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2009 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -44,7 +44,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version	1.0, 2008/12/31
+ * @version	1.1, 2009/01/29
  * @author	Wu Yongwei
  */
 
@@ -338,7 +338,7 @@ void init_linebreak(void)
  * @return		pointer to the language-specific line breaking
  *				properties array if found; \c NULL otherwise
  */
-struct LineBreakProperties *get_lb_prop_lang(const char *lang)
+static struct LineBreakProperties *get_lb_prop_lang(const char *lang)
 {
 	struct LineBreakPropertiesLang *lbplIter;
 	if (lang != NULL)
@@ -460,6 +460,8 @@ static enum LineBreakClass resolve_lb_class(
 /**
  * Gets the next Unicode character in a UTF-8 sequence.  The index will
  * be advanced to the next complete character.
+ * <p><b>Nota bene:</b> <em>This function will be prefixed with \c lb_
+ * in the future.</em></p>
  *
  * @param[in]     s		input UTF-8 string
  * @param[in]     len	length of the string in bytes
@@ -518,6 +520,8 @@ utf32_t get_next_char_utf8(
 /**
  * Gets the next Unicode character in a UTF-16 sequence.  The index will
  * be advanced to the next complete character.
+ * <p><b>Nota bene:</b> <em>This function will be prefixed with \c lb_
+ * in the future.</em></p>
  *
  * @param[in]     s		input UTF-16 string
  * @param[in]     len	length of the string in words
@@ -556,6 +560,8 @@ utf32_t get_next_char_utf16(
 /**
  * Gets the next Unicode character in a UTF-32 sequence.  The index will
  * be advanced to the next character.
+ * <p><b>Nota bene:</b> <em>This function will be prefixed with \c lb_
+ * in the future.</em></p>
  *
  * @param[in]     s		input UTF-32 string
  * @param[in]     len	length of the string in dwords
@@ -774,6 +780,9 @@ void set_linebreaks_utf32(
  * speaking, it is better to use #set_linebreaks_utf32 instead, since
  * complicated cases involving combining marks, spaces, etc. cannot be
  * correctly processed.
+ * <p><b>Nota bene:</b> <em>This function will be renamed to
+ * #is_line_breakable in the future.  The name is already defined as a
+ * macro&mdash;please use it.</em></p>
  *
  * @param char1 the first Unicode character
  * @param char2 the second Unicode character

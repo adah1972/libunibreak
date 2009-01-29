@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2009 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -43,7 +43,7 @@
  *
  * Header file for the line breaking algorithm.
  *
- * @version	1.0, 2008/12/31
+ * @version	1.1, 2000/01/29
  * @author	Wu Yongwei
  */
 
@@ -70,15 +70,17 @@ typedef unsigned int	utf32_t;	/**< Type for UTF-32 data points */
 
 void init_linebreak(void);
 int is_breakable(utf32_t char1, utf32_t char2, const char* lang);
-utf32_t get_next_char_utf8(const utf8_t *s, size_t len, size_t *ip);
-utf32_t get_next_char_utf16(const utf16_t *s, size_t len, size_t *ip);
-utf32_t get_next_char_utf32(const utf32_t *s, size_t len, size_t *ip);
 void set_linebreaks_utf8(
 		const utf8_t *s, size_t len, const char* lang, char *brks);
 void set_linebreaks_utf16(
 		const utf16_t *s, size_t len, const char* lang, char *brks);
 void set_linebreaks_utf32(
 		const utf32_t *s, size_t len, const char* lang, char *brks);
+
+/**
+ * Replacement form for the deprecated function #is_breakable.  Please
+ * use the macro for the present moment, before the function is renamed. */
+#define is_line_breakable is_breakable
 
 #ifdef __cplusplus
 }
