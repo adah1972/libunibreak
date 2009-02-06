@@ -1,3 +1,12 @@
+New in 1.1
+
+- Make get_lb_prop_lang static and not an exported symbol
+- Define is_line_breakable to alias to is_breakable
+- Declare get_next_char_utf* will be changed to lb_get_next_char_utf*
+- Move the declarations of get_next_char_utf* from linebreak.h to
+  linebreakdef.h
+- Add the function documentation comments to the header files
+
 New in 1.0
 
 - Update the line breaking data according to UAX #14-22 and

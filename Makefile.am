@@ -2,7 +2,7 @@
 include_HEADERS = linebreak.h linebreakdef.h
 lib_LTLIBRARIES = liblinebreak.la
 
-liblinebreak_la_LDFLAGS = -no-undefined -version-info 1:0
+liblinebreak_la_LDFLAGS = -no-undefined -version-info 1:1
 liblinebreak_la_SOURCES = \
 	linebreak.c \
 	linebreakdata.c \
