@@ -1,3 +1,7 @@
+2009-02-06  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* NEWS: Add information about the 1.1 release.
+
 2009-01-02  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* Makefile.am (EXTRA_DIST): Add the missing `LICENCE' file.
