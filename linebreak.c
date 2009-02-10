@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2009 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -44,7 +44,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version	1.0, 2008/12/31
+ * @version	1.9, 2009/02/10
  * @author	Wu Yongwei
  */
 
@@ -75,7 +75,6 @@ enum BreakAction
 /**
  * Break action pair table.  This is a direct mapping of Table 2 of
  * Unicode Standard Annex 14, Revision 22.
-
  */
 static enum BreakAction baTable[LBP_JT][LBP_JT] = {
 	{	/* OP */
@@ -338,7 +337,7 @@ void init_linebreak(void)
  * @return		pointer to the language-specific line breaking
  *				properties array if found; \c NULL otherwise
  */
-struct LineBreakProperties *get_lb_prop_lang(const char *lang)
+static struct LineBreakProperties *get_lb_prop_lang(const char *lang)
 {
 	struct LineBreakPropertiesLang *lbplIter;
 	if (lang != NULL)
@@ -467,7 +466,7 @@ static enum LineBreakClass resolve_lb_class(
  * @return				the Unicode character beginning at the index; or
  *						#EOS if end of input is encountered
  */
-utf32_t get_next_char_utf8(
+utf32_t lb_get_next_char_utf8(
 		const utf8_t *s,
 		size_t len,
 		size_t *ip)
@@ -525,7 +524,7 @@ utf32_t get_next_char_utf8(
  * @return				the Unicode character beginning at the index; or
  *						#EOS if end of input is encountered
  */
-utf32_t get_next_char_utf16(
+utf32_t lb_get_next_char_utf16(
 		const utf16_t *s,
 		size_t len,
 		size_t *ip)
@@ -563,7 +562,7 @@ utf32_t get_next_char_utf16(
  * @return				the Unicode character beginning at the index; or
  *						#EOS if end of input is encountered
  */
-utf32_t get_next_char_utf32(
+utf32_t lb_get_next_char_utf32(
 		const utf32_t *s,
 		size_t len,
 		size_t *ip)
@@ -727,7 +726,8 @@ void set_linebreaks_utf8(
 		const char *lang,
 		char *brks)
 {
-	set_linebreaks(s, len, lang, brks, (get_next_char_t)get_next_char_utf8);
+	set_linebreaks(s, len, lang, brks,
+				   (get_next_char_t)lb_get_next_char_utf8);
 }
 
 /**
@@ -746,7 +746,8 @@ void set_linebreaks_utf16(
 		const char *lang,
 		char *brks)
 {
-	set_linebreaks(s, len, lang, brks, (get_next_char_t)get_next_char_utf16);
+	set_linebreaks(s, len, lang, brks,
+				   (get_next_char_t)lb_get_next_char_utf16);
 }
 
 /**
@@ -765,7 +766,8 @@ void set_linebreaks_utf32(
 		const char *lang,
 		char *brks)
 {
-	set_linebreaks(s, len, lang, brks, (get_next_char_t)get_next_char_utf32);
+	set_linebreaks(s, len, lang, brks,
+				   (get_next_char_t)lb_get_next_char_utf32);
 }
 
 /**
@@ -781,7 +783,7 @@ void set_linebreaks_utf32(
  * @return      one of #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
  *				#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
  */
-int is_breakable(
+int is_line_breakable(
 		utf32_t char1,
 		utf32_t char2,
 		const char* lang)
