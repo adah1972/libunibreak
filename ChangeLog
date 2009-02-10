@@ -1,5 +1,11 @@
 2009-02-10  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* configure.ac (AC_INIT): Increase the version to 2.0.
+	* Makefile.am (liblinebreak_la_LDFLAGS): Set the version-info to
+	`2:0'.
+
+2009-02-10  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* linebreak.h (LINEBREAK_VERSION): New macro.
 	(linebreak_version): New global constant declaration.
 	* linebreak.c (linebreak_version): New global constant definition.
