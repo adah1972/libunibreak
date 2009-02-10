@@ -44,7 +44,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version	1.9, 2009/02/10
+ * @version	1.91, 2009/02/10
  * @author	Wu Yongwei
  */
 
@@ -58,6 +58,11 @@
  * Size of the second-level index to the line breaking properties.
  */
 #define LINEBREAK_INDEX_SIZE 40
+
+/**
+ * Version number of the library.
+ */
+const int linebreak_version = LINEBREAK_VERSION;
 
 /**
  * Enumeration of break actions.  They are used in the break action

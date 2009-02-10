@@ -43,7 +43,7 @@
  *
  * Header file for the line breaking algorithm.
  *
- * @version	1.9, 2000/02/10
+ * @version	1.91, 2000/02/10
  * @author	Wu Yongwei
  */
 
@@ -55,6 +55,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define LINEBREAK_VERSION	0x0191
+extern const int linebreak_version;
 
 #ifndef LINEBREAK_UTF_TYPES_DEFINED
 #define LINEBREAK_UTF_TYPES_DEFINED
