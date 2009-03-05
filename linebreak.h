@@ -43,7 +43,7 @@
  *
  * Header file for the line breaking algorithm.
  *
- * @version	1.1, 2000/01/29
+ * @version	1.1.1, 2009/01/29
  * @author	Wu Yongwei
  */
 
