@@ -1,5 +1,9 @@
 2009-03-05  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* configure.ac (AC_INIT): Increase the version to 1.1.1.
+
+2009-03-05  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* linebreak.h: Correct the wrong date in the documentation comment.
 	* linebreakdef.h: Ditto.
 
