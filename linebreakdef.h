@@ -44,7 +44,7 @@
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the line breaking algorithm.
  *
- * @version	1.9, 2000/02/10
+ * @version	1.91, 2009/02/10
  * @author	Wu Yongwei
  */
 
