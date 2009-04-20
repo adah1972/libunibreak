@@ -1,3 +1,11 @@
+2009-04-20  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* linebreakdef.c (lb_prop_English): Remove the specialization of
+	right single quotation mark as closing punctuation mark, because it
+	can be used as apostrophe.
+	(lb_prop_Spanish): Ditto.
+	(lb_prop_French): Ditto.
+
 2009-03-07  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* linebreak.h: Correct the wrong date in the documentation comment.
