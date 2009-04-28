@@ -6,6 +6,11 @@
 	(lb_prop_Spanish): Ditto.
 	(lb_prop_French): Ditto.
 
+2009-04-09  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* Makefile.msvc: Make the `clean' target work on MSVC versions other
+	than 6.0; do not use precompiled header.
+
 2009-03-07  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* linebreak.h: Correct the wrong date in the documentation comment.
