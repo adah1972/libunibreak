@@ -52,8 +52,8 @@
 	(is_breakable): Rename to is_line_breakable.
 	* linebreakdef.h (lb_get_next_char_utf8): Add the function prototype
 	declaration.
-	(get_next_char_utf16): Ditto.
-	(get_next_char_utf32): Ditto.
+	(lb_get_next_char_utf16): Ditto.
+	(lb_get_next_char_utf32): Ditto.
 
 2009-02-06  Wu Yongwei  <wuyongwei@gmail.com>
 
