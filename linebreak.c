@@ -44,7 +44,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version	1.91, 2009/02/10
+ * @version	1.92, 2009/04/28
  * @author	Wu Yongwei
  */
 
@@ -463,7 +463,8 @@ static enum LineBreakClass resolve_lb_class(
 
 /**
  * Gets the next Unicode character in a UTF-8 sequence.  The index will
- * be advanced to the next complete character.
+ * be advanced to the next complete character, unless the end of string
+ * is reached in the middle of a UTF-8 sequence.
  *
  * @param[in]     s		input UTF-8 string
  * @param[in]     len	length of the string in bytes
@@ -482,46 +483,48 @@ utf32_t lb_get_next_char_utf8(
 	assert(*ip <= len);
 	if (*ip == len)
 		return EOS;
-	ch = s[(*ip)++];
+	ch = s[*ip];
 
 	if (ch < 0xC2 || ch > 0xF4)
 	{	/* One-byte sequence, tail (should not occur), or invalid */
+		*ip += 1;
 		return ch;
 	}
 	else if (ch < 0xE0)
 	{	/* Two-byte sequence */
-		if (*ip == len)
+		if (*ip + 2 > len)
 			return EOS;
-		res = ((ch & 0x1F) << 6) + (s[*ip] & 0x3F);
-		++(*ip);
+		res = ((ch & 0x1F) << 6) + (s[*ip + 1] & 0x3F);
+		*ip += 2;
 		return res;
 	}
 	else if (ch < 0xF0)
 	{	/* Three-byte sequence */
-		if (*ip + 1 >= len)
+		if (*ip + 3 > len)
 			return EOS;
 		res = ((ch & 0x0F) << 12) +
-			  ((s[*ip] & 0x3F) << 6) +
-			  ((s[*ip + 1] & 0x3F));
-		*ip += 2;
+			  ((s[*ip + 1] & 0x3F) << 6) +
+			  ((s[*ip + 2] & 0x3F));
+		*ip += 3;
 		return res;
 	}
 	else
 	{	/* Four-byte sequence */
-		if (*ip + 2 >= len)
+		if (*ip + 4 > len)
 			return EOS;
 		res = ((ch & 0x07) << 18) +
-			  ((s[*ip] & 0x3F) << 12) +
 			  ((s[*ip + 1] & 0x3F) << 12) +
-			  ((s[*ip + 2] & 0x3F));
-		*ip += 3;
+			  ((s[*ip + 2] & 0x3F) << 6) +
+			  ((s[*ip + 3] & 0x3F));
+		*ip += 4;
 		return res;
 	}
 }
 
 /**
  * Gets the next Unicode character in a UTF-16 sequence.  The index will
- * be advanced to the next complete character.
+ * be advanced to the next complete character, unless the end of string
+ * is reached in the middle of a UTF-16 surrogate pair.
  *
  * @param[in]     s		input UTF-16 string
  * @param[in]     len	length of the string in words
@@ -547,6 +550,7 @@ utf32_t lb_get_next_char_utf16(
 	}
 	if (*ip == len)
 	{	/* If the input ends here (an error) */
+		--(*ip);
 		return EOS;
 	}
 	if (s[*ip] < 0xDC00 || s[*ip] > 0xDFFF)
