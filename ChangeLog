@@ -1,3 +1,17 @@
+2009-04-29  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Backport patches from the main trunk.
+	* linebreak.c (get_next_char_utf8): Fix the issue that the index can
+	point to the middle of a UTF-8 sequence if End of String (EOS) is
+	encountered prematurely (thanks to Nikolay Pultsin and Rick Xu).
+	(get_next_char_utf16): Fix the issue that the index can point to the
+	middle of a UTF-16 surrogate pair if EOS is encountered prematurely.
+	* linebreakdef.c (lb_prop_English): Remove the specialization of
+	right single quotation mark as closing punctuation mark, because it
+	can be used as apostrophe.
+	(lb_prop_Spanish): Ditto.
+	(lb_prop_French): Ditto.
+
 2009-03-05  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* configure.ac (AC_INIT): Increase the version to 1.1.1.
