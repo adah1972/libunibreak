@@ -1,5 +1,10 @@
 2009-04-30  Wu Yongwei  <wuyongwei@gmail.com>
 
+	Optimize the Doxygen output.
+	(lb_prop_index): Adjust its definition format slightly.
+
+2009-04-30  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* Doxyfile (USE_WINDOWS_ENCODING): Remove obsolete tag.
 	(DETAILS_AT_TOP): Ditto.
 	(MAX_DOT_GRAPH_WIDTH): Ditto.

@@ -304,7 +304,8 @@ struct LineBreakPropertiesIndex
 /**
  * Second-level index to the line breaking properties.
  */
-static struct LineBreakPropertiesIndex lb_prop_index[LINEBREAK_INDEX_SIZE] = {
+static struct LineBreakPropertiesIndex lb_prop_index[LINEBREAK_INDEX_SIZE] =
+{
 	{ 0xFFFFFFFF, lb_prop_default }
 };
 
