@@ -300,7 +300,8 @@ struct LineBreakPropertiesIndex
 /**
  * Second-level index to the line breaking properties.
  */
-static struct LineBreakPropertiesIndex lb_prop_index[LINEBREAK_INDEX_SIZE] = {
+static struct LineBreakPropertiesIndex lb_prop_index[LINEBREAK_INDEX_SIZE] =
+{
 	{ 0xFFFFFFFF, lb_prop_default }
 };
 
@@ -461,14 +462,14 @@ static enum LineBreakClass resolve_lb_class(
  * Gets the next Unicode character in a UTF-8 sequence.  The index will
  * be advanced to the next complete character, unless the end of string
  * is reached in the middle of a UTF-8 sequence.
- * <p><b>Nota bene:</b> <em>This function will be prefixed with \c lb_
- * in the future.</em></p>
  *
  * @param[in]     s		input UTF-8 string
  * @param[in]     len	length of the string in bytes
  * @param[in,out] ip	pointer to the index
  * @return				the Unicode character beginning at the index; or
  *						#EOS if end of input is encountered
+ *
+ * @deprecated	This function will be prefixed with \c lb_ in the future.
  */
 utf32_t get_next_char_utf8(
 		const utf8_t *s,
@@ -523,14 +524,14 @@ utf32_t get_next_char_utf8(
  * Gets the next Unicode character in a UTF-16 sequence.  The index will
  * be advanced to the next complete character, unless the end of string
  * is reached in the middle of a UTF-16 surrogate pair.
- * <p><b>Nota bene:</b> <em>This function will be prefixed with \c lb_
- * in the future.</em></p>
  *
  * @param[in]     s		input UTF-16 string
  * @param[in]     len	length of the string in words
  * @param[in,out] ip	pointer to the index
  * @return				the Unicode character beginning at the index; or
  *						#EOS if end of input is encountered
+ *
+ * @deprecated	This function will be prefixed with \c lb_ in the future.
  */
 utf32_t get_next_char_utf16(
 		const utf16_t *s,
@@ -564,14 +565,14 @@ utf32_t get_next_char_utf16(
 /**
  * Gets the next Unicode character in a UTF-32 sequence.  The index will
  * be advanced to the next character.
- * <p><b>Nota bene:</b> <em>This function will be prefixed with \c lb_
- * in the future.</em></p>
  *
  * @param[in]     s		input UTF-32 string
  * @param[in]     len	length of the string in dwords
  * @param[in,out] ip	pointer to the index
  * @return				the Unicode character beginning at the index; or
  *						#EOS if end of input is encountered
+ *
+ * @deprecated	This function will be prefixed with \c lb_ in the future.
  */
 utf32_t get_next_char_utf32(
 		const utf32_t *s,
@@ -784,15 +785,16 @@ void set_linebreaks_utf32(
  * speaking, it is better to use #set_linebreaks_utf32 instead, since
  * complicated cases involving combining marks, spaces, etc. cannot be
  * correctly processed.
- * <p><b>Nota bene:</b> <em>This function will be renamed to
- * #is_line_breakable in the future.  The name is already defined as a
- * macro&mdash;please use it.</em></p>
  *
  * @param char1 the first Unicode character
  * @param char2 the second Unicode character
  * @param lang  language of the input
  * @return      one of #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
  *				#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
+ *
+ * @deprecated  This function will be renamed to #is_line_breakable in
+ * 				the future.  The name is already defined as a
+ * 				macro&mdash;please use it.
  */
 int is_breakable(
 		utf32_t char1,
