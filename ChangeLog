@@ -1,3 +1,13 @@
+2009-04-30  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* Doxyfile (USE_WINDOWS_ENCODING): Remove obsolete tag.
+	(DETAILS_AT_TOP): Ditto.
+	(MAX_DOT_GRAPH_WIDTH): Ditto.
+	(MAX_DOT_GRAPH_HEIGHT): Ditto.
+	(REFERENCED_BY_RELATION): Set to `NO'.
+	(REFERENCES_RELATION): Ditto.
+	(EXCLUDE): Add `filter_dup.c'.
+
 2009-04-28  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* linebreak.c (lb_get_next_char_utf8): Fix the issue that the index
