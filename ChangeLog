@@ -1,3 +1,13 @@
+2009-04-30  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* Doxyfile (USE_WINDOWS_ENCODING): Remove obsolete tag.
+	(DETAILS_AT_TOP): Ditto.
+	(MAX_DOT_GRAPH_WIDTH): Ditto.
+	(MAX_DOT_GRAPH_HEIGHT): Ditto.
+	(REFERENCED_BY_RELATION): Set to `NO'.
+	(REFERENCES_RELATION): Ditto.
+	(EXCLUDE): Add `filter_dup.c'.
+
 2009-04-29  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Backport patches from the main trunk.
