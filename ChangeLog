@@ -5,7 +5,8 @@
 2009-04-30  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Optimize the Doxygen output.
-	(lb_prop_index): Adjust its definition format slightly.
+	* linebreak.c (lb_prop_index): Adjust its definition format
+	slightly.
 
 2009-04-30  Wu Yongwei  <wuyongwei@gmail.com>
 
