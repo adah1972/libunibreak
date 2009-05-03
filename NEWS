@@ -1,3 +1,12 @@
+New in 1.2
+
+- Fix the bug that an assertion in code can fail if an invalid UTF-8 or
+  UTF-16 sequence is encountered near the end of input
+- Remove the specialization of right single quotation mark as closing
+  punctuation mark in English, French, and Spanish, because it can be
+  used as apostrophe
+- Make Doxygen documentation better
+
 New in 1.1
 
 - Make get_lb_prop_lang static and not an exported symbol

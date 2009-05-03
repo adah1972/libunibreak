@@ -1,5 +1,13 @@
 2009-05-03  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* configure.ac (AC_INIT): Increase the version to 1.2.
+	* Doxyfile (PROJECT_NUMBER): Set to 1.2.
+	* Makefile.am (liblinebreak_la_LDFLAGS): Set the version-info to
+	`1:2'.
+	* NEWS: Add information about the 1.2 release.
+
+2009-05-03  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Deal with a bug in Doxygen when the documentation comment for one
 	entity is given twice and includes the @deprecated tag.
 	* linebreak.h (is_line_breakable): Move some of the documentation
