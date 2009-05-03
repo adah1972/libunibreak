@@ -43,7 +43,7 @@
  *
  * Header file for the line breaking algorithm.
  *
- * @version	1.1.1, 2009/01/29
+ * @version	1.2, 2009/05/03
  * @author	Wu Yongwei
  */
 
@@ -76,22 +76,6 @@ typedef unsigned int	utf32_t;	/**< Type for UTF-32 data points */
  */
 void init_linebreak(void);
 
-/**
- * Tells whether a line break can occur between two Unicode characters.
- * This is a wrapper function to expose a simple interface.  Generally
- * speaking, it is better to use #set_linebreaks_utf32 instead, since
- * complicated cases involving combining marks, spaces, etc. cannot be
- * correctly processed.
- * <p><b>Nota bene:</b> <em>This function will be renamed to
- * #is_line_breakable in the future.  The name is already defined as a
- * macro&mdash;please use it.</em></p>
- *
- * @param char1 the first Unicode character
- * @param char2 the second Unicode character
- * @param lang  language of the input
- * @return      one of #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
- *				#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
- */
 int is_breakable(utf32_t char1, utf32_t char2, const char* lang);
 
 /**
@@ -135,7 +119,18 @@ void set_linebreaks_utf32(
 
 /**
  * Replacement form for the deprecated function #is_breakable.  Please
- * use the macro for the present moment, before the function is renamed. */
+ * use the macro for the present moment, before the function is renamed.
+ * <p>This is a wrapper function to expose a simple interface.  Generally
+ * speaking, it is better to use #set_linebreaks_utf32 instead, since
+ * complicated cases involving combining marks, spaces, etc. cannot be
+ * correctly processed.
+ *
+ * @param char1 the first Unicode character
+ * @param char2 the second Unicode character
+ * @param lang  language of the input
+ * @return      one of #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *				#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
+ */
 #define is_line_breakable is_breakable
 
 #ifdef __cplusplus

@@ -44,7 +44,7 @@
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the line breaking algorithm.
  *
- * @version	1.1.1, 2009/01/29
+ * @version	1.2, 2009/05/03
  * @author	Wu Yongwei
  */
 
@@ -157,44 +157,6 @@ void set_linebreaks(
 		char *brks,
 		get_next_char_t get_next_char);
 
-/**
- * Gets the next Unicode character in a UTF-8 sequence.  The index will
- * be advanced to the next complete character.
- * <p><b>Nota bene:</b> <em>This function will be prefixed with \c lb_
- * in the future.</em></p>
- *
- * @param[in]     s		input UTF-8 string
- * @param[in]     len	length of the string in bytes
- * @param[in,out] ip	pointer to the index
- * @return				the Unicode character beginning at the index; or
- *						#EOS if end of input is encountered
- */
 utf32_t get_next_char_utf8(const utf8_t *s, size_t len, size_t *ip);
-
-/**
- * Gets the next Unicode character in a UTF-16 sequence.  The index will
- * be advanced to the next complete character.
- * <p><b>Nota bene:</b> <em>This function will be prefixed with \c lb_
- * in the future.</em></p>
- *
- * @param[in]     s		input UTF-16 string
- * @param[in]     len	length of the string in words
- * @param[in,out] ip	pointer to the index
- * @return				the Unicode character beginning at the index; or
- *						#EOS if end of input is encountered
- */
 utf32_t get_next_char_utf16(const utf16_t *s, size_t len, size_t *ip);
-
-/**
- * Gets the next Unicode character in a UTF-32 sequence.  The index will
- * be advanced to the next character.
- * <p><b>Nota bene:</b> <em>This function will be prefixed with \c lb_
- * in the future.</em></p>
- *
- * @param[in]     s		input UTF-32 string
- * @param[in]     len	length of the string in dwords
- * @param[in,out] ip	pointer to the index
- * @return				the Unicode character beginning at the index; or
- *						#EOS if end of input is encountered
- */
 utf32_t get_next_char_utf32(const utf32_t *s, size_t len, size_t *ip);

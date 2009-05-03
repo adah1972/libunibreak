@@ -1,3 +1,15 @@
+2009-05-03  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Deal with a bug in Doxygen when the documentation comment for one
+	entity is given twice and includes the @deprecated tag.
+	* linebreak.h (is_line_breakable): Move some of the documentation
+	comment of is_breakable here.
+	(is_breakable): Remove the documentation comment since
+	the result from recent versions of Doxygen is incorrect otherwise.
+	* linebreakdef.h (get_next_char_utf8): Ditto.
+	(get_next_char_utf16): Ditto.
+	(get_next_char_utf32): Ditto.
+
 2009-04-30  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Optimize the Doxygen output.
