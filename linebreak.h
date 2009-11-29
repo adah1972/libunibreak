@@ -56,7 +56,7 @@
 extern "C" {
 #endif
 
-#define LINEBREAK_VERSION	0x0195
+#define LINEBREAK_VERSION	0x0195	/**< Version of the library linebreak */
 extern const int linebreak_version;
 
 #ifndef LINEBREAK_UTF_TYPES_DEFINED
