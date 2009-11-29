@@ -1,3 +1,16 @@
+2009-11-29  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Update files according to UAX #14-24, for Unicode 5.2.0.
+	* linebreak.c: Update comments about UAX #14.
+	* linebreak.h: Ditto.
+	* linebreakdef.c: Ditto.
+	* linebreakdef.h: Ditto.
+	(LBP_CP): New enumerator for the new `CP' class as defined in
+	UAX #14-24.
+	* linebreak.c (baTable): Update for the new class `CP'.
+	* linebreakdata.c: Regenerate from LineBreak-5.2.0.txt.
+	* README: Update the reference to UAX #14-24, for Unicode 5.2.0.
+
 2009-05-03  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* NEWS: Add information about the 1.2 release.

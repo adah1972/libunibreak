@@ -30,9 +30,9 @@
  * Unicode 5.0.0:
  *		<URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 22, for
- * Unicode 5.1.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-22.html>
+ * This library has been updated according to Revision 24, for
+ * Unicode 5.2.0:
+ *		<URL:http://www.unicode.org/reports/tr14/tr14-24.html>
  *
  * The Unicode Terms of Use are available at
  *		<URL:http://www.unicode.org/copyright.html>
@@ -43,7 +43,7 @@
  *
  * Definition of language-specific data.
  *
- * @version	1.1, 2009/04/20
+ * @version	1.95, 2009/11/29
  * @author	Wu Yongwei
  */
 

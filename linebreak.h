@@ -30,9 +30,9 @@
  * Unicode 5.0.0:
  *		<URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 22, for
- * Unicode 5.1.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-22.html>
+ * This library has been updated according to Revision 24, for
+ * Unicode 5.2.0:
+ *		<URL:http://www.unicode.org/reports/tr14/tr14-24.html>
  *
  * The Unicode Terms of Use are available at
  *		<URL:http://www.unicode.org/copyright.html>
@@ -43,7 +43,7 @@
  *
  * Header file for the line breaking algorithm.
  *
- * @version	1.92, 2009/02/10
+ * @version	1.95, 2009/11/29
  * @author	Wu Yongwei
  */
 
@@ -56,7 +56,7 @@
 extern "C" {
 #endif
 
-#define LINEBREAK_VERSION	0x0191
+#define LINEBREAK_VERSION	0x0195
 extern const int linebreak_version;
 
 #ifndef LINEBREAK_UTF_TYPES_DEFINED

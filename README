@@ -5,9 +5,9 @@ Overview
 --------
 
 This is the README file for liblinebreak, an implementation of the line
-breaking algorithm as described in Unicode 5.1.0 Standard Annex 14,
-Revision 22, available at
-         <URL:http://www.unicode.org/reports/tr14/tr14-22.html>
+breaking algorithm as described in Unicode 5.2.0 Standard Annex 14,
+Revision 24, available at
+         <URL:http://www.unicode.org/reports/tr14/tr14-24.html>
 
 Check this URL for up-to-date information:
          <URL:http://vimgadgets.sourceforge.net/liblinebreak/>
@@ -45,7 +45,6 @@ There are three ways to build the library:
    - type `make doc' to generate the doxygen documentation; or
    - type `make linebreakdata' to regenerate linebreakdata.c from
      LineBreak.txt.
-
 
 2) On systems where GCC and Binutils are supported, one can type
 
