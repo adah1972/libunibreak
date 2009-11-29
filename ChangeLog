@@ -1,5 +1,9 @@
 2009-11-29  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* linebreak.c (baTable): Fix a comment; reflow the table data.
+
+2009-11-29  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* Doxyfile (TAB_SIZE): Set to the correct size `4', as used in the
 	source files.
 
