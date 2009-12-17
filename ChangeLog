@@ -1,3 +1,12 @@
+2009-12-17  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Change the values of enum BreakAction to the same length.
+	* linebreak.c (DIRECT_BRK): Rename to DIR_BRK.
+	(INDIRECT_BRK): Rename to IND_BRK.
+	(CM_INDIRECT_BRK): Rename to CMI_BRK.
+	(CM_PROHIBITED_BRK): Rename to CMP_BRK.
+	(PROHIBITED_BRK): Rename to PRH_BRK.
+
 2009-11-29  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* Doxyfile (TAB_SIZE): Set to the correct size `4', as used in the
