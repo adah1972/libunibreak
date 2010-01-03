@@ -1,3 +1,10 @@
+New in 2.0
+
+- Update the algorithm and data according to UAX #14-24 and
+  LineBreak-5.2.0.txt
+- Rename some functions to reduce namespace pollution
+- Make Doxygen documentation better
+
 New in 1.2
 
 - Fix the bug that an assertion in code can fail if an invalid UTF-8 or
