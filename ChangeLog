@@ -1,3 +1,10 @@
+2010-01-03  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* linebreak.c: Update the version number in comment to 2.0.
+	* linebreak.h: Ditto.
+	* linebreakdef.c: Ditto.
+	* linebreakdef.h: Ditto.
+
 2009-12-17  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Change the values of enum BreakAction to the same length.

@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2009 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2010 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -43,7 +43,7 @@
  *
  * Header file for the line breaking algorithm.
  *
- * @version	1.95, 2009/11/29
+ * @version	2.0, 2010/01/03
  * @author	Wu Yongwei
  */
 
@@ -56,7 +56,7 @@
 extern "C" {
 #endif
 
-#define LINEBREAK_VERSION	0x0195	/**< Version of the library linebreak */
+#define LINEBREAK_VERSION	0x0200	/**< Version of the library linebreak */
 extern const int linebreak_version;
 
 #ifndef LINEBREAK_UTF_TYPES_DEFINED
