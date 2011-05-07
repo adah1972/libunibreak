@@ -1,3 +1,9 @@
+2011-05-07  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* linebreak.c (set_linebreaks): Fix the assertion failure when
+	U+FFFC (OBJECT REPLACEMENT CHARACTER) appears at the beginning of a
+	line (thanks to Tom Hacohen).
+
 2010-01-03  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* LICENCE: Update the copyright year.
