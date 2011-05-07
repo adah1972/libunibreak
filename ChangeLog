@@ -1,5 +1,9 @@
 2011-05-07  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* linebreakdata.c: Regenerate from LineBreak-6.0.0.txt.
+
+2011-05-07  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* linebreak.c (set_linebreaks): Fix the assertion failure when
 	U+FFFC (OBJECT REPLACEMENT CHARACTER) appears at the beginning of a
 	line (thanks to Tom Hacohen).
