@@ -1,5 +1,9 @@
 2011-05-07  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* LICENCE: Update the copyright year.
+
+2011-05-07  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Update for the 2.1 release.
 	* Doxyfile (PROJECT_NUMBER): Set to `2.1'.
 	* NEWS: Add information about the 2.1 release.
