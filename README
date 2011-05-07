@@ -5,9 +5,9 @@ Overview
 --------
 
 This is the README file for liblinebreak, an implementation of the line
-breaking algorithm as described in Unicode 5.2.0 Standard Annex 14,
-Revision 24, available at
-         <URL:http://www.unicode.org/reports/tr14/tr14-24.html>
+breaking algorithm as described in Unicode 6.0.0 Standard Annex 14,
+Revision 26, available at
+         <URL:http://www.unicode.org/reports/tr14/tr14-26.html>
 
 Check this URL for up-to-date information:
          <URL:http://vimgadgets.sourceforge.net/liblinebreak/>
