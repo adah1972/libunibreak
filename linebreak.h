@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2010 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2011 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -30,9 +30,9 @@
  * Unicode 5.0.0:
  *		<URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 24, for
- * Unicode 5.2.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-24.html>
+ * This library has been updated according to Revision 26, for
+ * Unicode 6.0.0:
+ *		<URL:http://www.unicode.org/reports/tr14/tr14-26.html>
  *
  * The Unicode Terms of Use are available at
  *		<URL:http://www.unicode.org/copyright.html>
@@ -43,7 +43,7 @@
  *
  * Header file for the line breaking algorithm.
  *
- * @version	2.0, 2010/01/03
+ * @version	2.1, 2011/05/07
  * @author	Wu Yongwei
  */
 
@@ -56,7 +56,7 @@
 extern "C" {
 #endif
 
-#define LINEBREAK_VERSION	0x0200	/**< Version of the library linebreak */
+#define LINEBREAK_VERSION	0x0201	/**< Version of the library linebreak */
 extern const int linebreak_version;
 
 #ifndef LINEBREAK_UTF_TYPES_DEFINED

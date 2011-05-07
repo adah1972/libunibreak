@@ -30,9 +30,9 @@
  * Unicode 5.0.0:
  *		<URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 24, for
- * Unicode 5.2.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-24.html>
+ * This library has been updated according to Revision 26, for
+ * Unicode 6.0.0:
+ *		<URL:http://www.unicode.org/reports/tr14/tr14-26.html>
  *
  * The Unicode Terms of Use are available at
  *		<URL:http://www.unicode.org/copyright.html>

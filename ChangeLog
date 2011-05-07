@@ -1,5 +1,16 @@
 2011-05-07  Wu Yongwei  <wuyongwei@gmail.com>
 
+	Update for the 2.1 release.
+	* Doxyfile (PROJECT_NUMBER): Set to `2.1'.
+	* NEWS: Add information about the 2.1 release.
+	* linebreak.h (LINEBREAK_VERSION): Set to `0x0201'.
+	* linebreak.h: Update comments.
+	* linebreak.c: Ditto.
+	* linebreakdef.h: Ditto.
+	* linebreakdef.c: Ditto.
+
+2011-05-07  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* linebreakdata.c: Regenerate from LineBreak-6.0.0.txt.
 
 2011-05-07  Wu Yongwei  <wuyongwei@gmail.com>

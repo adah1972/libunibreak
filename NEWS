@@ -1,3 +1,9 @@
+New in 2.1
+
+- Update the data according to LineBreak-6.0.0.txt
+- Fix the bug that an assertion in code can fail if U+FFFC is
+  encountered at the beginning of a line
+
 New in 2.0
 
 - Update the algorithm and data according to UAX #14-24 and
