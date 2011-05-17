@@ -1,3 +1,11 @@
+2011-05-17  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Add support for pkg-config (thanks to Tom Hacohen).
+	* liblinebreak.pc.in: New file.
+	* configure.ac (AC_OUTPUT): Add `liblinebreak.pc'.
+	* Makefile.am (pkgconfig_DATA): Set to `liblinebreak.pc'.
+	(pkgconfigdir): Set to `$(libdir)/pkgconfig'.
+
 2011-05-07  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* README: Update the reference to UAX #14-26, for Unicode 6.0.0.

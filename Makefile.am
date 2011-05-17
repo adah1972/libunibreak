@@ -1,6 +1,8 @@
 #noinst_PROGRAMS = filter_dup
 include_HEADERS = linebreak.h linebreakdef.h
 lib_LTLIBRARIES = liblinebreak.la
+pkgconfig_DATA  = liblinebreak.pc
+pkgconfigdir    = $(libdir)/pkgconfig
 
 liblinebreak_la_LDFLAGS = -no-undefined -version-info 2:1
 liblinebreak_la_SOURCES = \

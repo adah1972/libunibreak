@@ -1,0 +1,11 @@
+liblinebreak:
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: liblinebreak
+Description: Unicode line-breaking algorithm implementation
+Version: @VERSION@
+Libs: -L${libdir} -llinebreak
+Cflags: -I${includedir}
