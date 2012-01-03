@@ -1,5 +1,5 @@
 #noinst_PROGRAMS = filter_dup
-include_HEADERS = linebreak.h linebreakdef.h
+include_HEADERS = linebreak.h linebreakdef.h wordbreak.h wordbreakdef.h
 lib_LTLIBRARIES = liblinebreak.la
 pkgconfig_DATA  = liblinebreak.pc
 pkgconfigdir    = $(libdir)/pkgconfig
@@ -8,7 +8,9 @@ liblinebreak_la_LDFLAGS = -no-undefined -version-info 2:1
 liblinebreak_la_SOURCES = \
 	linebreak.c \
 	linebreakdata.c \
-	linebreakdef.c
+	linebreakdef.c \
+	wordbreak.c \
+	wordbreakdata.c
 
 EXTRA_DIST = \
 	LineBreak1.sed \
@@ -20,10 +22,11 @@ EXTRA_DIST = \
 	Doxyfile \
 	Makefile.gcc \
 	Makefile.msvc \
-	doc
+	doc \
+	sort_numeric_hex.py
 
 distclean-local:
-	rm -f LineBreak.txt filter_dup${EXEEXT}
+	rm -f LineBreak.txt filter_dup${EXEEXT} WordBreakData.txt
 
 doc:
 	cd ${top_srcdir} && doxygen
@@ -31,9 +34,24 @@ doc:
 LineBreak.txt:
 	wget http://unicode.org/Public/UNIDATA/LineBreak.txt
 
+WordBreakProperty.txt:
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakProperty.txt
+
 linebreakdata: ${builddir}/filter_dup LineBreak.txt
 	sed -n -f ${top_srcdir}/LineBreak1.sed LineBreak.txt > tmp.txt
 	sed -f ${top_srcdir}/LineBreak2.sed tmp.txt | ${builddir}/filter_dup > tmp.c
 	head -2 LineBreak.txt > tmp.txt
 	cat ${top_srcdir}/linebreakdata1.tmpl tmp.txt ${top_srcdir}/linebreakdata2.tmpl tmp.c ${top_srcdir}/linebreakdata3.tmpl > ${top_srcdir}/linebreakdata.c
 	rm tmp.txt tmp.c
+
+wordbreakdata: WordBreakProperty.txt
+	sed -E -n 's/(^[0-9A-F.]+)/\1/p' WordBreakProperty.txt > tmp2.txt
+	sed -E -i 's/^([0-9A-F]+)\s+/\1..\1/' tmp2.txt
+	${top_srcdir}/sort_numeric_hex.py tmp2.txt > tmp.txt
+	rm tmp2.txt
+	sed -E -i -n 's/^([0-9A-F]+)..([0-9A-F]+)\s*;\s*([A-Za-z]+).*/\t{0x\1, 0x\2, WBP_\3},/p' tmp.txt 
+	echo "/* The content of this file is generated from:" > ${top_srcdir}/wordbreakdata.c
+	head -2 WordBreakProperty.txt >> ${top_srcdir}/wordbreakdata.c
+	echo "*/" >> ${top_srcdir}/wordbreakdata.c
+	cat ${top_srcdir}/wordbreakdata1.tmpl tmp.txt ${top_srcdir}/wordbreakdata2.tmpl >> ${top_srcdir}/wordbreakdata.c
+	rm tmp.txt
