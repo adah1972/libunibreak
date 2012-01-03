@@ -46,12 +46,12 @@ linebreakdata: ${builddir}/filter_dup LineBreak.txt
 
 wordbreakdata: WordBreakProperty.txt
 	sed -E -n 's/(^[0-9A-F.]+)/\1/p' WordBreakProperty.txt > tmp2.txt
-	sed -E -i 's/^([0-9A-F]+)\s+/\1..\1/' tmp2.txt
+	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
 	${top_srcdir}/sort_numeric_hex.py tmp2.txt > tmp.txt
-	rm tmp2.txt
-	sed -E -i -n 's/^([0-9A-F]+)..([0-9A-F]+)\s*;\s*([A-Za-z]+).*/\t{0x\1, 0x\2, WBP_\3},/p' tmp.txt 
+	rm tmp2.txt tmp2.txt.bak
+	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; *([A-Za-z]+).*/'$$'\t''{0x\1, 0x\2, WBP_\3},/p' tmp.txt 
 	echo "/* The content of this file is generated from:" > ${top_srcdir}/wordbreakdata.c
 	head -2 WordBreakProperty.txt >> ${top_srcdir}/wordbreakdata.c
 	echo "*/" >> ${top_srcdir}/wordbreakdata.c
 	cat ${top_srcdir}/wordbreakdata1.tmpl tmp.txt ${top_srcdir}/wordbreakdata2.tmpl >> ${top_srcdir}/wordbreakdata.c
-	rm tmp.txt
+	rm tmp.txt tmp.txt.bak
