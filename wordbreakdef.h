@@ -51,8 +51,6 @@
 enum WordBreakClass
 {
    WBP_Undefined,
-
-	/* The following break classes are treated in the pair table. */
    WBP_CR,
    WBP_LF,
    WBP_Newline,

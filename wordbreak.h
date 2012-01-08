@@ -53,9 +53,9 @@
 extern "C" {
 #endif
 
-#define WORDBREAK_BREAK 0 /* Break found */
-#define WORDBREAK_NOBREAK 1 /**< Break not found */
-#define WORDBREAK_INSIDECHAR 2 /**< A UTF-8/16 sequence is unfinished */
+#define WORDBREAK_BREAK			0	/**< Break is allowed */
+#define WORDBREAK_NOBREAK		1	/**< No break is allowed */
+#define WORDBREAK_INSIDECHAR	2	/**< A UTF-8/16 sequence is unfinished */
 
 void init_wordbreak(void);
 void set_wordbreaks_utf8(
