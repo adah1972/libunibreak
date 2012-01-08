@@ -2,8 +2,10 @@
 # WordBreakProperty-6.0.0.txt
 # Date: 2010-08-19, 00:48:48 GMT [MD]
 */
+
 #include "linebreak.h"
 #include "wordbreakdef.h"
+
 static struct WordBreakProperties wb_prop_default[] = {
 	{0x000A, 0x000A, WBP_LF},
 	{0x000B, 0x000C, WBP_Newline},
