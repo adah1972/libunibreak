@@ -120,20 +120,20 @@ static void set_brks_to(
 		char brkType,
 		get_next_char_t get_next_char)
 {
-	size_t posCur = posStart;
-	while (posCur < posEnd)
+	size_t posNext = posStart;
+	while (posNext < posEnd)
 	{
 		utf32_t ch;
-		ch = get_next_char(s, len, &posCur);
+		ch = get_next_char(s, len, &posNext);
 		assert(ch != EOS);
-		for (; posStart < posCur - 1; ++posStart)
+		for (; posStart < posNext - 1; ++posStart)
 			brks[posStart] = WORDBREAK_INSIDECHAR;
-		assert(posStart == posCur - 1);
+		assert(posStart == posNext - 1);
 
 		/* Only set it if we haven't set it not to break before. */
 		if (brks[posStart] != WORDBREAK_NOBREAK)
 			brks[posStart] = brkType;
-		posStart = posCur;
+		posStart = posNext;
 	}
 }
 
@@ -160,14 +160,16 @@ static void set_wordbreaks(
 		get_next_char_t get_next_char)
 {
 	enum WordBreakClass wbcLast = WBP_Undefined;
-	/* Strong class is a class that can start a sequence.
-     * Which means, it's all the classes, except for:
-     * 1. MidNumLet, MidNum and MidLet.
-     * 2. Extend and Format if not at the start of the buffer. */
-	enum WordBreakClass wbcLastStrong = WBP_Undefined;
+	/* wbcSeqStart is the class that started the current sequence.
+	 * WBP_Undefined is a special case that means "sot".
+	 * This value is the class that is at the start of the current rule
+	 * matching sequence. For example, in case of Numeric+MidNum+Numeric
+	 * it'll be Numeric all the way.
+	 */
+	enum WordBreakClass wbcSeqStart = WBP_Undefined;
 	utf32_t ch;
+	size_t posNext = 0;
 	size_t posCur = 0;
-	size_t posCurStrong = 0;
 	size_t posLast = 0;
 
 	/* TODO: Language-specific specialization. */
@@ -176,7 +178,7 @@ static void set_wordbreaks(
 	/* Init brks. */
 	memset(brks, WORDBREAK_BREAK, len);
 
-	ch = get_next_char(s, len, &posCur);
+	ch = get_next_char(s, len, &posNext);
 
 	while (ch != EOS)
 	{
@@ -188,29 +190,29 @@ static void set_wordbreaks(
 		{
 	    case WBP_CR:
 			/* WB3b */
-			set_brks_to(s, brks, posLast, posCurStrong, len,
+			set_brks_to(s, brks, posLast, posCur, len,
 						WORDBREAK_BREAK, get_next_char);
-			wbcLastStrong = wbcCur;
-			posLast = posCurStrong;
+			wbcSeqStart = wbcCur;
+			posLast = posCur;
 			break;
 
 	    case WBP_LF:
-			if (wbcLastStrong == WBP_CR) /* WB3 */
+			if (wbcSeqStart == WBP_CR) /* WB3 */
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_NOBREAK, get_next_char);
-				wbcLastStrong = wbcCur;
-				posLast = posCurStrong;
+				wbcSeqStart = wbcCur;
+				posLast = posCur;
 				break;
 			}
 			/* Fall off */
 
 	    case WBP_Newline:
 			/* WB3a,3b */
-			set_brks_to(s, brks, posLast, posCurStrong, len,
+			set_brks_to(s, brks, posLast, posCur, len,
 						WORDBREAK_BREAK, get_next_char);
-			wbcLastStrong = wbcCur;
-			posLast = posCurStrong;
+			wbcSeqStart = wbcCur;
+			posLast = posCur;
 			break;
 
 	    case WBP_Extend:
@@ -218,54 +220,54 @@ static void set_wordbreaks(
 			/* WB4 - If not the first char/after a newline (WB3a,3b), skip
 			 * this class, set it to be the same as the prev, and mark
 			 * brks not to break before them. */
-			if ((wbcLastStrong == WBP_Undefined) || IS_WB3ab(wbcLastStrong))
+			if ((wbcSeqStart == WBP_Undefined) || IS_WB3ab(wbcSeqStart))
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_BREAK, get_next_char);
-				wbcLastStrong = wbcCur;
+				wbcSeqStart = wbcCur;
 			}
 			else
 			{
 				/* It's surely not the first */
-				brks[posCurStrong - 1] = WORDBREAK_NOBREAK;
+				brks[posCur - 1] = WORDBREAK_NOBREAK;
 				/* "inherit" the previous class. */
 				wbcCur = wbcLast;
 			}
 			break;
 
 	    case WBP_Katakana:
-			if ((wbcLastStrong == WBP_Katakana) || /* WB13 */
-					(wbcLastStrong == WBP_ExtendNumLet)) /* WB13b */
+			if ((wbcSeqStart == WBP_Katakana) || /* WB13 */
+					(wbcSeqStart == WBP_ExtendNumLet)) /* WB13b */
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_NOBREAK, get_next_char);
 			}
 			/* No rule found, reset */
 			else
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_BREAK, get_next_char);
 			}
-			wbcLastStrong = wbcCur;
-			posLast = posCurStrong;
+			wbcSeqStart = wbcCur;
+			posLast = posCur;
 			break;
 
 	    case WBP_ALetter:
-			if ((wbcLastStrong == WBP_ALetter) || /* WB5,6,7 */
+			if ((wbcSeqStart == WBP_ALetter) || /* WB5,6,7 */
 					(wbcLast == WBP_Numeric) || /* WB10 */
-					(wbcLastStrong == WBP_ExtendNumLet)) /* WB13b */
+					(wbcSeqStart == WBP_ExtendNumLet)) /* WB13b */
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_NOBREAK, get_next_char);
 			}
 			/* No rule found, reset */
 			else
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_BREAK, get_next_char);
 			}
-			wbcLastStrong = wbcCur;
-			posLast = posCurStrong;
+			wbcSeqStart = wbcCur;
+			posLast = posCur;
 			break;
 
 	    case WBP_MidNumLet:
@@ -276,10 +278,10 @@ static void set_wordbreaks(
 			}
 			else
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_BREAK, get_next_char);
-				wbcLastStrong = wbcCur; /* XXX: Strong class? */
-				posLast = posCurStrong;
+				wbcSeqStart = wbcCur;
+				posLast = posCur;
 			}
 			break;
 
@@ -290,10 +292,10 @@ static void set_wordbreaks(
 			}
 			else
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_BREAK, get_next_char);
-				wbcLastStrong = wbcCur; /* XXX: Strong class? */
-				posLast = posCurStrong;
+				wbcSeqStart = wbcCur;
+				posLast = posCur;
 			}
 			break;
 
@@ -304,58 +306,58 @@ static void set_wordbreaks(
 			}
 			else
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_BREAK, get_next_char);
-				wbcLastStrong = wbcCur; /* XXX: Strong class? */
-				posLast = posCurStrong;
+				wbcSeqStart = wbcCur;
+				posLast = posCur;
 			}
 			break;
 
 	    case WBP_Numeric:
-			if ((wbcLastStrong == WBP_Numeric) || /* WB8,11,12 */
+			if ((wbcSeqStart == WBP_Numeric) || /* WB8,11,12 */
 					(wbcLast == WBP_ALetter) || /* WB9 */
-					(wbcLastStrong == WBP_ExtendNumLet)) /* WB13b */
+					(wbcSeqStart == WBP_ExtendNumLet)) /* WB13b */
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_NOBREAK, get_next_char);
 			}
 			/* No rule found, reset */
 			else
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_BREAK, get_next_char);
 			}
-			wbcLastStrong = wbcCur;
-			posLast = posCurStrong;
+			wbcSeqStart = wbcCur;
+			posLast = posCur;
 			break;
 
 	    case WBP_ExtendNumLet:
 			/* WB13a,13b */
-			if ((wbcLastStrong == wbcLast) &&
+			if ((wbcSeqStart == wbcLast) &&
 				((wbcLast == WBP_ALetter) ||
 				 (wbcLast == WBP_Numeric) ||
 				 (wbcLast == WBP_Katakana) ||
 				 (wbcLast == WBP_ExtendNumLet)))
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_NOBREAK, get_next_char);
 			}
 			/* No rule found, reset */
 			else
 			{
-				set_brks_to(s, brks, posLast, posCurStrong, len,
+				set_brks_to(s, brks, posLast, posCur, len,
 							WORDBREAK_BREAK, get_next_char);
 			}
-			wbcLastStrong = wbcCur;
-			posLast = posCurStrong;
+			wbcSeqStart = wbcCur;
+			posLast = posCur;
 			break;
 
 		 case WBP_Any:
 			/* Allow breaks and reset */
-			set_brks_to(s, brks, posLast, posCurStrong, len,
+			set_brks_to(s, brks, posLast, posCur, len,
 						WORDBREAK_BREAK, get_next_char);
-			wbcLastStrong = wbcCur;
-			posLast = posCurStrong;
+			wbcSeqStart = wbcCur;
+			posLast = posCur;
 			break;
 
 	    default:
@@ -365,12 +367,12 @@ static void set_wordbreaks(
 		}
 
 		wbcLast = wbcCur;
-		posCurStrong = posCur;
-		ch = get_next_char(s, len, &posCur);
+		posCur = posNext;
+		ch = get_next_char(s, len, &posNext);
     }
 
 	/* WB2 */
-	set_brks_to(s, brks, posLast, posCur, len,
+	set_brks_to(s, brks, posLast, posNext, len,
 				WORDBREAK_BREAK, get_next_char);
 }
 
