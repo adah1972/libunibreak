@@ -1,3 +1,21 @@
+2012-01-18  Tom Hacohen  <tom@stosb.com>
+
+	Add word breaking support.
+	* AUTHORS: Add `Tom Hacohen'.
+	* Makefile.am (include_HEADERS): Add header files for word breaking.
+	(liblinebreak_la_SOURCES): Add source files for word breaking.
+	(sort_numeric_hex.py): Add `sort_numeric_hex.py'.
+	(distclean-local): Clean also `WordBreakData.txt'.
+	(WordBreakProperty.txt): New target.
+	(wordbreakdata): New target.
+	* sort_numeric_hex.py: New file.
+	* wordbreak.c: New file.
+	* wordbreak.h: New file.
+	* wordbreakdef.h: New file.
+	* wordbreakdata.c: New file.
+	* wordbreakdata1.tmpl: New file.
+	* wordbreakdata2.tmpl: New file.
+
 2011-05-17  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Add support for pkg-config (thanks to Tom Hacohen).

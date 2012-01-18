@@ -4,3 +4,5 @@ Nikolay Pultsin.  Put forward the original requirements on liblinebreak,
 performed tests, and made a lot of suggestions on the initial versions.
 
 Thomas Klausner.  Autoconfiscated and libtoolized liblinebreak.
+
+Tom Hacohen.  Added word boundaries support.
