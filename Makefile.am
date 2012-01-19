@@ -9,8 +9,7 @@ liblinebreak_la_SOURCES = \
 	linebreak.c \
 	linebreakdata.c \
 	linebreakdef.c \
-	wordbreak.c \
-	wordbreakdata.c
+	wordbreak.c
 
 EXTRA_DIST = \
 	LineBreak1.sed \
@@ -18,6 +17,9 @@ EXTRA_DIST = \
 	linebreakdata1.tmpl \
 	linebreakdata2.tmpl \
 	linebreakdata3.tmpl \
+	wordbreakdata1.tmpl \
+	wordbreakdata2.tmpl \
+	wordbreakdata.c \
 	LICENCE \
 	Doxyfile \
 	Makefile.gcc \

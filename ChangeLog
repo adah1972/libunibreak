@@ -1,5 +1,11 @@
 2012-01-19  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* Makefile.am (liblinebreak_la_SOURCES): Remove wordbreakdata.c.
+	(EXTRA_DIST): Add wordbreakdata.c, wordbreakdata1.tmpl, and
+	wordbreakdata2.tmpl.
+
+2012-01-19  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* Makefile.msvc: Add wordbreak files.
 
 2012-01-18  Tom Hacohen  <tom@stosb.com>
