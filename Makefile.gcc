@@ -105,7 +105,7 @@ RELEASE_OBJS = $(patsubst %.o,$(RELEASE)/%.o,$(OBJFILES))
 DEBUG_DEPS   = $(patsubst %.o,%.dep,$(DEBUG_OBJS))
 RELEASE_DEPS = $(patsubst %.o,%.dep,$(RELEASE_OBJS))
 
-CFILES   := linebreak.c linebreakdata.c linebreakdef.c
+CFILES   := linebreak.c linebreakdata.c linebreakdef.c wordbreak.c
 CXXFILES :=
 
 LIBS :=
@@ -142,13 +142,28 @@ linebreakdata: filter_dup$(EXEEXT) LineBreak.txt
 	cat linebreakdata1.tmpl tmp.txt linebreakdata2.tmpl tmp.c linebreakdata3.tmpl > linebreakdata.c
 	$(RM) tmp.txt tmp.c
 
+wordbreakdata: WordBreakProperty.txt
+	sed -E -n 's/(^[0-9A-F.]+)/\1/p' WordBreakProperty.txt > tmp2.txt
+	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
+	./sort_numeric_hex.py tmp2.txt > tmp.txt
+	rm tmp2.txt tmp2.txt.bak
+	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; *([A-Za-z]+).*/'$$'\t''{0x\1, 0x\2, WBP_\3},/p' tmp.txt 
+	echo "/* The content of this file is generated from:" > wordbreakdata.c
+	head -2 WordBreakProperty.txt >> wordbreakdata.c
+	echo "*/" >> wordbreakdata.c
+	cat wordbreakdata1.tmpl tmp.txt wordbreakdata2.tmpl >> wordbreakdata.c
+	rm tmp.txt tmp.txt.bak
+
 filter_dup$(EXEEXT): filter_dup.c
 	gcc -O2 -o filter_dup$(EXEEXT) $<
 
 LineBreak.txt:
 	wget http://unicode.org/Public/UNIDATA/LineBreak.txt
 
-.PHONY: all debug release clean distclean doc linebreakdata
+WordBreakProperty.txt:
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakProperty.txt
+
+.PHONY: all debug release clean distclean doc linebreakdata wordbreakdata
 
 clean:
 	$(RM) $(DEBUG)/*.o $(DEBUG)/*.dep $(DEBUG_TARGET)
