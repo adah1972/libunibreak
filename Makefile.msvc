@@ -44,6 +44,7 @@ CLEAN :
 	-@erase "$(INTDIR)\linebreak.obj"
 	-@erase "$(INTDIR)\linebreakdata.obj"
 	-@erase "$(INTDIR)\linebreakdef.obj"
+	-@erase "$(INTDIR)\wordbreak.obj"
 	-@erase "$(INTDIR)\vc*.idb"
 	-@erase "$(OUTDIR)\linebreak.lib"
 
@@ -60,7 +61,8 @@ LIB32_FLAGS=/nologo /out:"$(OUTDIR)\linebreak.lib"
 LIB32_OBJS= \
 	"$(INTDIR)\linebreak.obj" \
 	"$(INTDIR)\linebreakdata.obj" \
-	"$(INTDIR)\linebreakdef.obj"
+	"$(INTDIR)\linebreakdef.obj" \
+	"$(INTDIR)\wordbreak.obj"
 
 "$(OUTDIR)\linebreak.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
@@ -82,6 +84,7 @@ CLEAN :
 	-@erase "$(INTDIR)\linebreak.obj"
 	-@erase "$(INTDIR)\linebreakdata.obj"
 	-@erase "$(INTDIR)\linebreakdef.obj"
+	-@erase "$(INTDIR)\wordbreak.obj"
 	-@erase "$(INTDIR)\vc*.idb"
 	-@erase "$(INTDIR)\vc*.pdb"
 	-@erase "$(OUTDIR)\linebreak.lib"
@@ -99,7 +102,8 @@ LIB32_FLAGS=/nologo /out:"$(OUTDIR)\linebreak.lib"
 LIB32_OBJS= \
 	"$(INTDIR)\linebreak.obj" \
 	"$(INTDIR)\linebreakdata.obj" \
-	"$(INTDIR)\linebreakdef.obj"
+	"$(INTDIR)\linebreakdef.obj" \
+	"$(INTDIR)\wordbreak.obj"
 
 "$(OUTDIR)\linebreak.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
@@ -151,6 +155,13 @@ LIB32_OBJS= \
 	".\linebreak.h"\
 	".\linebreakdef.h"\
 	
+.\wordbreak.c : \
+	".\linebreak.h"\
+	".\linebreakdef.h"\
+	".\wordbreak.h"\
+	".\wordbreakdef.h"\
+	".\wordbreakdata.c"\
+	
 
 !IF "$(CFG)" == "linebreak - Win32 Release" || "$(CFG)" == "linebreak - Win32 Debug"
 SOURCE=.\linebreak.c
@@ -166,6 +177,11 @@ SOURCE=.\linebreakdata.c
 SOURCE=.\linebreakdef.c
 
 "$(INTDIR)\linebreakdef.obj" : $(SOURCE) "$(INTDIR)"
+
+
+SOURCE=.\wordbreak.c
+
+"$(INTDIR)\wordbreak.obj" : $(SOURCE) "$(INTDIR)"
 
 
 
