@@ -47,7 +47,7 @@
 #define WORDBREAK_H
 
 #include <stddef.h>
-#include <linebreak.h>
+#include "linebreak.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,5 +1,10 @@
 2012-01-19  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* wordbreak.h: Change angle brackets to quotation marks (which
+	caused build errors).
+
+2012-01-19  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* Makefile.gcc (CFILES): Add wordbreak.c.
 	(WordBreakProperty.txt): New target.
 	(wordbreakdata): New target.
