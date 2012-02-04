@@ -39,7 +39,7 @@
  *
  * Header file for the word breaking (segmentation) algorithm.
  *
- * @version	2.1, 2012/01/18
+ * @version	2.2, 2012/02/04
  * @author	Tom Hacohen
  */
 
@@ -55,7 +55,7 @@ extern "C" {
 
 #define WORDBREAK_BREAK			0	/**< Break is allowed */
 #define WORDBREAK_NOBREAK		1	/**< No break is allowed */
-#define WORDBREAK_INSIDECHAR	2	/**< A UTF-8/16 sequence is unfinished */
+#define WORDBREAK_INSIDEACHAR	2	/**< A UTF-8/16 sequence is unfinished */
 
 void init_wordbreak(void);
 void set_wordbreaks_utf8(

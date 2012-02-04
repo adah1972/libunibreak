@@ -40,7 +40,7 @@
  * Implementation of the word breaking algorithm as described in Unicode
  * Standard Annex 29.
  *
- * @version	2.1, 2012/01/18
+ * @version	2.2, 2012/02/04
  * @author	Tom Hacohen
  */
 
@@ -99,7 +99,7 @@ static enum WordBreakClass get_char_wb_class(
 /**
  * Sets the word break types to a specific value in a range.
  *
- * It sets the inside chars to #WORDBREAK_INSIDECHAR and the rest to brkType.
+ * It sets the inside chars to #WORDBREAK_INSIDEACHAR and the rest to brkType.
  * Assumes \a brks is initialized - all the cells with #WORDBREAK_NOBREAK are
  * cells that we really don't want to break after.
  *
@@ -127,7 +127,7 @@ static void set_brks_to(
 		ch = get_next_char(s, len, &posNext);
 		assert(ch != EOS);
 		for (; posStart < posNext - 1; ++posStart)
-			brks[posStart] = WORDBREAK_INSIDECHAR;
+			brks[posStart] = WORDBREAK_INSIDEACHAR;
 		assert(posStart == posNext - 1);
 
 		/* Only set it if we haven't set it not to break before. */
