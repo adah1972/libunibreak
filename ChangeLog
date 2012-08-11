@@ -1,5 +1,9 @@
 2012-08-11  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* LICENCE: Add copyright information about Tom Hacohen.
+
+2012-08-11  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* configure.ac (AC_INIT): Change the library name and version to
 	`libunibreak' and `1.0'.
 	(AC_PROG_LN_S): New macro.
