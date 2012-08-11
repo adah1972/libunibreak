@@ -1,3 +1,8 @@
+2012-08-11  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* Makefile.msvc: Change the library name to `libunibreak', and the
+	output library to `unibreak.lib'.
+
 2012-02-04  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* wordbreak.h (WORDBREAK_INSIDEACHAR): Change from
