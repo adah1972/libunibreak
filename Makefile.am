@@ -1,11 +1,11 @@
 #noinst_PROGRAMS = filter_dup
 include_HEADERS = linebreak.h linebreakdef.h wordbreak.h wordbreakdef.h
-lib_LTLIBRARIES = liblinebreak.la
-pkgconfig_DATA  = liblinebreak.pc
-pkgconfigdir    = $(libdir)/pkgconfig
+lib_LTLIBRARIES = libunibreak.la
+pkgconfig_DATA  = libunibreak.pc
+pkgconfigdir    = ${libdir}/pkgconfig
 
-liblinebreak_la_LDFLAGS = -no-undefined -version-info 2:1
-liblinebreak_la_SOURCES = \
+libunibreak_la_LDFLAGS = -no-undefined -version-info 1:0
+libunibreak_la_SOURCES = \
 	linebreak.c \
 	linebreakdata.c \
 	linebreakdef.c \
@@ -26,6 +26,10 @@ EXTRA_DIST = \
 	Makefile.msvc \
 	doc \
 	sort_numeric_hex.py
+
+install-exec-hook:
+	rm -f ${libdir}/liblinebreak.a
+	${LN_S} ${libdir}/libunibreak.a ${libdir}/liblinebreak.a
 
 distclean-local:
 	rm -f LineBreak.txt WordBreakData.txt filter_dup${EXEEXT}

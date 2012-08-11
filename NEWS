@@ -1,17 +1,23 @@
-New in 2.1
+New in libunibreak 1.0
+
+- Add word breaking support
+- Change the library name to "libunibreak", while keeping maximum compatibility
+- Add pkg-config support
+
+New in liblinebreak 2.1
 
 - Update the data according to LineBreak-6.0.0.txt
 - Fix the bug that an assertion in code can fail if U+FFFC is
   encountered at the beginning of a line
 
-New in 2.0
+New in liblinebreak 2.0
 
 - Update the algorithm and data according to UAX #14-24 and
   LineBreak-5.2.0.txt
 - Rename some functions to reduce namespace pollution
 - Make Doxygen documentation better
 
-New in 1.2
+New in liblinebreak 1.2
 
 - Fix the bug that an assertion in code can fail if an invalid UTF-8 or
   UTF-16 sequence is encountered near the end of input
@@ -20,7 +26,7 @@ New in 1.2
   used as apostrophe
 - Make Doxygen documentation better
 
-New in 1.1
+New in liblinebreak 1.1
 
 - Make get_lb_prop_lang static and not an exported symbol
 - Define is_line_breakable to alias to is_breakable
@@ -29,7 +35,7 @@ New in 1.1
   linebreakdef.h
 - Add the function documentation comments to the header files
 
-New in 1.0
+New in liblinebreak 1.0
 
 - Update the line breaking data according to UAX #14-22 and
   LineBreak-5.1.0.txt
