@@ -46,7 +46,7 @@ There are three ways to build the library:
    - type `make doc' to generate the doxygen documentation; or
    - type `make linebreakdata' to regenerate linebreakdata.c from
      LineBreak.txt.
-   - type ‘make wordbreakdata’ to regenerate wordbreakdata.c from
+   - type `make wordbreakdata' to regenerate wordbreakdata.c from
      WordBreakProperty.txt.
 
 2) On systems where GCC and Binutils are supported, one can type
@@ -61,7 +61,7 @@ There are three ways to build the library:
    - type `make doc' to generate the doxygen documentation; or
    - type `make linebreakdata' to regenerate linebreakdata.c from
      LineBreak.txt.
-   - type ‘make wordbreakdata’ to regenerate wordbreakdata.c from
+   - type `make wordbreakdata' to regenerate wordbreakdata.c from
      WordBreakProperty.txt.
 
 3) On Windows, apart from using method 1 (Cygwin/MSYS) and method 2
