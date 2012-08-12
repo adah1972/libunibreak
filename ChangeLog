@@ -1,3 +1,7 @@
+2012-08-12  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* README: Change the home URL to github; remove $Id$.
+
 2012-08-11  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* configure.ac (AC_INIT): Change the library name and version to
