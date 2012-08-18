@@ -1,3 +1,32 @@
+2012-08-13  Tom Hacohen  <tom@stosb.com>
+
+	Move source files to under src.
+	* Makefile.am: Split from original Makefile.am.
+	(SUBDIRS): Add `src'.
+	* configure.ac (AC_CONFIG_SRCDIR): Add `src/' before `linebreak.c'.
+	(AC_CONFIG_FILES): Add `src/Makefile'.
+	* src/LineBreak1.sed: Move from LineBreak1.sed.
+	* src/LineBreak2.sed: Move from LineBreak2.sed.
+	* src/Makefile.am: Split from Makefile.am
+	* src/Makefile.gcc: Move from Makefile.gcc.
+	* src/Makefile.msvc: Move from Makefile.msvc.
+	* src/filter_dup.c: Move from filter_dup.c.
+	* src/linebreak.c: Move from linebreak.c.
+	* src/linebreak.h: Move from linebreak.h.
+	* src/linebreakdata.c: Move from linebreakdata.c.
+	* src/linebreakdata1.tmpl: Move from linebreakdata1.tmpl.
+	* src/linebreakdata2.tmpl: Move from linebreakdata2.tmpl.
+	* src/linebreakdata3.tmpl: Move from linebreakdata3.tmpl.
+	* src/linebreakdef.c: Move from linebreakdef.c.
+	* src/linebreakdef.h: Move from linebreakdef.h.
+	* src/sort_numeric_hex.py: Move from sort_numeric_hex.py.
+	* src/wordbreak.c: Move from wordbreak.c.
+	* src/wordbreak.h: Move from wordbreak.h.
+	* src/wordbreakdata.c: Move from wordbreakdata.c.
+	* src/wordbreakdata1.tmpl: Move from wordbreakdata1.tmpl.
+	* src/wordbreakdata2.tmpl: Move from wordbreakdata2.tmpl.
+	* src/wordbreakdef.h: Move from wordbreakdef.h.
+
 2012-08-12  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* README: Change the home URL to github; remove $Id$; eliminate
