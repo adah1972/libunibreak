@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2011 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2012 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -30,9 +30,9 @@
  * Unicode 5.0.0:
  *		<URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 26, for
- * Unicode 6.0.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-26.html>
+ * This library has been updated according to Revision 28, for
+ * Unicode 6.1.0:
+ *		<URL:http://www.unicode.org/reports/tr14/tr14-28.html>
  *
  * The Unicode Terms of Use are available at
  *		<URL:http://www.unicode.org/copyright.html>
@@ -44,7 +44,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version	2.1, 2011/05/07
+ * @version	2.2, 2012/09/16
  * @author	Wu Yongwei
  */
 
@@ -79,7 +79,7 @@ enum BreakAction
 
 /**
  * Break action pair table.  This is a direct mapping of Table 2 of
- * Unicode Standard Annex 14, Revision 24.
+ * Unicode Standard Annex 14, Revision 28.
  */
 static enum BreakAction baTable[LBP_JT][LBP_JT] = {
 	{	/* OP */
@@ -143,6 +143,11 @@ static enum BreakAction baTable[LBP_JT][LBP_JT] = {
 		IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK, CMI_BRK,
 		PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK },
 	{	/* AL */
+		IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
+		PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK,
+		IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK, CMI_BRK,
+		PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK },
+	{	/* HL */
 		IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
 		PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK,
 		IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK, CMI_BRK,
@@ -379,7 +384,15 @@ static enum LineBreakClass resolve_lb_class(
 		{
 			return LBP_ID;
 		}
-		/* Fall through */
+		else
+		{
+			return LBP_AL;
+		}
+	case LBP_CJ:
+		/* Simplified for `normal' line breaking.  See
+		 * <url:http://www.unicode.org/reports/tr14/tr14-28.html#CJ>
+		 * for details. */
+		return LBP_ID;
 	case LBP_SA:
 	case LBP_SG:
 	case LBP_XX:
@@ -608,6 +621,9 @@ nextline:
 		}
 
 		lbcNew = resolve_lb_class(lbcNew, lang);
+
+		/* TODO: LB21a, as introduced by Revision 28 of UAX#14, is not
+		 * yet implemented below. */
 
 		assert(lbcCur <= LBP_JT);
 		assert(lbcNew <= LBP_JT);

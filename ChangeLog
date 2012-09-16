@@ -1,3 +1,15 @@
+2012-09-16  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Update files according to UAX #14-28, for Unicode 6.1.0.
+	* README: Update the reference to UAX #14-28.
+	* src/linebreak.c (baTable): Update for the new class `HL'.
+	(resolve_lb_class): Resolve the new class `CJ' to `ID' (simplified).
+	* src/linebreakdef.h (LBP_HL): New enumerator for the new class `HL'
+	as defined in UAX #14-28.
+	(LBP_CJ): New enumerator for the new class `CJ' as defined in
+	UAX #14-28.
+	* src/linebreakdata.c: Regenerate from LineBreak-6.1.0.txt.
+
 2012-08-13  Tom Hacohen  <tom@stosb.com>
 
 	Move source files to under src.

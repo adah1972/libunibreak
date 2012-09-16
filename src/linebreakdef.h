@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2011 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2012 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -30,9 +30,9 @@
  * Unicode 5.0.0:
  *		<URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 26, for
- * Unicode 6.0.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-26.html>
+ * This library has been updated according to Revision 28, for
+ * Unicode 6.1.0:
+ *		<URL:http://www.unicode.org/reports/tr14/tr14-28.html>
  *
  * The Unicode Terms of Use are available at
  *		<URL:http://www.unicode.org/copyright.html>
@@ -44,7 +44,7 @@
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the line breaking algorithm.
  *
- * @version	2.1, 2011/05/07
+ * @version	2.2, 2012/09/16
  * @author	Wu Yongwei
  */
 
@@ -77,6 +77,7 @@ enum LineBreakClass
 	LBP_PO,			/**< Postfix */
 	LBP_NU,			/**< Numeric */
 	LBP_AL,			/**< Alphabetic */
+	LBP_HL,			/**< Hebrew letter */
 	LBP_ID,			/**< Ideographic */
 	LBP_IN,			/**< Inseparable characters */
 	LBP_HY,			/**< Hyphen */
@@ -96,6 +97,7 @@ enum LineBreakClass
 	LBP_AI,			/**< Ambiguous (alphabetic or ideograph) */
 	LBP_BK,			/**< Break (mandatory) */
 	LBP_CB,			/**< Contingent break */
+	LBP_CJ,			/**< Conditional Japanese starter */
 	LBP_CR,			/**< Carriage return */
 	LBP_LF,			/**< Line feed */
 	LBP_NL,			/**< Next line */
