@@ -1,6 +1,7 @@
 *.lo
 *.o
 *.swp
+tags
 /Makefile
 /Makefile.in
 /aclocal.m4
