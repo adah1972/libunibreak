@@ -5,7 +5,8 @@
 	(FILE_PATTERNS): Set to `*.c *.h'.
 	* Makefile.am (EXTRA_DIST): Move content from src/Makefile.am.
 	(doc): Move target from src/Makefile.am.
-	* src/Makefile.am (EXTRA_DIST): Move partial content to Makefile.am.
+	* src/Makefile.am (EXTRA_DIST): Move partial content to Makefile.am;
+	add missing `filter_dup.c'.
 	(doc): Move target to Makefile.am.
 
 2012-09-16  Wu Yongwei  <wuyongwei@gmail.com>

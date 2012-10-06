@@ -20,6 +20,7 @@ EXTRA_DIST = \
 	wordbreakdata.c \
 	Makefile.gcc \
 	Makefile.msvc \
+	filter_dup.c \
 	sort_numeric_hex.py
 
 install-exec-hook:
