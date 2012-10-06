@@ -30,9 +30,9 @@
  * Unicode 5.0.0:
  *		<URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 28, for
- * Unicode 6.1.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-28.html>
+ * This library has been updated according to Revision 30, for
+ * Unicode 6.2.0:
+ *		<URL:http://www.unicode.org/reports/tr14/tr14-30.html>
  *
  * The Unicode Terms of Use are available at
  *		<URL:http://www.unicode.org/copyright.html>
@@ -44,7 +44,7 @@
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the line breaking algorithm.
  *
- * @version	2.2, 2012/09/16
+ * @version	2.3, 2012/10/06
  * @author	Wu Yongwei
  */
 
@@ -92,6 +92,7 @@ enum LineBreakClass
 	LBP_JL,			/**< Hangul L Jamo */
 	LBP_JV,			/**< Hangul V Jamo */
 	LBP_JT,			/**< Hangul T Jamo */
+	LBP_RI,			/**< Regional indicator */
 
 	/* The following break classes are not treated in the pair table */
 	LBP_AI,			/**< Ambiguous (alphabetic or ideograph) */

@@ -6,8 +6,8 @@ Overview
 
 This is the README file for libunibreak, an implementation of the line
 breaking and word breaking algorithms as described in Unicode
-Standard Annex 14 and Unicode Standard Annex 29, available at
-         <URL:http://www.unicode.org/reports/tr14/tr14-28.html>
+Standard Annex 14 and Unicode Standard Annex 30, available at
+         <URL:http://www.unicode.org/reports/tr14/tr14-30.html>
          <URL:http://www.unicode.org/reports/tr29/tr29-17.html>
 
 Check this URL for up-to-date information:
