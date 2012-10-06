@@ -10,3 +10,9 @@ EXTRA_DIST = \
 
 doc:
 	cd ${srcdir} && doxygen
+
+linebreakdata:
+	cd src && ${MAKE} linebreakdata
+
+wordbreakdata:
+	cd src && ${MAKE} wordbreakdata

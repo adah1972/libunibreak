@@ -1,12 +1,18 @@
 2012-10-06  Wu Yongwei  <wuyongwei@gmail.com>
 
+	Make `make linebreakdata' and `make wordbreakdata' work again.
+	* src/Makefile.am (EXTRA_DIST): Add missing `filter_dup.c'.
+	(linebreakdata): New make target.
+	(wordbreakdata): New make target.
+
+2012-10-06  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Make `make dist' work again after the directory adjustment.
 	* Doxyfile (INPUT): Change to `src'.
 	(FILE_PATTERNS): Set to `*.c *.h'.
 	* Makefile.am (EXTRA_DIST): Move content from src/Makefile.am.
 	(doc): Move target from src/Makefile.am.
-	* src/Makefile.am (EXTRA_DIST): Move partial content to Makefile.am;
-	add missing `filter_dup.c'.
+	* src/Makefile.am (EXTRA_DIST): Move partial content to Makefile.am.
 	(doc): Move target to Makefile.am.
 
 2012-09-16  Wu Yongwei  <wuyongwei@gmail.com>
