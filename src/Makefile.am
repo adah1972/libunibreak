@@ -18,11 +18,8 @@ EXTRA_DIST = \
 	wordbreakdata1.tmpl \
 	wordbreakdata2.tmpl \
 	wordbreakdata.c \
-	LICENCE \
-	Doxyfile \
 	Makefile.gcc \
 	Makefile.msvc \
-	doc \
 	sort_numeric_hex.py
 
 install-exec-hook:
@@ -31,9 +28,6 @@ install-exec-hook:
 
 distclean-local:
 	rm -f LineBreak.txt WordBreakData.txt filter_dup${EXEEXT}
-
-doc:
-	cd ${srcdir} && doxygen
 
 LineBreak.txt:
 	wget http://unicode.org/Public/UNIDATA/LineBreak.txt

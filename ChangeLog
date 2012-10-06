@@ -1,3 +1,13 @@
+2012-10-06  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Make `make dist' work again after the directory adjustment.
+	* Doxyfile (INPUT): Change to `src'.
+	(FILE_PATTERNS): Set to `*.c *.h'.
+	* Makefile.am (EXTRA_DIST): Move content from src/Makefile.am.
+	(doc): Move target from src/Makefile.am.
+	* src/Makefile.am (EXTRA_DIST): Move partial content to Makefile.am.
+	(doc): Move target to Makefile.am.
+
 2012-09-16  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Update files according to UAX #14-28, for Unicode 6.1.0.
