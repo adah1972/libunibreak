@@ -51,6 +51,7 @@ There are three ways to build the library:
 
 2) On systems where GCC and Binutils are supported, one can type
 
+     cd src
      cp -p Makefile.gcc Makefile
      make
 
@@ -67,6 +68,7 @@ There are three ways to build the library:
 3) On Windows, apart from using method 1 (Cygwin/MSYS) and method 2
    (MinGW), MSVC can also be used.  Type
 
+     cd src
      nmake -f Makefile.msvc
 
    to build the static library.  By default the debug release is built.

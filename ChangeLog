@@ -1,5 +1,9 @@
 2012-10-06  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* README: Update to reflect the recent changes.
+
+2012-10-06  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Make `make linebreakdata' and `make wordbreakdata' work again.
 	* src/Makefile.am (EXTRA_DIST): Add missing `filter_dup.c'.
 	(linebreakdata): New make target.
