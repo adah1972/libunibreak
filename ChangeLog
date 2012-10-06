@@ -1,5 +1,10 @@
 2012-10-06  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/linebreak.c (baTable): Correct the issue that one column was
+	missing in the table.
+
+2012-10-06  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* README: Update to reflect the recent changes.
 
 2012-10-06  Wu Yongwei  <wuyongwei@gmail.com>
