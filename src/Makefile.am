@@ -24,7 +24,8 @@ EXTRA_DIST = \
 	sort_numeric_hex.py
 
 install-exec-hook:
-	rm -f ${libdir}/liblinebreak.a
+	- [ -f ${libdir}/libunibreak.a ] && \
+	rm -f ${libdir}/liblinebreak.a && \
 	${LN_S} ${libdir}/libunibreak.a ${libdir}/liblinebreak.a
 
 distclean-local:

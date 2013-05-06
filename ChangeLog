@@ -1,3 +1,8 @@
+2013-05-06  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* src/Makefile.am (install-exec-hook): Make sure `--disable-static'
+	can work (thanks to Eugene V. Lyubimkin).
+
 2012-10-06  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Update files according to UAX #14-30, for Unicode 6.2.0.
