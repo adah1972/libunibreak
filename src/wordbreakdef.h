@@ -63,6 +63,7 @@ enum WordBreakClass
    WBP_MidNum,
    WBP_Numeric,
    WBP_ExtendNumLet,
+   WBP_Regional,
    WBP_Any
 };
 

@@ -352,6 +352,17 @@ static void set_wordbreaks(
 			posLast = posCur;
 			break;
 
+         case WBP_Regional:
+            /* WB13c */
+            if (wbcSeqStart == WBP_Regional)
+              {
+                 set_brks_to(s, brks, posLast, posCur, len,
+                         WORDBREAK_NOBREAK, get_next_char);
+              }
+            wbcSeqStart = wbcCur;
+            posLast = posCur;
+            break;
+
 		 case WBP_Any:
 			/* Allow breaks and reset */
 			set_brks_to(s, brks, posLast, posCur, len,
