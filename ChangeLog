@@ -2,9 +2,9 @@
 
 	Update files according to UAX #29-21, for Unicode 6.2.0.
 	* README: Update the reference to UAX #29-21.
-	* wordbreak.c: Update for WBP_Reginoal.
-	* wordbreakdef.h: Added WBP_Reginoal.
-	* wordbreakdata.c: Regenerate from WordBreakProperty-6.2.0.txt.
+	* src/wordbreak.c (set_wordbreaks): Update for WBP_Reginoal.
+	* src/wordbreakdef.h (enum WordBreakClass): Added WBP_Reginoal.
+	* src/wordbreakdata.c: Regenerate from WordBreakProperty-6.2.0.txt.
 
 2013-05-06  Wu Yongwei  <wuyongwei@gmail.com>
 
