@@ -40,7 +40,7 @@
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the word breaking algorithm.
  *
- * @version	2.1, 2012/01/18
+ * @version	2.2, 2013/05/14
  * @author	Tom Hacohen
  */
 
@@ -50,21 +50,21 @@
  */
 enum WordBreakClass
 {
-   WBP_Undefined,
-   WBP_CR,
-   WBP_LF,
-   WBP_Newline,
-   WBP_Extend,
-   WBP_Format,
-   WBP_Katakana,
-   WBP_ALetter,
-   WBP_MidNumLet,
-   WBP_MidLetter,
-   WBP_MidNum,
-   WBP_Numeric,
-   WBP_ExtendNumLet,
-   WBP_Regional,
-   WBP_Any
+	WBP_Undefined,
+	WBP_CR,
+	WBP_LF,
+	WBP_Newline,
+	WBP_Extend,
+	WBP_Format,
+	WBP_Katakana,
+	WBP_ALetter,
+	WBP_MidNumLet,
+	WBP_MidLetter,
+	WBP_MidNum,
+	WBP_Numeric,
+	WBP_ExtendNumLet,
+	WBP_Regional,
+	WBP_Any
 };
 
 /**

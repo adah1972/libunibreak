@@ -40,7 +40,7 @@
  * Implementation of the word breaking algorithm as described in Unicode
  * Standard Annex 29.
  *
- * @version	2.2, 2012/02/04
+ * @version	2.3, 2013/05/14
  * @author	Tom Hacohen
  */
 
@@ -188,7 +188,7 @@ static void set_wordbreaks(
 
 		switch (wbcCur)
 		{
-	    case WBP_CR:
+		case WBP_CR:
 			/* WB3b */
 			set_brks_to(s, brks, posLast, posCur, len,
 						WORDBREAK_BREAK, get_next_char);
@@ -196,7 +196,7 @@ static void set_wordbreaks(
 			posLast = posCur;
 			break;
 
-	    case WBP_LF:
+		case WBP_LF:
 			if (wbcSeqStart == WBP_CR) /* WB3 */
 			{
 				set_brks_to(s, brks, posLast, posCur, len,
@@ -207,7 +207,7 @@ static void set_wordbreaks(
 			}
 			/* Fall off */
 
-	    case WBP_Newline:
+		case WBP_Newline:
 			/* WB3a,3b */
 			set_brks_to(s, brks, posLast, posCur, len,
 						WORDBREAK_BREAK, get_next_char);
@@ -215,8 +215,8 @@ static void set_wordbreaks(
 			posLast = posCur;
 			break;
 
-	    case WBP_Extend:
-	    case WBP_Format:
+		case WBP_Extend:
+		case WBP_Format:
 			/* WB4 - If not the first char/after a newline (WB3a,3b), skip
 			 * this class, set it to be the same as the prev, and mark
 			 * brks not to break before them. */
@@ -235,7 +235,7 @@ static void set_wordbreaks(
 			}
 			break;
 
-	    case WBP_Katakana:
+		case WBP_Katakana:
 			if ((wbcSeqStart == WBP_Katakana) || /* WB13 */
 					(wbcSeqStart == WBP_ExtendNumLet)) /* WB13b */
 			{
@@ -252,7 +252,7 @@ static void set_wordbreaks(
 			posLast = posCur;
 			break;
 
-	    case WBP_ALetter:
+		case WBP_ALetter:
 			if ((wbcSeqStart == WBP_ALetter) || /* WB5,6,7 */
 					(wbcLast == WBP_Numeric) || /* WB10 */
 					(wbcSeqStart == WBP_ExtendNumLet)) /* WB13b */
@@ -270,7 +270,7 @@ static void set_wordbreaks(
 			posLast = posCur;
 			break;
 
-	    case WBP_MidNumLet:
+		case WBP_MidNumLet:
 			if ((wbcLast == WBP_ALetter) || /* WB6,7 */
 					(wbcLast == WBP_Numeric)) /* WB11,12 */
 			{
@@ -285,7 +285,7 @@ static void set_wordbreaks(
 			}
 			break;
 
-	    case WBP_MidLetter:
+		case WBP_MidLetter:
 			if (wbcLast == WBP_ALetter) /* WB6,7 */
 			{
 				/* Go on */
@@ -299,7 +299,7 @@ static void set_wordbreaks(
 			}
 			break;
 
-	    case WBP_MidNum:
+		case WBP_MidNum:
 			if (wbcLast == WBP_Numeric) /* WB11,12 */
 			{
 				/* Go on */
@@ -313,7 +313,7 @@ static void set_wordbreaks(
 			}
 			break;
 
-	    case WBP_Numeric:
+		case WBP_Numeric:
 			if ((wbcSeqStart == WBP_Numeric) || /* WB8,11,12 */
 					(wbcLast == WBP_ALetter) || /* WB9 */
 					(wbcSeqStart == WBP_ExtendNumLet)) /* WB13b */
@@ -331,7 +331,7 @@ static void set_wordbreaks(
 			posLast = posCur;
 			break;
 
-	    case WBP_ExtendNumLet:
+		case WBP_ExtendNumLet:
 			/* WB13a,13b */
 			if ((wbcSeqStart == wbcLast) &&
 				((wbcLast == WBP_ALetter) ||
@@ -352,18 +352,18 @@ static void set_wordbreaks(
 			posLast = posCur;
 			break;
 
-         case WBP_Regional:
-            /* WB13c */
-            if (wbcSeqStart == WBP_Regional)
-              {
-                 set_brks_to(s, brks, posLast, posCur, len,
-                         WORDBREAK_NOBREAK, get_next_char);
-              }
-            wbcSeqStart = wbcCur;
-            posLast = posCur;
-            break;
+		case WBP_Regional:
+			/* WB13c */
+			if (wbcSeqStart == WBP_Regional)
+			{
+				set_brks_to(s, brks, posLast, posCur, len,
+							WORDBREAK_NOBREAK, get_next_char);
+			}
+			wbcSeqStart = wbcCur;
+			posLast = posCur;
+			break;
 
-		 case WBP_Any:
+		case WBP_Any:
 			/* Allow breaks and reset */
 			set_brks_to(s, brks, posLast, posCur, len,
 						WORDBREAK_BREAK, get_next_char);
