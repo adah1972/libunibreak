@@ -38,6 +38,7 @@ There are three ways to build the library:
             ./configure
             make
             sudo make install
+
    to build and install both the dynamic and static libraries.  In
    addition, one may
    - type `make doc` to generate the doxygen documentation; or
@@ -51,6 +52,7 @@ There are three ways to build the library:
             cd src
             cp -p Makefile.gcc Makefile
             make
+
    to build the static library.  In addition, one may
    - type `make debug` or `make release` to explicitly generate the
      debug or release build;
@@ -65,6 +67,7 @@ There are three ways to build the library:
 
             cd src
             nmake -f Makefile.msvc
+
    to build the static library.  By default the debug release is built.
    To build the release version
 
