@@ -6,7 +6,7 @@ Overview
 
 This is the README file for libunibreak, an implementation of the line
 breaking and word breaking algorithms as described in [Unicode Standard
-Annex 14] [1] and [Unicode Standard Annex 29] [2].  Check the current
+Annex 14] [1] and [Unicode Standard Annex 29] [2].  Check the project's
 [home page] [3] for up-to-date information.
 
   [1]: http://www.unicode.org/reports/tr14/tr14-30.html
