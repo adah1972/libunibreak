@@ -20,6 +20,7 @@ tags
 /libtool
 /libunibreak.pc
 /ltmain.sh
+/m4/
 /missing
 /src/.deps/
 /src/.libs/

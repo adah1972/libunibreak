@@ -1,5 +1,14 @@
 2013-09-28  Wu Yongwei  <wuyongwei@gmail.com>
 
+	Fix the errors caused by libtool 2.4 (really annoying to the level
+	of WTF for making me add the foolish dependency on m4).
+	* Makefile.am (ACLOCAL_AMFLAGS): Add `-I m4'.
+	* bootstrap: Add a line to execute autoreconf.
+	* configure.ac (AC_CONFIG_MACRO_DIR): Set to `[m4]'.
+	* purge: Make it remove also the m4 directory.
+
+2013-09-28  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* Makefile.am (EXTRA_DIST): Add `README.md'.
 
 2013-09-28  Wu Yongwei  <wuyongwei@gmail.com>
