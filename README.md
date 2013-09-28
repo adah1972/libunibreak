@@ -35,9 +35,9 @@ There are three ways to build the library:
 1. On \*NIX systems supported by the autoconfiscation tools, do the
    normal
 
-            ./configure
-            make
-            sudo make install
+        ./configure
+        make
+        sudo make install
 
    to build and install both the dynamic and static libraries.  In
    addition, one may
@@ -49,9 +49,9 @@ There are three ways to build the library:
 
 2. On systems where GCC and Binutils are supported, one can type
 
-            cd src
-            cp -p Makefile.gcc Makefile
-            make
+        cd src
+        cp -p Makefile.gcc Makefile
+        make
 
    to build the static library.  In addition, one may
    - type `make debug` or `make release` to explicitly generate the
@@ -65,13 +65,13 @@ There are three ways to build the library:
 3. On Windows, apart from using method 1 (Cygwin/MSYS) and method 2
    (MinGW), MSVC can also be used.  Type
 
-            cd src
-            nmake -f Makefile.msvc
+        cd src
+        nmake -f Makefile.msvc
 
    to build the static library.  By default the debug release is built.
    To build the release version
 
-            nmake -f Makefile.msvc CFG="libunibreak - Win32 Release"
+        nmake -f Makefile.msvc CFG="libunibreak - Win32 Release"
 
 
 Documentation
