@@ -42,11 +42,11 @@ There are three ways to build the library:
    to build and install both the dynamic and static libraries.  In
    addition, one may
 
-    - type `make doc` to generate the doxygen documentation; or
-    - type `make linebreakdata` to regenerate *linebreakdata.c* from
-      *LineBreak.txt*.
-    - type `make wordbreakdata` to regenerate *wordbreakdata.c* from
-      *WordBreakProperty.txt*.
+   - type `make doc` to generate the doxygen documentation; or
+   - type `make linebreakdata` to regenerate *linebreakdata.c* from
+     *LineBreak.txt*.
+   - type `make wordbreakdata` to regenerate *wordbreakdata.c* from
+     *WordBreakProperty.txt*.
 
 2. On systems where GCC and Binutils are supported, one can type
 
@@ -56,13 +56,13 @@ There are three ways to build the library:
 
    to build the static library.  In addition, one may
 
-    - type `make debug` or `make release` to explicitly generate the
-      debug or release build;
-    - type `make doc` to generate the doxygen documentation; or
-    - type `make linebreakdata` to regenerate *linebreakdata.c* from
-      *LineBreak.txt*.
-    - type `make wordbreakdata` to regenerate *wordbreakdata.c* from
-      *WordBreakProperty.txt*.
+   - type `make debug` or `make release` to explicitly generate the
+     debug or release build;
+   - type `make doc` to generate the doxygen documentation; or
+   - type `make linebreakdata` to regenerate *linebreakdata.c* from
+     *LineBreak.txt*.
+   - type `make wordbreakdata` to regenerate *wordbreakdata.c* from
+     *WordBreakProperty.txt*.
 
 3. On Windows, apart from using method 1 (Cygwin/MSYS) and method 2
    (MinGW), MSVC can also be used.  Type
