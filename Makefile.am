@@ -6,6 +6,7 @@ pkgconfigdir    = ${libdir}/pkgconfig
 EXTRA_DIST = \
 	Doxyfile \
 	LICENCE \
+	README.md \
 	doc
 
 doc:

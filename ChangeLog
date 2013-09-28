@@ -1,5 +1,9 @@
 2013-09-28  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* Makefile.am (EXTRA_DIST): Add `README.md'.
+
+2013-09-28  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* README.md: New Markdown version of README.
 	* README: Remove.
 
