@@ -10,7 +10,7 @@ Annex 14] [1] and [Unicode Standard Annex 30] [2].  Check the current
 [home page] [3] for up-to-date information.
 
   [1]: http://www.unicode.org/reports/tr14/tr14-30.html
-  [2]: http://www.unicode.org/reports/tr29/tr29-17.html
+  [2]: http://www.unicode.org/reports/tr29/tr29-21.html
   [3]: https://github.com/adah1972/libunibreak
 
 
