@@ -4,7 +4,7 @@
  * Word breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2012 Tom Hacohen <tom@stosb.com>
+ * Copyright (C) 2013 Tom Hacohen <tom@stosb.com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -30,6 +30,10 @@
  * Unicode 6.0.0:
  *		<URL:http://www.unicode.org/reports/tr29/tr29-17.html>
  *
+ * This library has been updated according to Revision 21, for
+ * Unicode 6.2.0:
+ *		<URL:http://www.unicode.org/reports/tr29/tr29-21.html>
+ *
  * The Unicode Terms of Use are available at
  *		<URL:http://www.unicode.org/copyright.html>
  */
@@ -40,7 +44,7 @@
  * Implementation of the word breaking algorithm as described in Unicode
  * Standard Annex 29.
  *
- * @version	2.3, 2013/05/14
+ * @version	2.4, 2013/09/28
  * @author	Tom Hacohen
  */
 
