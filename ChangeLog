@@ -1,3 +1,8 @@
+2013-09-28  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* README.md: New Markdown version of README.
+	* README: Remove.
+
 2013-05-13  Tom Hacohen  <tom@stosb.com>
 
 	Update files according to UAX #29-21, for Unicode 6.2.0.
