@@ -8,7 +8,8 @@ EXTRA_DIST = \
 	Doxyfile \
 	LICENCE \
 	README.md \
-	doc
+	doc \
+	tools
 
 doc:
 	cd ${srcdir} && doxygen

@@ -1,3 +1,12 @@
+2013-09-30  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Update for the libunibreak 1.1 release.
+	* configure.ac (AC_INIT): Change the library version to `1.1'.
+	* Doxyfile (PROJECT_NUMBER): Change to `1.1'.
+	* Makefile.am (EXTRA_DIST): Add the `tools' directory.
+	* NEWS: Add information about libunibreak 1.1.
+	* src/Makefile.am (libunibreak_la_LDFLAGS): Set the version to `1:1'.
+
 2013-09-29  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* src/Makefile.msvc: Modernize obsolete/deprecated MSVC options.

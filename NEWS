@@ -1,3 +1,10 @@
+New in libunibreak 1.1
+
+- Update the code and data to conform to Unicode 6.2.0
+- Update build files to support libtool 2.4
+- Adjust code structure
+- Make a few bug fixes
+
 New in libunibreak 1.0
 
 - Add word breaking support
