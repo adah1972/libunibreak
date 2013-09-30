@@ -124,11 +124,12 @@
 
 2012-08-11  Wu Yongwei  <wuyongwei@gmail.com>
 
+	Update for the libunibreak 1.0 release.
 	* configure.ac (AC_INIT): Change the library name and version to
 	`libunibreak' and `1.0'.
 	(AC_PROG_LN_S): New macro.
 	(AC_OUTPUT): Change to `libunibreak.pc'.
-	* Doxyfile: (PROJECT_NAME): Change to `libunibreak'.
+	* Doxyfile (PROJECT_NAME): Change to `libunibreak'.
 	(PROJECT_NUMBER): Change to `1.0'.
 	* LICENCE: Add copyright information about Tom Hacohen.
 	* Makefile.am (lib_LTLIBRARIES): Change to `libunibreak.la'.
@@ -138,7 +139,7 @@
 	a symlink to libunibreak.a.
 	* Makefile.msvc: Change the library name to `libunibreak', and the
 	output library to `unibreak.lib'.
-	* NEW: Add information about libunibreak 1.0.
+	* NEWS: Add information about libunibreak 1.0.
 	* README: Change the library name, and add information about word
 	break.
 
