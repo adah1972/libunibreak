@@ -50,7 +50,7 @@
 
 /**
  * Word break classes.  This is a direct mapping of Table 3 of Unicode
- * Standard Annex 29, Revision 17.
+ * Standard Annex 29, Revision 23.
  */
 enum WordBreakClass
 {
@@ -68,6 +68,9 @@ enum WordBreakClass
 	WBP_Numeric,
 	WBP_ExtendNumLet,
 	WBP_Regional,
+	WBP_Hebrew,
+	WBP_Single,
+	WBP_Double,
 	WBP_Any
 };
 
