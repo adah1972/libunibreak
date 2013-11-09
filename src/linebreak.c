@@ -721,24 +721,21 @@ void set_linebreaks(
 		lbc.lbcNew = get_char_lb_class_lang(ch, lbc.lbpLang);
 
 		brk = lb_classify_break_simple(&lbc);
-		
+
 		switch (brk)
 		{
 		case LINEBREAK_MUSTBREAK:
-			brks[posLast] = brk;
 			lbc.lbcCur = resolve_lb_class(lbc.lbcNew, lbc.lang);
 			lb_init_breaking_class(&lbc);
-			continue;
+			break;
 		case LINEBREAK_UNDEFINED:
+			lbc.lbcNew = resolve_lb_class(lbc.lbcNew, lbc.lang);
+			brk = lb_classify_break_lookup(&lbc);
 			break;
 		default:
-			brks[posLast] = brk;
-			continue;
+			break;
 		}
-
-		lbc.lbcNew = resolve_lb_class(lbc.lbcNew, lbc.lang);
-
-		brks[posLast] = lb_classify_break_lookup(&lbc);
+		brks[posLast] = brk;
 	}
 
 	assert(posLast == posCur - 1 && posCur <= len);
