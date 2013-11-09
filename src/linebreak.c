@@ -558,6 +558,18 @@ utf32_t lb_get_next_char_utf32(
 }
 
 /**
+ * Context representing internal state of the linebreaking algorithm
+ */
+struct LineBreakContext
+{
+	const char *lang;                    /**< Language name */
+	struct LineBreakProperties *lbpLang; /**< Pointer to line breaking properties */
+	enum LineBreakClass lbcCur;          /**< Breaking class of current codepoint */
+	enum LineBreakClass lbcNew;          /**< Breaking class of next codepoint */
+	enum LineBreakClass lbcLast;         /**< Breaking class of last codepoint */
+};
+
+/**
  * Sets the line breaking information for a generic input string.
  *
  * @param[in]  s			input string
@@ -577,10 +589,8 @@ void set_linebreaks(
 		get_next_char_t get_next_char)
 {
 	utf32_t ch;
-	enum LineBreakClass lbcCur;
-	enum LineBreakClass lbcNew;
-	enum LineBreakClass lbcLast;
-	struct LineBreakProperties *lbpLang;
+	struct LineBreakContext lbc;
+	lbc.lang = lang;
 	size_t posCur = 0;
 	size_t posLast = 0;
 
@@ -588,24 +598,25 @@ void set_linebreaks(
 	ch = get_next_char(s, len, &posCur);
 	if (ch == EOS)
 		return;
-	lbpLang = get_lb_prop_lang(lang);
-	lbcCur = resolve_lb_class(get_char_lb_class_lang(ch, lbpLang), lang);
-	lbcNew = LBP_Undefined;
+	lbc.lbpLang = get_lb_prop_lang(lbc.lang);
+
+	lbc.lbcCur = resolve_lb_class(get_char_lb_class_lang(ch, lbc.lbpLang), lbc.lang);
+	lbc.lbcNew = LBP_Undefined;
 
 nextline:
 
 	/* Special treatment for the first character */
-	switch (lbcCur)
+	switch (lbc.lbcCur)
 	{
 	case LBP_LF:
 	case LBP_NL:
-		lbcCur = LBP_BK;
+		lbc.lbcCur = LBP_BK;
 		break;
 	case LBP_CB:
-		lbcCur = LBP_BA;
+		lbc.lbcCur = LBP_BA;
 		break;
 	case LBP_SP:
-		lbcCur = LBP_WJ;
+		lbc.lbcCur = LBP_WJ;
 		break;
 	default:
 		break;
@@ -619,19 +630,19 @@ nextline:
 			brks[posLast] = LINEBREAK_INSIDEACHAR;
 		}
 		assert(posLast == posCur - 1);
-		lbcLast = lbcNew;
+		lbc.lbcLast = lbc.lbcNew;
 		ch = get_next_char(s, len, &posCur);
 		if (ch == EOS)
 			break;
-		lbcNew = get_char_lb_class_lang(ch, lbpLang);
-		if (lbcCur == LBP_BK || (lbcCur == LBP_CR && lbcNew != LBP_LF))
+		lbc.lbcNew = get_char_lb_class_lang(ch, lbc.lbpLang);
+		if (lbc.lbcCur == LBP_BK || (lbc.lbcCur == LBP_CR && lbc.lbcNew != LBP_LF))
 		{
 			brks[posLast] = LINEBREAK_MUSTBREAK;
-			lbcCur = resolve_lb_class(lbcNew, lang);
+			lbc.lbcCur = resolve_lb_class(lbc.lbcNew, lbc.lang);
 			goto nextline;
 		}
 
-		switch (lbcNew)
+		switch (lbc.lbcNew)
 		{
 		case LBP_SP:
 			brks[posLast] = LINEBREAK_NOBREAK;
@@ -640,35 +651,35 @@ nextline:
 		case LBP_LF:
 		case LBP_NL:
 			brks[posLast] = LINEBREAK_NOBREAK;
-			lbcCur = LBP_BK;
+			lbc.lbcCur = LBP_BK;
 			continue;
 		case LBP_CR:
 			brks[posLast] = LINEBREAK_NOBREAK;
-			lbcCur = LBP_CR;
+			lbc.lbcCur = LBP_CR;
 			continue;
 		case LBP_CB:
 			brks[posLast] = LINEBREAK_ALLOWBREAK;
-			lbcCur = LBP_BA;
+			lbc.lbcCur = LBP_BA;
 			continue;
 		default:
 			break;
 		}
 
-		lbcNew = resolve_lb_class(lbcNew, lang);
+		lbc.lbcNew = resolve_lb_class(lbc.lbcNew, lbc.lang);
 
 		/* TODO: LB21a, as introduced by Revision 28 of UAX#14, is not
 		 * yet implemented below. */
 
-		assert(lbcCur <= LBP_JT);
-		assert(lbcNew <= LBP_JT);
-		switch (baTable[lbcCur - 1][lbcNew - 1])
+		assert(lbc.lbcCur <= LBP_JT);
+		assert(lbc.lbcNew <= LBP_JT);
+		switch (baTable[lbc.lbcCur - 1][lbc.lbcNew - 1])
 		{
 		case DIR_BRK:
 			brks[posLast] = LINEBREAK_ALLOWBREAK;
 			break;
 		case CMI_BRK:
 		case IND_BRK:
-			if (lbcLast == LBP_SP)
+			if (lbc.lbcLast == LBP_SP)
 			{
 				brks[posLast] = LINEBREAK_ALLOWBREAK;
 			}
@@ -679,7 +690,7 @@ nextline:
 			break;
 		case CMP_BRK:
 			brks[posLast] = LINEBREAK_NOBREAK;
-			if (lbcLast != LBP_SP)
+			if (lbc.lbcLast != LBP_SP)
 				continue;
 			break;
 		case PRH_BRK:
@@ -687,7 +698,7 @@ nextline:
 			break;
 		}
 
-		lbcCur = lbcNew;
+		lbc.lbcCur = lbc.lbcNew;
 	}
 
 	assert(posLast == posCur - 1 && posCur <= len);
