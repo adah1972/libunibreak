@@ -574,20 +574,6 @@ struct LineBreakContext
 	enum LineBreakClass lbcLast;         /**< Breaking class of last codepoint */
 };
 
-/**
- * Initializes LineBreakingContext for given language
- *
- * @param[in,out]  lbpCtx       line breaking context
- * @param[in]      lang         language of the input
- */
-static void lb_init_break_context(
-		struct LineBreakContext* lbpCtx,
-		const char* lang)
-{
-	lbpCtx->lang = lang;
-	lbpCtx->lbpLang = get_lb_prop_lang(lang);
-}
-
 /* Special treatment for the first character */
 static inline void lb_init_breaking_class(
 		struct LineBreakContext* lbpCtx)
@@ -671,6 +657,25 @@ static inline int lb_classify_break_lookup(
 }
 
 /**
+ * Initializes LineBreakingContext for given language
+ *
+ * @param[in,out]  lbpCtx       line breaking context
+ * @param[in]      lang         language of the input
+ */
+static void lb_init_break_context(
+		struct LineBreakContext* lbpCtx,
+		utf32_t ch,
+		const char* lang)
+{
+	lbpCtx->lang = lang;
+	lbpCtx->lbpLang = get_lb_prop_lang(lang);
+	lbpCtx->lbcLast = LBP_Undefined;
+	lbpCtx->lbcNew = LBP_Undefined;
+	lbpCtx->lbcCur = resolve_lb_class(get_char_lb_class_lang(ch, lbpCtx->lbpLang), lbpCtx->lang);
+	lb_init_breaking_class(lbpCtx);
+}
+
+/**
  * Updates LineBreakingContext for next codepoint and returns detected break
  *
  * @param[in,out]  lbpCtx       line breaking context
@@ -734,12 +739,7 @@ void set_linebreaks(
 	ch = get_next_char(s, len, &posCur);
 	if (ch == EOS)
 		return;
-
-	lb_init_break_context(&lbc, lang);
-
-	lbc.lbcCur = resolve_lb_class(get_char_lb_class_lang(ch, lbc.lbpLang), lbc.lang);
-	lbc.lbcNew = LBP_Undefined;
-	lb_init_breaking_class(&lbc);
+	lb_init_break_context(&lbc, ch, lang);
 
 	/* Process a line till an explicit break or end of string */
 	for (;;)
