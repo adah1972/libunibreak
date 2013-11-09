@@ -638,6 +638,38 @@ static inline int lb_classify_break_simple(
 	}
 }
 
+static inline int lb_classify_break_lookup(
+		struct LineBreakContext* lbpCtx)
+{
+	/* TODO: LB21a, as introduced by Revision 28 of UAX#14, is not
+	 * yet implemented below. */
+	assert(lbpCtx->lbcCur <= LBP_JT);
+	assert(lbpCtx->lbcNew <= LBP_JT);
+	int brk = LINEBREAK_UNDEFINED;
+	switch (baTable[lbpCtx->lbcCur - 1][lbpCtx->lbcNew - 1])
+	{
+	case DIR_BRK:
+		brk = LINEBREAK_ALLOWBREAK;
+		break;
+	case CMI_BRK:
+	case IND_BRK:
+		brk = (lbpCtx->lbcLast == LBP_SP)
+			? LINEBREAK_ALLOWBREAK
+			: LINEBREAK_NOBREAK;
+		break;
+	case CMP_BRK:
+		brk = LINEBREAK_NOBREAK;
+		if (lbpCtx->lbcLast != LBP_SP)
+			return brk;
+		break;
+	case PRH_BRK:
+		brk = LINEBREAK_NOBREAK;
+		break;
+	}
+	lbpCtx->lbcCur = lbpCtx->lbcNew;
+	return brk;
+}
+
 /**
  * Sets the line breaking information for a generic input string.
  *
@@ -706,38 +738,7 @@ void set_linebreaks(
 
 		lbc.lbcNew = resolve_lb_class(lbc.lbcNew, lbc.lang);
 
-		/* TODO: LB21a, as introduced by Revision 28 of UAX#14, is not
-		 * yet implemented below. */
-
-		assert(lbc.lbcCur <= LBP_JT);
-		assert(lbc.lbcNew <= LBP_JT);
-		switch (baTable[lbc.lbcCur - 1][lbc.lbcNew - 1])
-		{
-		case DIR_BRK:
-			brks[posLast] = LINEBREAK_ALLOWBREAK;
-			break;
-		case CMI_BRK:
-		case IND_BRK:
-			if (lbc.lbcLast == LBP_SP)
-			{
-				brks[posLast] = LINEBREAK_ALLOWBREAK;
-			}
-			else
-			{
-				brks[posLast] = LINEBREAK_NOBREAK;
-			}
-			break;
-		case CMP_BRK:
-			brks[posLast] = LINEBREAK_NOBREAK;
-			if (lbc.lbcLast != LBP_SP)
-				continue;
-			break;
-		case PRH_BRK:
-			brks[posLast] = LINEBREAK_NOBREAK;
-			break;
-		}
-
-		lbc.lbcCur = lbc.lbcNew;
+		brks[posLast] = lb_classify_break_lookup(&lbc);
 	}
 
 	assert(posLast == posCur - 1 && posCur <= len);
