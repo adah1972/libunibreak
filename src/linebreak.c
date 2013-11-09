@@ -580,7 +580,7 @@ struct LineBreakContext
  * @param[in,out]  lbpCtx       line breaking context
  * @param[in]      lang         language of the input
  */
-static void lb_init_break_context( 
+static void lb_init_break_context(
 		struct LineBreakContext* lbpCtx,
 		const char* lang)
 {
@@ -589,7 +589,7 @@ static void lb_init_break_context(
 }
 
 /* Special treatment for the first character */
-static inline void lb_init_breaking_class( 
+static inline void lb_init_breaking_class(
 		struct LineBreakContext* lbpCtx)
 {
 	switch (lbpCtx->lbcCur)
@@ -612,7 +612,7 @@ static inline void lb_init_breaking_class(
 static inline int lb_classify_break_simple( 
 		struct LineBreakContext* lbpCtx)
 {
-	if (lbpCtx->lbcCur == LBP_BK 
+	if (lbpCtx->lbcCur == LBP_BK
 		|| (lbpCtx->lbcCur == LBP_CR && lbpCtx->lbcNew != LBP_LF))
 	{
 		return LINEBREAK_MUSTBREAK;
@@ -703,7 +703,6 @@ void set_linebreaks(
 
 	lbc.lbcCur = resolve_lb_class(get_char_lb_class_lang(ch, lbc.lbpLang), lbc.lang);
 	lbc.lbcNew = LBP_Undefined;
-
 	lb_init_breaking_class(&lbc);
 
 	/* Process a line till an explicit break or end of string */
@@ -718,10 +717,10 @@ void set_linebreaks(
 		ch = get_next_char(s, len, &posCur);
 		if (ch == EOS)
 			break;
+
 		lbc.lbcNew = get_char_lb_class_lang(ch, lbc.lbpLang);
 
 		brk = lb_classify_break_simple(&lbc);
-
 		switch (brk)
 		{
 		case LINEBREAK_MUSTBREAK:
