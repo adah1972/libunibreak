@@ -562,18 +562,6 @@ utf32_t lb_get_next_char_utf32(
 	return s[(*ip)++];
 }
 
-/**
- * Context representing internal state of the linebreaking algorithm
- */
-struct LineBreakContext
-{
-	const char *lang;                    /**< Language name */
-	struct LineBreakProperties *lbpLang; /**< Pointer to line breaking properties */
-	enum LineBreakClass lbcCur;          /**< Breaking class of current codepoint */
-	enum LineBreakClass lbcNew;          /**< Breaking class of next codepoint */
-	enum LineBreakClass lbcLast;         /**< Breaking class of last codepoint */
-};
-
 /* Special treatment for the first character */
 static inline void lb_init_breaking_class(
 		struct LineBreakContext* lbpCtx)
@@ -662,7 +650,7 @@ static inline int lb_classify_break_lookup(
  * @param[in,out]  lbpCtx       line breaking context
  * @param[in]      lang         language of the input
  */
-static void lb_init_break_context(
+void lb_init_break_context(
 		struct LineBreakContext* lbpCtx,
 		utf32_t ch,
 		const char* lang)
@@ -685,9 +673,9 @@ static void lb_init_break_context(
  *                                      #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
  *                                      #LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
  */
-static char lb_process_next_char(
+char lb_process_next_char(
 		struct LineBreakContext* lbpCtx,
-		const utf32_t ch )
+		utf32_t ch )
 {
 	int brk;
 

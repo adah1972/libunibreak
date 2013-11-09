@@ -150,3 +150,25 @@ void set_linebreaks(
 		const char *lang,
 		char *brks,
 		get_next_char_t get_next_char);
+
+// Low level API - can be used for incremental "on-the-fly" linebreaking analysis
+
+/**
+ * Context representing internal state of the linebreaking algorithm
+ */
+struct LineBreakContext
+{
+	const char *lang;                                       /**< Language name */
+	struct LineBreakProperties *lbpLang;/**< Pointer to line breaking properties */
+	enum LineBreakClass lbcCur;                     /**< Breaking class of current codepoint */
+	enum LineBreakClass lbcNew;                     /**< Breaking class of next codepoint */
+	enum LineBreakClass lbcLast;            /**< Breaking class of last codepoint */
+};
+
+void lb_init_break_context( 
+	struct LineBreakContext* lbpCtx,
+	utf32_t ch,
+	const char* lang );
+char lb_process_next_char(
+	struct LineBreakContext* lbpCtx, 
+	utf32_t ch );
