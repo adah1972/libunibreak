@@ -609,7 +609,7 @@ static inline void lb_init_breaking_class(
 	}
 }
 
-static inline int lb_classify_break_simple( 
+static inline int lb_classify_break_simple(
 		struct LineBreakContext* lbpCtx)
 {
 	if (lbpCtx->lbcCur == LBP_BK
@@ -671,6 +671,41 @@ static inline int lb_classify_break_lookup(
 }
 
 /**
+ * Updates LineBreakingContext for next codepoint and returns detected break
+ *
+ * @param[in,out]  lbpCtx       line breaking context
+ * @param[in]      ch           unicode codepoint
+ *
+ * @return breaking data result, one of
+ *                                      #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *                                      #LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
+ */
+static char lb_process_next_char(
+		struct LineBreakContext* lbpCtx,
+		const utf32_t ch )
+{
+	int brk;
+
+	lbpCtx->lbcLast = lbpCtx->lbcNew;
+	lbpCtx->lbcNew = get_char_lb_class_lang(ch, lbpCtx->lbpLang);
+	brk = lb_classify_break_simple(lbpCtx);
+	switch (brk)
+	{
+	case LINEBREAK_MUSTBREAK:
+		lbpCtx->lbcCur = resolve_lb_class(lbpCtx->lbcNew, lbpCtx->lang);
+		lb_init_breaking_class(lbpCtx);
+		break;
+	case LINEBREAK_UNDEFINED:
+		lbpCtx->lbcNew = resolve_lb_class(lbpCtx->lbcNew, lbpCtx->lang);
+		brk = lb_classify_break_lookup(lbpCtx);
+		break;
+	default:
+		break;
+	}
+	return (char)brk;
+}
+
+/**
  * Sets the line breaking information for a generic input string.
  *
  * @param[in]  s			input string
@@ -717,25 +752,7 @@ void set_linebreaks(
 		ch = get_next_char(s, len, &posCur);
 		if (ch == EOS)
 			break;
-
-		lbc.lbcLast = lbc.lbcNew;
-		lbc.lbcNew = get_char_lb_class_lang(ch, lbc.lbpLang);
-
-		brk = lb_classify_break_simple(&lbc);
-		switch (brk)
-		{
-		case LINEBREAK_MUSTBREAK:
-			lbc.lbcCur = resolve_lb_class(lbc.lbcNew, lbc.lang);
-			lb_init_breaking_class(&lbc);
-			break;
-		case LINEBREAK_UNDEFINED:
-			lbc.lbcNew = resolve_lb_class(lbc.lbcNew, lbc.lang);
-			brk = lb_classify_break_lookup(&lbc);
-			break;
-		default:
-			break;
-		}
-		brks[posLast] = brk;
+		brks[posLast] = lb_process_next_char(&lbc, ch);
 	}
 
 	assert(posLast == posCur - 1 && posCur <= len);
