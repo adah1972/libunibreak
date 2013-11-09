@@ -583,6 +583,27 @@ static void lb_init_break_context(
 	lbpCtx->lbpLang = get_lb_prop_lang(lang);
 }
 
+/* Special treatment for the first character */
+static inline void lb_init_breaking_class( 
+		struct LineBreakContext* lbpCtx)
+{
+	switch (lbpCtx->lbcCur)
+	{
+	case LBP_LF:
+	case LBP_NL:
+		lbpCtx->lbcCur = LBP_BK;
+		break;
+	case LBP_CB:
+		lbpCtx->lbcCur = LBP_BA;
+		break;
+	case LBP_SP:
+		lbpCtx->lbcCur = LBP_WJ;
+		break;
+	default:
+		break;
+	}
+}
+
 /**
  * Sets the line breaking information for a generic input string.
  *
@@ -616,24 +637,7 @@ void set_linebreaks(
 	lbc.lbcCur = resolve_lb_class(get_char_lb_class_lang(ch, lbc.lbpLang), lbc.lang);
 	lbc.lbcNew = LBP_Undefined;
 
-nextline:
-
-	/* Special treatment for the first character */
-	switch (lbc.lbcCur)
-	{
-	case LBP_LF:
-	case LBP_NL:
-		lbc.lbcCur = LBP_BK;
-		break;
-	case LBP_CB:
-		lbc.lbcCur = LBP_BA;
-		break;
-	case LBP_SP:
-		lbc.lbcCur = LBP_WJ;
-		break;
-	default:
-		break;
-	}
+	lb_init_breaking_class(&lbc);
 
 	/* Process a line till an explicit break or end of string */
 	for (;;)
@@ -652,7 +656,8 @@ nextline:
 		{
 			brks[posLast] = LINEBREAK_MUSTBREAK;
 			lbc.lbcCur = resolve_lb_class(lbc.lbcNew, lbc.lang);
-			goto nextline;
+			lb_init_breaking_class(&lbc);
+			continue;
 		}
 
 		switch (lbc.lbcNew)
