@@ -691,7 +691,6 @@ void set_linebreaks(
 {
 	utf32_t ch;
 	struct LineBreakContext lbc;
-	lb_init_break_context(&lbc, lang);
 	size_t posCur = 0;
 	size_t posLast = 0;
 	int brk = LINEBREAK_UNDEFINED;
@@ -700,6 +699,8 @@ void set_linebreaks(
 	ch = get_next_char(s, len, &posCur);
 	if (ch == EOS)
 		return;
+
+	lb_init_break_context(&lbc, lang);
 
 	lbc.lbcCur = resolve_lb_class(get_char_lb_class_lang(ch, lbc.lbpLang), lbc.lang);
 	lbc.lbcNew = LBP_Undefined;
@@ -713,11 +714,11 @@ void set_linebreaks(
 			brks[posLast] = LINEBREAK_INSIDEACHAR;
 		}
 		assert(posLast == posCur - 1);
-		lbc.lbcLast = lbc.lbcNew;
 		ch = get_next_char(s, len, &posCur);
 		if (ch == EOS)
 			break;
 
+		lbc.lbcLast = lbc.lbcNew;
 		lbc.lbcNew = get_char_lb_class_lang(ch, lbc.lbpLang);
 
 		brk = lb_classify_break_simple(&lbc);
