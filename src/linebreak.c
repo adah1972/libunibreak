@@ -570,6 +570,20 @@ struct LineBreakContext
 };
 
 /**
+ * Initializes LineBreakingContext for given language
+ *
+ * @param[in,out]  lbpCtx       line breaking context
+ * @param[in]      lang         language of the input
+ */
+static void lb_init_break_context( 
+		struct LineBreakContext* lbpCtx,
+		const char* lang)
+{
+	lbpCtx->lang = lang;
+	lbpCtx->lbpLang = get_lb_prop_lang(lang);
+}
+
+/**
  * Sets the line breaking information for a generic input string.
  *
  * @param[in]  s			input string
@@ -590,7 +604,7 @@ void set_linebreaks(
 {
 	utf32_t ch;
 	struct LineBreakContext lbc;
-	lbc.lang = lang;
+	lb_init_break_context(&lbc, lang);
 	size_t posCur = 0;
 	size_t posLast = 0;
 
@@ -598,7 +612,6 @@ void set_linebreaks(
 	ch = get_next_char(s, len, &posCur);
 	if (ch == EOS)
 		return;
-	lbc.lbpLang = get_lb_prop_lang(lbc.lang);
 
 	lbc.lbcCur = resolve_lb_class(get_char_lb_class_lang(ch, lbc.lbpLang), lbc.lang);
 	lbc.lbcNew = LBP_Undefined;
