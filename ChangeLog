@@ -1,3 +1,23 @@
+2013-11-10  Petr Filipsky  <philodej@gmail.com>
+
+	Expose low level line-breaking API for incremental processing.
+	* src/linebreak.h: Add prototype declarations for
+	lb_init_break_context and lb_process_next_char.
+	(struct LineBreakContext): New struct.
+	* src/linebreak.h (LINEBREAK_UNDEFINED): New macro constant.
+	(lb_init_breaking_class): New static function.
+	(lb_classify_break_simple): New static function.
+	(lb_classify_break_lookup): New static function.
+	(lb_init_break_context): New function.
+	(lb_process_next_char): New function.
+	(set_linebreaks): Implement with lb_init_break_context and
+	lb_process_next_char.
+
+2013-11-05  Petr Filipsky  <philodej@gmail.com>
+
+	* src/wordbreakdef.h (enum WordBreakClass): Update according to
+	Table 3 of Unicode Standard Annex 29, Revision 23.
+
 2013-09-30  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Update for the libunibreak 1.1 release.
