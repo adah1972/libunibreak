@@ -1,5 +1,10 @@
 2013-11-10  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/linebreak.c: Make minor changes in doc comments, formatting,
+	and names.
+
+2013-11-10  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* AUTHORS: Add `Petr Filipsky'.
 
 2013-11-10  Petr Filipsky  <philodej@gmail.com>

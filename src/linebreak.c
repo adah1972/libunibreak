@@ -647,10 +647,10 @@ static inline int lb_classify_break_lookup(
 }
 
 /**
- * Initializes LineBreakingContext for given language
+ * Initializes line breaking context for a given language.
  *
- * @param[in,out]  lbpCtx       line breaking context
- * @param[in]      lang         language of the input
+ * @param[in,out] lbpCtx	pointer to the line breaking context
+ * @param[in]     lang		language of the input
  */
 void lb_init_break_context(
 		struct LineBreakContext* lbpCtx,
@@ -661,19 +661,21 @@ void lb_init_break_context(
 	lbpCtx->lbpLang = get_lb_prop_lang(lang);
 	lbpCtx->lbcLast = LBP_Undefined;
 	lbpCtx->lbcNew = LBP_Undefined;
-	lbpCtx->lbcCur = resolve_lb_class(get_char_lb_class_lang(ch, lbpCtx->lbpLang), lbpCtx->lang);
+	lbpCtx->lbcCur = resolve_lb_class(
+						get_char_lb_class_lang(ch, lbpCtx->lbpLang),
+						lbpCtx->lang);
 	lb_init_breaking_class(lbpCtx);
 }
 
 /**
- * Updates LineBreakingContext for next codepoint and returns detected break
+ * Updates LineBreakingContext for the next code point and returns
+ * the detected break.
  *
- * @param[in,out]  lbpCtx       line breaking context
- * @param[in]      ch           unicode codepoint
- *
- * @return breaking data result, one of
- *                                      #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
- *                                      #LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
+ * @param[in,out] lbpCtx	pointer to the line breaking context
+ * @param[in]     ch		Unicode code point
+ * @return					breaking data result, one of
+ *							#LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *							#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
  */
 char lb_process_next_char(
 		struct LineBreakContext* lbpCtx,
@@ -720,7 +722,7 @@ void set_linebreaks(
 		get_next_char_t get_next_char)
 {
 	utf32_t ch;
-	struct LineBreakContext lbc;
+	struct LineBreakContext lbCtx;
 	size_t posCur = 0;
 	size_t posLast = 0;
 	int brk = LINEBREAK_UNDEFINED;
@@ -729,7 +731,7 @@ void set_linebreaks(
 	ch = get_next_char(s, len, &posCur);
 	if (ch == EOS)
 		return;
-	lb_init_break_context(&lbc, ch, lang);
+	lb_init_break_context(&lbCtx, ch, lang);
 
 	/* Process a line till an explicit break or end of string */
 	for (;;)
@@ -742,7 +744,7 @@ void set_linebreaks(
 		ch = get_next_char(s, len, &posCur);
 		if (ch == EOS)
 			break;
-		brks[posLast] = lb_process_next_char(&lbc, ch);
+		brks[posLast] = lb_process_next_char(&lbCtx, ch);
 	}
 
 	assert(posLast == posCur - 1 && posCur <= len);
