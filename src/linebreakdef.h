@@ -133,6 +133,19 @@ struct LineBreakPropertiesLang
 };
 
 /**
+ * Context representing internal state of the line breaking algorithm.
+ * This is useful to callers if incremental analysis is wanted.
+ */
+struct LineBreakContext
+{
+	const char *lang;				/**< Language name */
+	struct LineBreakProperties *lbpLang;/**< Pointer to LineBreakProperties */
+	enum LineBreakClass lbcCur;		/**< Breaking class of current codepoint */
+	enum LineBreakClass lbcNew;		/**< Breaking class of next codepoint */
+	enum LineBreakClass lbcLast;	/**< Breaking class of last codepoint */
+};
+
+/**
  * Abstract function interface for #lb_get_next_char_utf8,
  * #lb_get_next_char_utf16, and #lb_get_next_char_utf32.
  */
@@ -146,6 +159,13 @@ extern struct LineBreakPropertiesLang lb_prop_lang_map[];
 utf32_t lb_get_next_char_utf8(const utf8_t *s, size_t len, size_t *ip);
 utf32_t lb_get_next_char_utf16(const utf16_t *s, size_t len, size_t *ip);
 utf32_t lb_get_next_char_utf32(const utf32_t *s, size_t len, size_t *ip);
+void lb_init_break_context(
+		struct LineBreakContext* lbpCtx,
+		utf32_t ch,
+		const char* lang);
+int lb_process_next_char(
+		struct LineBreakContext* lbpCtx,
+		utf32_t ch);
 void set_linebreaks(
 		const void *s,
 		size_t len,
@@ -153,24 +173,3 @@ void set_linebreaks(
 		char *brks,
 		get_next_char_t get_next_char);
 
-/* Low-level API for incremental analysis */
-
-/**
- * Context representing internal state of the linebreaking algorithm
- */
-struct LineBreakContext
-{
-	const char *lang;				/**< Language name */
-	struct LineBreakProperties *lbpLang;/**< Pointer to LineBreakProperties */
-	enum LineBreakClass lbcCur;		/**< Breaking class of current codepoint */
-	enum LineBreakClass lbcNew;		/**< Breaking class of next codepoint */
-	enum LineBreakClass lbcLast;	/**< Breaking class of last codepoint */
-};
-
-void lb_init_break_context(
-	struct LineBreakContext* lbpCtx,
-	utf32_t ch,
-	const char* lang );
-char lb_process_next_char(
-	struct LineBreakContext* lbpCtx,
-	utf32_t ch );

@@ -677,7 +677,7 @@ void lb_init_break_context(
  *							#LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
  *							#LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
  */
-char lb_process_next_char(
+int lb_process_next_char(
 		struct LineBreakContext* lbpCtx,
 		utf32_t ch )
 {
@@ -699,7 +699,7 @@ char lb_process_next_char(
 	default:
 		break;
 	}
-	return (char)brk;
+	return brk;
 }
 
 /**
