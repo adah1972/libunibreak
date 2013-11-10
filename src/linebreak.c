@@ -4,7 +4,8 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2012 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2013 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2013 Petr Filipsky <philodej at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -44,8 +45,9 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version	2.3, 2012/10/06
+ * @version	2.4, 2013/11/10
  * @author	Wu Yongwei
+ * @author	Petr Filipsky
  */
 
 #include <assert.h>
