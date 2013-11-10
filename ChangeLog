@@ -2,6 +2,7 @@
 
 	* src/linebreak.c: Make minor changes in doc comments, formatting,
 	and names.
+	* src/linebreakdef.c: Ditto.
 
 2013-11-10  Wu Yongwei  <wuyongwei@gmail.com>
 
