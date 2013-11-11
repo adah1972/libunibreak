@@ -53,19 +53,32 @@ void putchar_utf8(utf32_t ch)
     }
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wincompatible-pointer-types"
-
 /* Output a UTF-8 character via libiconv */
 void putchar_iconv(iconv_t ic, const char* buf, size_t count)
 {
     char outbuf[5];
-    const char *inp;
+    char *inp;
     char *outp;
     size_t i;
     size_t bytes;
 
-    inp = buf;
+    /* Alas, most of the platforms I test now do not have const in the
+     * second parameter of the iconv function.  I never understand why
+     * someone chose to REMOVE the const in POSIX 2004 (so the standard
+     * encourages const-incorrect code).  The decision looked really
+     * foolish to me.  Anyway, it makes the cast necessary.  A big pain
+     * is that this cast problem makes the current code cause a warning
+     * when a platform declares a semantically correct iconv function,
+     * as char** cannot be converted to const char** implicitly, or vice
+     * versa.  An explanation is here:
+     *
+     *  http://mail-index.netbsd.org/tech-userlevel/2004/07/28/0006.html
+     *
+     * A useful trick for C++ (only) is here:
+     *
+     *  http://stackoverflow.com/questions/11421439/how-can-i-portably-call-a-c-function-that-takes-a-char-on-some-platforms-and
+     */
+    inp = (char*)buf;
     outp = outbuf;
     i = sizeof outbuf;
     if (iconv(ic, &inp, &count, &outp, &i) != (size_t)-1)
@@ -82,8 +95,6 @@ void putchar_iconv(iconv_t ic, const char* buf, size_t count)
         putchar(outbuf[i]);
     }
 }
-
-#pragma clang diagnostic pop
 
 /* Output a UTF-8 string via libiconv */
 void puts_iconv(const char *s, iconv_t ic)
