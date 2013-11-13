@@ -565,7 +565,7 @@ utf32_t lb_get_next_char_utf32(
 }
 
 /* Special treatment for the first character */
-static inline void lb_init_breaking_class(
+static void lb_init_breaking_class(
 		struct LineBreakContext* lbpCtx)
 {
 	switch (lbpCtx->lbcCur)
@@ -585,7 +585,7 @@ static inline void lb_init_breaking_class(
 	}
 }
 
-static inline int lb_classify_break_simple(
+static int lb_classify_break_simple(
 		struct LineBreakContext* lbpCtx)
 {
 	if (lbpCtx->lbcCur == LBP_BK
@@ -614,14 +614,14 @@ static inline int lb_classify_break_simple(
 	}
 }
 
-static inline int lb_classify_break_lookup(
+static int lb_classify_break_lookup(
 		struct LineBreakContext* lbpCtx)
 {
 	/* TODO: LB21a, as introduced by Revision 28 of UAX#14, is not
 	 * yet implemented below. */
+	int brk = LINEBREAK_UNDEFINED;
 	assert(lbpCtx->lbcCur <= LBP_JT);
 	assert(lbpCtx->lbcNew <= LBP_JT);
-	int brk = LINEBREAK_UNDEFINED;
 	switch (baTable[lbpCtx->lbcCur - 1][lbpCtx->lbcNew - 1])
 	{
 	case DIR_BRK:
