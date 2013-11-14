@@ -57,7 +57,7 @@
 #include "linebreakdef.h"
 
 /**
- * Special linebreak value used internally in the set_linebreaks algorithm
+ * Special value used internally to indicate an undefined break result.
  */
 #define LINEBREAK_UNDEFINED -1
 
