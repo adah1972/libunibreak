@@ -1,4 +1,4 @@
-/* vim: set tabstop=4 shiftwidth=4: */
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 
 /*
  * Line breaking in a Unicode sequence.  Designed to be used in a
@@ -25,29 +25,29 @@
  *    distribution.
  *
  * The main reference is Unicode Standard Annex 14 (UAX #14):
- *		<URL:http://www.unicode.org/reports/tr14/>
+ *      <URL:http://www.unicode.org/reports/tr14/>
  *
  * When this library was designed, this annex was at Revision 19, for
  * Unicode 5.0.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-19.html>
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
  * This library has been updated according to Revision 30, for
  * Unicode 6.2.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-30.html>
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-30.html>
  *
  * The Unicode Terms of Use are available at
- *		<URL:http://www.unicode.org/copyright.html>
+ *      <URL:http://www.unicode.org/copyright.html>
  */
 
 /**
- * @file	linebreakdef.h
+ * @file    linebreakdef.h
  *
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the line breaking algorithm.
  *
- * @version	2.4, 2013/11/10
- * @author	Wu Yongwei
- * @author	Petr Filipsky
+ * @version 2.4, 2013/11/10
+ * @author  Wu Yongwei
+ * @author  Petr Filipsky
  */
 
 /**
@@ -62,52 +62,52 @@
  */
 enum LineBreakClass
 {
-	/* This is used to signal an error condition. */
-	LBP_Undefined,	/**< Undefined */
+    /* This is used to signal an error condition. */
+    LBP_Undefined,  /**< Undefined */
 
-	/* The following break classes are treated in the pair table. */
-	LBP_OP,			/**< Opening punctuation */
-	LBP_CL,			/**< Closing punctuation */
-	LBP_CP,			/**< Closing parenthesis */
-	LBP_QU,			/**< Ambiguous quotation */
-	LBP_GL,			/**< Glue */
-	LBP_NS,			/**< Non-starters */
-	LBP_EX,			/**< Exclamation/Interrogation */
-	LBP_SY,			/**< Symbols allowing break after */
-	LBP_IS,			/**< Infix separator */
-	LBP_PR,			/**< Prefix */
-	LBP_PO,			/**< Postfix */
-	LBP_NU,			/**< Numeric */
-	LBP_AL,			/**< Alphabetic */
-	LBP_HL,			/**< Hebrew letter */
-	LBP_ID,			/**< Ideographic */
-	LBP_IN,			/**< Inseparable characters */
-	LBP_HY,			/**< Hyphen */
-	LBP_BA,			/**< Break after */
-	LBP_BB,			/**< Break before */
-	LBP_B2,			/**< Break on either side (but not pair) */
-	LBP_ZW,			/**< Zero-width space */
-	LBP_CM,			/**< Combining marks */
-	LBP_WJ,			/**< Word joiner */
-	LBP_H2,			/**< Hangul LV */
-	LBP_H3,			/**< Hangul LVT */
-	LBP_JL,			/**< Hangul L Jamo */
-	LBP_JV,			/**< Hangul V Jamo */
-	LBP_JT,			/**< Hangul T Jamo */
-	LBP_RI,			/**< Regional indicator */
+    /* The following break classes are treated in the pair table. */
+    LBP_OP,         /**< Opening punctuation */
+    LBP_CL,         /**< Closing punctuation */
+    LBP_CP,         /**< Closing parenthesis */
+    LBP_QU,         /**< Ambiguous quotation */
+    LBP_GL,         /**< Glue */
+    LBP_NS,         /**< Non-starters */
+    LBP_EX,         /**< Exclamation/Interrogation */
+    LBP_SY,         /**< Symbols allowing break after */
+    LBP_IS,         /**< Infix separator */
+    LBP_PR,         /**< Prefix */
+    LBP_PO,         /**< Postfix */
+    LBP_NU,         /**< Numeric */
+    LBP_AL,         /**< Alphabetic */
+    LBP_HL,         /**< Hebrew letter */
+    LBP_ID,         /**< Ideographic */
+    LBP_IN,         /**< Inseparable characters */
+    LBP_HY,         /**< Hyphen */
+    LBP_BA,         /**< Break after */
+    LBP_BB,         /**< Break before */
+    LBP_B2,         /**< Break on either side (but not pair) */
+    LBP_ZW,         /**< Zero-width space */
+    LBP_CM,         /**< Combining marks */
+    LBP_WJ,         /**< Word joiner */
+    LBP_H2,         /**< Hangul LV */
+    LBP_H3,         /**< Hangul LVT */
+    LBP_JL,         /**< Hangul L Jamo */
+    LBP_JV,         /**< Hangul V Jamo */
+    LBP_JT,         /**< Hangul T Jamo */
+    LBP_RI,         /**< Regional indicator */
 
-	/* The following break classes are not treated in the pair table */
-	LBP_AI,			/**< Ambiguous (alphabetic or ideograph) */
-	LBP_BK,			/**< Break (mandatory) */
-	LBP_CB,			/**< Contingent break */
-	LBP_CJ,			/**< Conditional Japanese starter */
-	LBP_CR,			/**< Carriage return */
-	LBP_LF,			/**< Line feed */
-	LBP_NL,			/**< Next line */
-	LBP_SA,			/**< South-East Asian */
-	LBP_SG,			/**< Surrogates */
-	LBP_SP,			/**< Space */
-	LBP_XX			/**< Unknown */
+    /* The following break classes are not treated in the pair table */
+    LBP_AI,         /**< Ambiguous (alphabetic or ideograph) */
+    LBP_BK,         /**< Break (mandatory) */
+    LBP_CB,         /**< Contingent break */
+    LBP_CJ,         /**< Conditional Japanese starter */
+    LBP_CR,         /**< Carriage return */
+    LBP_LF,         /**< Line feed */
+    LBP_NL,         /**< Next line */
+    LBP_SA,         /**< South-East Asian */
+    LBP_SG,         /**< Surrogates */
+    LBP_SP,         /**< Space */
+    LBP_XX          /**< Unknown */
 };
 
 /**
@@ -116,9 +116,9 @@ enum LineBreakClass
  */
 struct LineBreakProperties
 {
-	utf32_t start;				/**< Starting coding point */
-	utf32_t end;				/**< End coding point */
-	enum LineBreakClass prop;	/**< The line breaking property */
+    utf32_t start;              /**< Starting coding point */
+    utf32_t end;                /**< End coding point */
+    enum LineBreakClass prop;   /**< The line breaking property */
 };
 
 /**
@@ -127,9 +127,9 @@ struct LineBreakProperties
  */
 struct LineBreakPropertiesLang
 {
-	const char *lang;					/**< Language name */
-	size_t namelen;						/**< Length of name to match */
-	struct LineBreakProperties *lbp;	/**< Pointer to associated data */
+    const char *lang;                   /**< Language name */
+    size_t namelen;                     /**< Length of name to match */
+    struct LineBreakProperties *lbp;    /**< Pointer to associated data */
 };
 
 /**
@@ -138,11 +138,11 @@ struct LineBreakPropertiesLang
  */
 struct LineBreakContext
 {
-	const char *lang;				/**< Language name */
-	struct LineBreakProperties *lbpLang;/**< Pointer to LineBreakProperties */
-	enum LineBreakClass lbcCur;		/**< Breaking class of current codepoint */
-	enum LineBreakClass lbcNew;		/**< Breaking class of next codepoint */
-	enum LineBreakClass lbcLast;	/**< Breaking class of last codepoint */
+    const char *lang;               /**< Language name */
+    struct LineBreakProperties *lbpLang;/**< Pointer to LineBreakProperties */
+    enum LineBreakClass lbcCur;     /**< Breaking class of current codepoint */
+    enum LineBreakClass lbcNew;     /**< Breaking class of next codepoint */
+    enum LineBreakClass lbcLast;    /**< Breaking class of last codepoint */
 };
 
 /**
@@ -160,16 +160,15 @@ utf32_t lb_get_next_char_utf8(const utf8_t *s, size_t len, size_t *ip);
 utf32_t lb_get_next_char_utf16(const utf16_t *s, size_t len, size_t *ip);
 utf32_t lb_get_next_char_utf32(const utf32_t *s, size_t len, size_t *ip);
 void lb_init_break_context(
-		struct LineBreakContext* lbpCtx,
-		utf32_t ch,
-		const char* lang);
+        struct LineBreakContext* lbpCtx,
+        utf32_t ch,
+        const char* lang);
 int lb_process_next_char(
-		struct LineBreakContext* lbpCtx,
-		utf32_t ch);
+        struct LineBreakContext* lbpCtx,
+        utf32_t ch);
 void set_linebreaks(
-		const void *s,
-		size_t len,
-		const char *lang,
-		char *brks,
-		get_next_char_t get_next_char);
-
+        const void *s,
+        size_t len,
+        const char *lang,
+        char *brks,
+        get_next_char_t get_next_char);

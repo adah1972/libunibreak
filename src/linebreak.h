@@ -1,4 +1,4 @@
-/* vim: set tabstop=4 shiftwidth=4: */
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 
 /*
  * Line breaking in a Unicode sequence.  Designed to be used in a
@@ -24,27 +24,27 @@
  *    distribution.
  *
  * The main reference is Unicode Standard Annex 14 (UAX #14):
- *		<URL:http://www.unicode.org/reports/tr14/>
+ *      <URL:http://www.unicode.org/reports/tr14/>
  *
  * When this library was designed, this annex was at Revision 19, for
  * Unicode 5.0.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-19.html>
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
  * This library has been updated according to Revision 30, for
  * Unicode 6.2.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-30.html>
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-30.html>
  *
  * The Unicode Terms of Use are available at
- *		<URL:http://www.unicode.org/copyright.html>
+ *      <URL:http://www.unicode.org/copyright.html>
  */
 
 /**
- * @file	linebreak.h
+ * @file    linebreak.h
  *
  * Header file for the line breaking algorithm.
  *
- * @version	2.2, 2012/10/06
- * @author	Wu Yongwei
+ * @version 2.2, 2012/10/06
+ * @author  Wu Yongwei
  */
 
 #ifndef LINEBREAK_H
@@ -56,28 +56,28 @@
 extern "C" {
 #endif
 
-#define LINEBREAK_VERSION	0x0202	/**< Version of the library linebreak */
+#define LINEBREAK_VERSION   0x0202  /**< Version of the library linebreak */
 extern const int linebreak_version;
 
 #ifndef LINEBREAK_UTF_TYPES_DEFINED
 #define LINEBREAK_UTF_TYPES_DEFINED
-typedef unsigned char	utf8_t;		/**< Type for UTF-8 data points */
-typedef unsigned short	utf16_t;	/**< Type for UTF-16 data points */
-typedef unsigned int	utf32_t;	/**< Type for UTF-32 data points */
+typedef unsigned char   utf8_t;     /**< Type for UTF-8 data points */
+typedef unsigned short  utf16_t;    /**< Type for UTF-16 data points */
+typedef unsigned int    utf32_t;    /**< Type for UTF-32 data points */
 #endif
 
-#define LINEBREAK_MUSTBREAK		0	/**< Break is mandatory */
-#define LINEBREAK_ALLOWBREAK	1	/**< Break is allowed */
-#define LINEBREAK_NOBREAK		2	/**< No break is possible */
-#define LINEBREAK_INSIDEACHAR	3	/**< A UTF-8/16 sequence is unfinished */
+#define LINEBREAK_MUSTBREAK     0   /**< Break is mandatory */
+#define LINEBREAK_ALLOWBREAK    1   /**< Break is allowed */
+#define LINEBREAK_NOBREAK       2   /**< No break is possible */
+#define LINEBREAK_INSIDEACHAR   3   /**< A UTF-8/16 sequence is unfinished */
 
 void init_linebreak(void);
 void set_linebreaks_utf8(
-		const utf8_t *s, size_t len, const char* lang, char *brks);
+        const utf8_t *s, size_t len, const char* lang, char *brks);
 void set_linebreaks_utf16(
-		const utf16_t *s, size_t len, const char* lang, char *brks);
+        const utf16_t *s, size_t len, const char* lang, char *brks);
 void set_linebreaks_utf32(
-		const utf32_t *s, size_t len, const char* lang, char *brks);
+        const utf32_t *s, size_t len, const char* lang, char *brks);
 int is_line_breakable(utf32_t char1, utf32_t char2, const char* lang);
 
 #ifdef __cplusplus

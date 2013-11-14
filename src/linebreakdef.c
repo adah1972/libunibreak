@@ -1,4 +1,4 @@
-/* vim: set tabstop=4 shiftwidth=4: */
+/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 
 /*
  * Line breaking in a Unicode sequence.  Designed to be used in a
@@ -24,27 +24,27 @@
  *    distribution.
  *
  * The main reference is Unicode Standard Annex 14 (UAX #14):
- *		<URL:http://www.unicode.org/reports/tr14/>
+ *      <URL:http://www.unicode.org/reports/tr14/>
  *
  * When this library was designed, this annex was at Revision 19, for
  * Unicode 5.0.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-19.html>
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
  * This library has been updated according to Revision 30, for
  * Unicode 6.2.0:
- *		<URL:http://www.unicode.org/reports/tr14/tr14-30.html>
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-30.html>
  *
  * The Unicode Terms of Use are available at
- *		<URL:http://www.unicode.org/copyright.html>
+ *      <URL:http://www.unicode.org/copyright.html>
  */
 
 /**
- * @file	linebreakdef.c
+ * @file    linebreakdef.c
  *
  * Definition of language-specific data.
  *
- * @version	2.2, 2012/10/06
- * @author	Wu Yongwei
+ * @version 2.2, 2012/10/06
+ * @author  Wu Yongwei
  */
 
 #include "linebreak.h"
@@ -54,72 +54,72 @@
  * English-specifc data over the default Unicode rules.
  */
 static struct LineBreakProperties lb_prop_English[] = {
-	{ 0x2018, 0x2018, LBP_OP },	/* Left single quotation mark: opening */
-	{ 0x201C, 0x201C, LBP_OP },	/* Left double quotation mark: opening */
-	{ 0x201D, 0x201D, LBP_CL },	/* Right double quotation mark: closing */
-	{ 0, 0, LBP_Undefined }
+    { 0x2018, 0x2018, LBP_OP }, /* Left single quotation mark: opening */
+    { 0x201C, 0x201C, LBP_OP }, /* Left double quotation mark: opening */
+    { 0x201D, 0x201D, LBP_CL }, /* Right double quotation mark: closing */
+    { 0, 0, LBP_Undefined }
 };
 
 /**
  * German-specifc data over the default Unicode rules.
  */
 static struct LineBreakProperties lb_prop_German[] = {
-	{ 0x00AB, 0x00AB, LBP_CL },	/* Left double angle quotation mark: closing */
-	{ 0x00BB, 0x00BB, LBP_OP },	/* Right double angle quotation mark: opening */
-	{ 0x2018, 0x2018, LBP_CL },	/* Left single quotation mark: closing */
-	{ 0x201C, 0x201C, LBP_CL },	/* Left double quotation mark: closing */
-	{ 0x2039, 0x2039, LBP_CL },	/* Left single angle quotation mark: closing */
-	{ 0x203A, 0x203A, LBP_OP },	/* Right single angle quotation mark: opening */
-	{ 0, 0, LBP_Undefined }
+    { 0x00AB, 0x00AB, LBP_CL }, /* Left double angle quotation mark: closing */
+    { 0x00BB, 0x00BB, LBP_OP }, /* Right double angle quotation mark: opening */
+    { 0x2018, 0x2018, LBP_CL }, /* Left single quotation mark: closing */
+    { 0x201C, 0x201C, LBP_CL }, /* Left double quotation mark: closing */
+    { 0x2039, 0x2039, LBP_CL }, /* Left single angle quotation mark: closing */
+    { 0x203A, 0x203A, LBP_OP }, /* Right single angle quotation mark: opening */
+    { 0, 0, LBP_Undefined }
 };
 
 /**
  * Spanish-specifc data over the default Unicode rules.
  */
 static struct LineBreakProperties lb_prop_Spanish[] = {
-	{ 0x00AB, 0x00AB, LBP_OP },	/* Left double angle quotation mark: opening */
-	{ 0x00BB, 0x00BB, LBP_CL },	/* Right double angle quotation mark: closing */
-	{ 0x2018, 0x2018, LBP_OP },	/* Left single quotation mark: opening */
-	{ 0x201C, 0x201C, LBP_OP },	/* Left double quotation mark: opening */
-	{ 0x201D, 0x201D, LBP_CL },	/* Right double quotation mark: closing */
-	{ 0x2039, 0x2039, LBP_OP },	/* Left single angle quotation mark: opening */
-	{ 0x203A, 0x203A, LBP_CL },	/* Right single angle quotation mark: closing */
-	{ 0, 0, LBP_Undefined }
+    { 0x00AB, 0x00AB, LBP_OP }, /* Left double angle quotation mark: opening */
+    { 0x00BB, 0x00BB, LBP_CL }, /* Right double angle quotation mark: closing */
+    { 0x2018, 0x2018, LBP_OP }, /* Left single quotation mark: opening */
+    { 0x201C, 0x201C, LBP_OP }, /* Left double quotation mark: opening */
+    { 0x201D, 0x201D, LBP_CL }, /* Right double quotation mark: closing */
+    { 0x2039, 0x2039, LBP_OP }, /* Left single angle quotation mark: opening */
+    { 0x203A, 0x203A, LBP_CL }, /* Right single angle quotation mark: closing */
+    { 0, 0, LBP_Undefined }
 };
 
 /**
  * French-specifc data over the default Unicode rules.
  */
 static struct LineBreakProperties lb_prop_French[] = {
-	{ 0x00AB, 0x00AB, LBP_OP },	/* Left double angle quotation mark: opening */
-	{ 0x00BB, 0x00BB, LBP_CL },	/* Right double angle quotation mark: closing */
-	{ 0x2018, 0x2018, LBP_OP },	/* Left single quotation mark: opening */
-	{ 0x201C, 0x201C, LBP_OP },	/* Left double quotation mark: opening */
-	{ 0x201D, 0x201D, LBP_CL },	/* Right double quotation mark: closing */
-	{ 0x2039, 0x2039, LBP_OP },	/* Left single angle quotation mark: opening */
-	{ 0x203A, 0x203A, LBP_CL },	/* Right single angle quotation mark: closing */
-	{ 0, 0, LBP_Undefined }
+    { 0x00AB, 0x00AB, LBP_OP }, /* Left double angle quotation mark: opening */
+    { 0x00BB, 0x00BB, LBP_CL }, /* Right double angle quotation mark: closing */
+    { 0x2018, 0x2018, LBP_OP }, /* Left single quotation mark: opening */
+    { 0x201C, 0x201C, LBP_OP }, /* Left double quotation mark: opening */
+    { 0x201D, 0x201D, LBP_CL }, /* Right double quotation mark: closing */
+    { 0x2039, 0x2039, LBP_OP }, /* Left single angle quotation mark: opening */
+    { 0x203A, 0x203A, LBP_CL }, /* Right single angle quotation mark: closing */
+    { 0, 0, LBP_Undefined }
 };
 
 /**
  * Russian-specifc data over the default Unicode rules.
  */
 static struct LineBreakProperties lb_prop_Russian[] = {
-	{ 0x00AB, 0x00AB, LBP_OP },	/* Left double angle quotation mark: opening */
-	{ 0x00BB, 0x00BB, LBP_CL },	/* Right double angle quotation mark: closing */
-	{ 0x201C, 0x201C, LBP_CL },	/* Left double quotation mark: closing */
-	{ 0, 0, LBP_Undefined }
+    { 0x00AB, 0x00AB, LBP_OP }, /* Left double angle quotation mark: opening */
+    { 0x00BB, 0x00BB, LBP_CL }, /* Right double angle quotation mark: closing */
+    { 0x201C, 0x201C, LBP_CL }, /* Left double quotation mark: closing */
+    { 0, 0, LBP_Undefined }
 };
 
 /**
  * Chinese-specifc data over the default Unicode rules.
  */
 static struct LineBreakProperties lb_prop_Chinese[] = {
-	{ 0x2018, 0x2018, LBP_OP },	/* Left single quotation mark: opening */
-	{ 0x2019, 0x2019, LBP_CL },	/* Right single quotation mark: closing */
-	{ 0x201C, 0x201C, LBP_OP },	/* Left double quotation mark: opening */
-	{ 0x201D, 0x201D, LBP_CL },	/* Right double quotation mark: closing */
-	{ 0, 0, LBP_Undefined }
+    { 0x2018, 0x2018, LBP_OP }, /* Left single quotation mark: opening */
+    { 0x2019, 0x2019, LBP_CL }, /* Right single quotation mark: closing */
+    { 0x201C, 0x201C, LBP_OP }, /* Left double quotation mark: opening */
+    { 0x201D, 0x201D, LBP_CL }, /* Right double quotation mark: closing */
+    { 0, 0, LBP_Undefined }
 };
 
 /**
@@ -129,11 +129,11 @@ static struct LineBreakProperties lb_prop_Chinese[] = {
  * you may want to redefine \e lb_prop_lang_map in your C source file.
  */
 struct LineBreakPropertiesLang lb_prop_lang_map[] = {
-	{ "en", 2, lb_prop_English },
-	{ "de", 2, lb_prop_German },
-	{ "es", 2, lb_prop_Spanish },
-	{ "fr", 2, lb_prop_French },
-	{ "ru", 2, lb_prop_Russian },
-	{ "zh", 2, lb_prop_Chinese },
-	{ NULL, 0, NULL }
+    { "en", 2, lb_prop_English },
+    { "de", 2, lb_prop_German },
+    { "es", 2, lb_prop_Spanish },
+    { "fr", 2, lb_prop_French },
+    { "ru", 2, lb_prop_Russian },
+    { "zh", 2, lb_prop_Chinese },
+    { NULL, 0, NULL }
 };
