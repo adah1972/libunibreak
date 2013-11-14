@@ -1,6 +1,6 @@
 /* The content of this file is generated from:
-# LineBreak-6.2.0.txt
-# Date: 2012-08-08, 19:26:00 GMT [KW]
+# LineBreak-6.3.0.txt
+# Date: 2013-02-06, 19:45:00 GMT [KW, LI]
 */
 
 #include "linebreak.h"
@@ -114,7 +114,9 @@ struct LineBreakProperties lb_prop_default[] = {
 	{ 0x060C, 0x060D, LBP_IS },
 	{ 0x060E, 0x060F, LBP_AL },
 	{ 0x0610, 0x061A, LBP_CM },
-	{ 0x061B, 0x061F, LBP_EX },
+	{ 0x061B, 0x061B, LBP_EX },
+	{ 0x061C, 0x061C, LBP_CM },
+	{ 0x061E, 0x061F, LBP_EX },
 	{ 0x0620, 0x064A, LBP_AL },
 	{ 0x064B, 0x065F, LBP_CM },
 	{ 0x0660, 0x0669, LBP_NU },
@@ -456,7 +458,7 @@ struct LineBreakProperties lb_prop_default[] = {
 	{ 0x205D, 0x205F, LBP_BA },
 	{ 0x2060, 0x2060, LBP_WJ },
 	{ 0x2061, 0x2064, LBP_AL },
-	{ 0x206A, 0x206F, LBP_CM },
+	{ 0x2066, 0x206F, LBP_CM },
 	{ 0x2070, 0x2071, LBP_AL },
 	{ 0x2074, 0x2074, LBP_AI },
 	{ 0x2075, 0x207C, LBP_AL },
@@ -473,7 +475,7 @@ struct LineBreakProperties lb_prop_default[] = {
 	{ 0x20A7, 0x20A7, LBP_PO },
 	{ 0x20A8, 0x20B5, LBP_PR },
 	{ 0x20B6, 0x20B6, LBP_PO },
-	{ 0x20B7, 0x20BA, LBP_PR },
+	{ 0x20B7, 0x20CF, LBP_PR },
 	{ 0x20D0, 0x20F0, LBP_CM },
 	{ 0x2100, 0x2102, LBP_AL },
 	{ 0x2103, 0x2103, LBP_PO },
@@ -774,7 +776,8 @@ struct LineBreakProperties lb_prop_default[] = {
 	{ 0x2E33, 0x2E34, LBP_BA },
 	{ 0x2E35, 0x2E39, LBP_AL },
 	{ 0x2E3A, 0x2E3B, LBP_B2 },
-	{ 0x2E80, 0x3000, LBP_ID },
+	{ 0x2E80, 0x2FFB, LBP_ID },
+	{ 0x3000, 0x3000, LBP_BA },
 	{ 0x3001, 0x3002, LBP_CL },
 	{ 0x3003, 0x3004, LBP_ID },
 	{ 0x3005, 0x3005, LBP_NS },
@@ -803,7 +806,9 @@ struct LineBreakProperties lb_prop_default[] = {
 	{ 0x301E, 0x301F, LBP_CL },
 	{ 0x3020, 0x3029, LBP_ID },
 	{ 0x302A, 0x302F, LBP_CM },
-	{ 0x3030, 0x303A, LBP_ID },
+	{ 0x3030, 0x3034, LBP_ID },
+	{ 0x3035, 0x3035, LBP_CM },
+	{ 0x3036, 0x303A, LBP_ID },
 	{ 0x303B, 0x303C, LBP_NS },
 	{ 0x303D, 0x303F, LBP_ID },
 	{ 0x3041, 0x3041, LBP_CJ },
