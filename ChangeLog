@@ -1,5 +1,13 @@
 2013-11-14  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/linebreak.c: Add/update comments and doc comments.
+	(lb_init_breaking_class): Rename to treat_first_char.
+	(lb_classify_break_simple): Rename to get_lb_result_simple.
+	(lb_classify_break_lookup): Rename to get_lb_result_lookup.
+	(set_linebreaks): Remove an unused local variable.
+
+2013-11-14  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* src/linebreakdata.c: Regenerate from LineBreak-6.3.0.txt.
 
 2013-11-13  Wu Yongwei  <wuyongwei@gmail.com>

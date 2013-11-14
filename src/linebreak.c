@@ -45,7 +45,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version 2.4, 2013/11/10
+ * @version 2.5, 2013/11/14
  * @author  Wu Yongwei
  * @author  Petr Filipsky
  */
@@ -431,7 +431,7 @@ static enum LineBreakClass resolve_lb_class(
         }
     case LBP_CJ:
         /* Simplified for `normal' line breaking.  See
-         * <url:http://www.unicode.org/reports/tr14/tr14-28.html#CJ>
+         * <url:http://www.unicode.org/reports/tr14/tr14-30.html#CJ>
          * for details. */
         return LBP_ID;
     case LBP_SA:
@@ -564,60 +564,94 @@ utf32_t lb_get_next_char_utf32(
     return s[(*ip)++];
 }
 
-/* Special treatment for the first character */
-static void lb_init_breaking_class(
+/**
+ * Treats specially for the first character in a line.
+ *
+ * @param[in,out] lbpCtx  pointer to the line breaking context
+ * @pre                   \a lbpCtx->lbcCur has a valid line break class
+ * @post                  \a lbpCtx->lbcCur has the updated line break class
+ */
+static void treat_first_char(
         struct LineBreakContext* lbpCtx)
 {
     switch (lbpCtx->lbcCur)
     {
     case LBP_LF:
     case LBP_NL:
-        lbpCtx->lbcCur = LBP_BK;
+        lbpCtx->lbcCur = LBP_BK;        /* Rule LB5 */
         break;
     case LBP_CB:
-        lbpCtx->lbcCur = LBP_BA;
+        lbpCtx->lbcCur = LBP_BA;        /* Rule LB20 */
         break;
     case LBP_SP:
-        lbpCtx->lbcCur = LBP_WJ;
+        lbpCtx->lbcCur = LBP_WJ;        /* Leading space treated as WJ */
         break;
     default:
         break;
     }
 }
 
-static int lb_classify_break_simple(
+/**
+ * Tries telling the line break opportunity by simple rules.
+ *
+ * @param[in,out] lbpCtx  pointer to the line breaking context
+ * @pre                   \a lbpCtx->lbcCur has the current line break
+ *                        class; and \a lbpCtx->lbcNew has the line
+ *                        break class for the next character
+ * @post                  \a lbpCtx->lbcCur has the updated line break
+ *                        class
+ * @return                break result, one of #LINEBREAK_MUSTBREAK,
+ *                        #LINEBREAK_ALLOWBREAK, and #LINEBREAK_NOBREAK
+ *                        if identified; or #LINEBREAK_UNDEFINED if
+ *                        table lookup is needed
+ */
+static int get_lb_result_simple(
         struct LineBreakContext* lbpCtx)
 {
     if (lbpCtx->lbcCur == LBP_BK
         || (lbpCtx->lbcCur == LBP_CR && lbpCtx->lbcNew != LBP_LF))
     {
-        return LINEBREAK_MUSTBREAK;
+        return LINEBREAK_MUSTBREAK;     /* Rules LB4 and LB5 */
     }
 
     switch (lbpCtx->lbcNew)
     {
     case LBP_SP:
-        return LINEBREAK_NOBREAK;
+        return LINEBREAK_NOBREAK;       /* Rule LB7; no change to lbcCur */
     case LBP_BK:
     case LBP_LF:
     case LBP_NL:
-        lbpCtx->lbcCur = LBP_BK;
-        return LINEBREAK_NOBREAK;
+        lbpCtx->lbcCur = LBP_BK;        /* Mandatory break after */
+        return LINEBREAK_NOBREAK;       /* Rule LB6 */
     case LBP_CR:
         lbpCtx->lbcCur = LBP_CR;
-        return LINEBREAK_NOBREAK;
+        return LINEBREAK_NOBREAK;       /* Rule LB6 */
     case LBP_CB:
         lbpCtx->lbcCur = LBP_BA;
-        return LINEBREAK_ALLOWBREAK;
+        return LINEBREAK_ALLOWBREAK;    /* Rule LB20 */
     default:
-        return LINEBREAK_UNDEFINED;
+        return LINEBREAK_UNDEFINED;     /* Table lookup is needed */
     }
 }
 
-static int lb_classify_break_lookup(
+/**
+ * Tells the line break opportunity by table lookup.
+ *
+ * @param[in,out] lbpCtx  pointer to the line breaking context
+ * @pre                   \a lbpCtx->lbcCur has the current line break
+ *                        class; \a lbpCtx->lbcLast has the line break
+ *                        class for the last character; and \a
+ *                        lbcCur->lbcNew has the line break class for
+ *                        the next character
+ * @post                  \a lbpCtx->lbcCur has the updated line break
+ *                        class
+ * @return                break result, one of #LINEBREAK_MUSTBREAK,
+ *                        #LINEBREAK_ALLOWBREAK, and #LINEBREAK_NOBREAK
+ */
+static int get_lb_result_lookup(
         struct LineBreakContext* lbpCtx)
 {
-    /* TODO: LB21a, as introduced by Revision 28 of UAX#14, is not
+    /* TODO: Rule LB21a, as introduced by Revision 28 of UAX#14, is not
      * yet implemented below. */
     int brk = LINEBREAK_UNDEFINED;
     assert(lbpCtx->lbcCur <= LBP_JT);
@@ -636,7 +670,7 @@ static int lb_classify_break_lookup(
     case CMP_BRK:
         brk = LINEBREAK_NOBREAK;
         if (lbpCtx->lbcLast != LBP_SP)
-            return brk;
+            return brk;                 /* Do not update lbcCur */
         break;
     case PRH_BRK:
         brk = LINEBREAK_NOBREAK;
@@ -650,7 +684,9 @@ static int lb_classify_break_lookup(
  * Initializes line breaking context for a given language.
  *
  * @param[in,out] lbpCtx  pointer to the line breaking context
+ * @param[in]     ch      the first character to process
  * @param[in]     lang    language of the input
+ * @post                  the line breaking context is initialized
  */
 void lb_init_break_context(
         struct LineBreakContext* lbpCtx,
@@ -664,7 +700,7 @@ void lb_init_break_context(
     lbpCtx->lbcCur = resolve_lb_class(
                         get_char_lb_class_lang(ch, lbpCtx->lbpLang),
                         lbpCtx->lang);
-    lb_init_breaking_class(lbpCtx);
+    treat_first_char(lbpCtx);
 }
 
 /**
@@ -673,9 +709,9 @@ void lb_init_break_context(
  *
  * @param[in,out] lbpCtx  pointer to the line breaking context
  * @param[in]     ch      Unicode code point
- * @return                breaking data result, one of
- *                        #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
- *                        #LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
+ * @return                break result, one of #LINEBREAK_MUSTBREAK,
+ *                        #LINEBREAK_ALLOWBREAK, and #LINEBREAK_NOBREAK
+ * @post                  the line breaking context is updated
  */
 int lb_process_next_char(
         struct LineBreakContext* lbpCtx,
@@ -685,16 +721,16 @@ int lb_process_next_char(
 
     lbpCtx->lbcLast = lbpCtx->lbcNew;
     lbpCtx->lbcNew = get_char_lb_class_lang(ch, lbpCtx->lbpLang);
-    brk = lb_classify_break_simple(lbpCtx);
+    brk = get_lb_result_simple(lbpCtx);
     switch (brk)
     {
     case LINEBREAK_MUSTBREAK:
         lbpCtx->lbcCur = resolve_lb_class(lbpCtx->lbcNew, lbpCtx->lang);
-        lb_init_breaking_class(lbpCtx);
+        treat_first_char(lbpCtx);
         break;
     case LINEBREAK_UNDEFINED:
         lbpCtx->lbcNew = resolve_lb_class(lbpCtx->lbcNew, lbpCtx->lang);
-        brk = lb_classify_break_lookup(lbpCtx);
+        brk = get_lb_result_lookup(lbpCtx);
         break;
     default:
         break;
@@ -725,7 +761,6 @@ void set_linebreaks(
     struct LineBreakContext lbCtx;
     size_t posCur = 0;
     size_t posLast = 0;
-    int brk = LINEBREAK_UNDEFINED;
 
     --posLast;  /* To be ++'d later */
     ch = get_next_char(s, len, &posCur);
