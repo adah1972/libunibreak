@@ -54,7 +54,7 @@
  * Constant value to mark the end of string.  It is not a valid Unicode
  * character.
  */
-#define EOS 0xFFFF
+#define EOS 0xFFFFFFFF
 
 /**
  * Line break classes.  This is a direct mapping of Table 1 of Unicode
