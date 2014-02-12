@@ -1,3 +1,8 @@
+2014-02-12  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* bootstrap: Remove the overkill bits and add back autoreconf.
+	* purge: Ensure config.cache is removed.
+
 2014-02-10  Tom Hacohen  <tom@stosb.com>
 
 	* bootstrap: Solve bootstrap problems found on Linux and Mac (thanks
