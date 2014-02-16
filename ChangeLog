@@ -1,3 +1,10 @@
+2014-02-16  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Following https://people.gnome.org/~walters/docs/build-api.txt, add
+	a quasi-standard autogen.sh, which generates `configure' and runs it
+	optionally.
+	* autogen.sh: New file.
+
 2014-02-12  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* bootstrap: Remove the overkill bits and add back autoreconf.
