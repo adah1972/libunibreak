@@ -110,7 +110,7 @@ CXXFILES :=
 
 LIBS :=
 
-TARGET         = liblinebreak.a
+TARGET         = libunibreak.a
 DEBUG_TARGET   = $(patsubst %,$(DEBUG)/%,$(TARGET))
 RELEASE_TARGET = $(patsubst %,$(RELEASE)/%,$(TARGET))
 
