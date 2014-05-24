@@ -1,3 +1,9 @@
+2014-05-23  Christoph Junghans  <junghans@votca.org>
+
+	Fix `make install DESTDIR=...'.
+	* Makefile.am (install-exec-hook): Prefix `$(DESTDIR)/' before
+	`${libdir}'.
+
 2014-02-16  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Following https://people.gnome.org/~walters/docs/build-api.txt, add
