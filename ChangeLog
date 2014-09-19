@@ -1,3 +1,8 @@
+2014-09-19  Petr Filipsky  <philodej@gmail.com>
+
+	* src/LineBreak1.sed: Fix sed expression due to changed
+	LineBreak.txt file format.
+
 2014-05-24  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* src/Makefile.gcc (TARGET): Change from `liblinebreak.a' to
