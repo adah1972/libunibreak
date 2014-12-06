@@ -533,8 +533,8 @@ static int get_lb_result_lookup(
     /* TODO: Rule LB21a, as introduced by Revision 28 of UAX#14, is not
      * yet implemented below. */
     int brk = LINEBREAK_UNDEFINED;
-    assert(lbpCtx->lbcCur <= LBP_JT);
-    assert(lbpCtx->lbcNew <= LBP_JT);
+    assert(lbpCtx->lbcCur <= LBP_RI);
+    assert(lbpCtx->lbcNew <= LBP_RI);
     switch (baTable[lbpCtx->lbcCur - 1][lbpCtx->lbcNew - 1])
     {
     case DIR_BRK:
