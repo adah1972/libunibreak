@@ -1,3 +1,8 @@
+2014-12-06  Mikhail Polubisok  <mpolubisok@gmail.com>
+
+	* src/linebreak.c (get_lb_result_lookup): Extend assertion condition
+	that has been wrong since Unicode 6.2.
+
 2014-09-19  Petr Filipsky  <philodej@gmail.com>
 
 	* src/LineBreak1.sed: Fix sed expression due to changed
