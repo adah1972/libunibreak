@@ -1,5 +1,11 @@
 2015-04-05  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/linebreak.c: Make pointer alignment consistent.
+	* src/linebreak.h: Ditto.
+	* src/linebreakdef.h: Ditto.
+
+2015-04-05  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* src/linebreak.h: Update copyright year and UAX information.
 	* src/linebreakdef.c: Ditto.
 

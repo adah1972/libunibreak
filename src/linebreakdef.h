@@ -161,11 +161,11 @@ utf32_t lb_get_next_char_utf8(const utf8_t *s, size_t len, size_t *ip);
 utf32_t lb_get_next_char_utf16(const utf16_t *s, size_t len, size_t *ip);
 utf32_t lb_get_next_char_utf32(const utf32_t *s, size_t len, size_t *ip);
 void lb_init_break_context(
-        struct LineBreakContext* lbpCtx,
+        struct LineBreakContext *lbpCtx,
         utf32_t ch,
-        const char* lang);
+        const char *lang);
 int lb_process_next_char(
-        struct LineBreakContext* lbpCtx,
+        struct LineBreakContext *lbpCtx,
         utf32_t ch);
 void set_linebreaks(
         const void *s,

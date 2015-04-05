@@ -451,7 +451,7 @@ static enum LineBreakClass resolve_lb_class(
  * @post                  \a lbpCtx->lbcCur has the updated line break class
  */
 static void treat_first_char(
-        struct LineBreakContext* lbpCtx)
+        struct LineBreakContext *lbpCtx)
 {
     switch (lbpCtx->lbcCur)
     {
@@ -487,7 +487,7 @@ static void treat_first_char(
  *                        table lookup is needed
  */
 static int get_lb_result_simple(
-        struct LineBreakContext* lbpCtx)
+        struct LineBreakContext *lbpCtx)
 {
     if (lbpCtx->lbcCur == LBP_BK
         || (lbpCtx->lbcCur == LBP_CR && lbpCtx->lbcNew != LBP_LF))
@@ -530,7 +530,7 @@ static int get_lb_result_simple(
  *                        #LINEBREAK_ALLOWBREAK, and #LINEBREAK_NOBREAK
  */
 static int get_lb_result_lookup(
-        struct LineBreakContext* lbpCtx)
+        struct LineBreakContext *lbpCtx)
 {
     int brk = LINEBREAK_UNDEFINED;
 
@@ -582,9 +582,9 @@ static int get_lb_result_lookup(
  * @post                  the line breaking context is initialized
  */
 void lb_init_break_context(
-        struct LineBreakContext* lbpCtx,
+        struct LineBreakContext *lbpCtx,
         utf32_t ch,
-        const char* lang)
+        const char *lang)
 {
     lbpCtx->lang = lang;
     lbpCtx->lbpLang = get_lb_prop_lang(lang);
@@ -608,7 +608,7 @@ void lb_init_break_context(
  * @post                  the line breaking context is updated
  */
 int lb_process_next_char(
-        struct LineBreakContext* lbpCtx,
+        struct LineBreakContext *lbpCtx,
         utf32_t ch )
 {
     int brk;
@@ -883,7 +883,7 @@ void set_linebreaks_utf32(
 int is_line_breakable(
         utf32_t char1,
         utf32_t char2,
-        const char* lang)
+        const char *lang)
 {
     utf32_t s[2];
     char brks[2];
