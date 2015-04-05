@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2013 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2015 Wu Yongwei <wuyongwei at gmail dot com>
  * Copyright (C) 2013 Petr Filipsky <philodej at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
@@ -31,9 +31,9 @@
  * Unicode 5.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 30, for
- * Unicode 6.2.0:
- *      <URL:http://www.unicode.org/reports/tr14/tr14-30.html>
+ * This library has been updated according to Revision 33, for
+ * Unicode 7.0.0:
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-33.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -45,7 +45,7 @@
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the line breaking algorithm.
  *
- * @version 2.4, 2013/11/10
+ * @version 2.5, 2015/04/05
  * @author  Wu Yongwei
  * @author  Petr Filipsky
  */
@@ -143,6 +143,7 @@ struct LineBreakContext
     enum LineBreakClass lbcCur;     /**< Breaking class of current codepoint */
     enum LineBreakClass lbcNew;     /**< Breaking class of next codepoint */
     enum LineBreakClass lbcLast;    /**< Breaking class of last codepoint */
+    int fLb21aHebrew;               /**< Flag for Hebrew letters (LB21a) */
 };
 
 /**

@@ -1,3 +1,13 @@
+2015-04-05  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Implement rule LB21a, as introduced by Revision 28 of UAX#14.
+	* src/linebreakdef.h (struct LineBreakContext): Add new field
+	fLb21aHebrew.
+	* src/linebreak.c (treat_first_char): Initialize fLb21aHebrew
+	properly.
+	(lb_init_break_context): Clear fLb21aHebrew.
+	(get_lb_result_lookup): Apply rule LB21a and update fLb21aHebrew.
+
 2014-12-06  Mikhail Polubisok  <mpolubisok@gmail.com>
 
 	* src/linebreak.c (get_lb_result_lookup): Extend assertion condition

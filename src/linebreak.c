@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2013 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2015 Wu Yongwei <wuyongwei at gmail dot com>
  * Copyright (C) 2013 Petr Filipsky <philodej at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
@@ -31,9 +31,9 @@
  * Unicode 5.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 30, for
- * Unicode 6.2.0:
- *      <URL:http://www.unicode.org/reports/tr14/tr14-30.html>
+ * This library has been updated according to Revision 33, for
+ * Unicode 7.0.0:
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-33.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -45,7 +45,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version 2.5, 2013/11/14
+ * @version 2.6, 2015/04/05
  * @author  Wu Yongwei
  * @author  Petr Filipsky
  */
@@ -465,6 +465,8 @@ static void treat_first_char(
     case LBP_SP:
         lbpCtx->lbcCur = LBP_WJ;        /* Leading space treated as WJ */
         break;
+    case LBP_HL:
+        lbpCtx->fLb21aHebrew = 1;       /* Rule LB21a */
     default:
         break;
     }
@@ -530,9 +532,8 @@ static int get_lb_result_simple(
 static int get_lb_result_lookup(
         struct LineBreakContext* lbpCtx)
 {
-    /* TODO: Rule LB21a, as introduced by Revision 28 of UAX#14, is not
-     * yet implemented below. */
     int brk = LINEBREAK_UNDEFINED;
+
     assert(lbpCtx->lbcCur <= LBP_RI);
     assert(lbpCtx->lbcNew <= LBP_RI);
     switch (baTable[lbpCtx->lbcCur - 1][lbpCtx->lbcNew - 1])
@@ -555,6 +556,19 @@ static int get_lb_result_lookup(
         brk = LINEBREAK_NOBREAK;
         break;
     }
+
+    /* Special processing due to rule LB21a */
+    if (lbpCtx->fLb21aHebrew &&
+        (lbpCtx->lbcCur == LBP_HY || lbpCtx->lbcCur == LBP_BA))
+    {
+        brk = LINEBREAK_NOBREAK;
+        lbpCtx->fLb21aHebrew = 0;
+    }
+    else if (!(lbpCtx->lbcNew == LBP_HY || lbpCtx->lbcNew == LBP_BA))
+    {
+        lbpCtx->fLb21aHebrew = (lbpCtx->lbcNew == LBP_HL);
+    }
+
     lbpCtx->lbcCur = lbpCtx->lbcNew;
     return brk;
 }
@@ -579,6 +593,7 @@ void lb_init_break_context(
     lbpCtx->lbcCur = resolve_lb_class(
                         get_char_lb_class_lang(ch, lbpCtx->lbpLang),
                         lbpCtx->lang);
+    lbpCtx->fLb21aHebrew = 0;
     treat_first_char(lbpCtx);
 }
 
