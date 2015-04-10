@@ -1,5 +1,5 @@
 #noinst_PROGRAMS = filter_dup
-include_HEADERS = linebreak.h linebreakdef.h wordbreak.h wordbreakdef.h
+include_HEADERS = linebreak.h linebreakdef.h wordbreak.h
 lib_LTLIBRARIES = libunibreak.la
 
 libunibreak_la_LDFLAGS = -no-undefined -version-info 2:0:1
@@ -21,7 +21,8 @@ EXTRA_DIST = \
 	Makefile.gcc \
 	Makefile.msvc \
 	filter_dup.c \
-	sort_numeric_hex.py
+	sort_numeric_hex.py \
+	wordbreakdef.h
 
 install-exec-hook:
 	- [ -f $(DESTDIR)/${libdir}/libunibreak.a ] && \
