@@ -35,6 +35,9 @@
  * Unicode 6.2.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-21.html>
  *
+ * This library has been updated according to Revision 25, for
+ * Unicode 7.0.0:
+ *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
  */
@@ -73,7 +76,10 @@ enum WordBreakClass
     WBP_Hebrew,
     WBP_Single,
     WBP_Double,
-    WBP_Any
+    WBP_Any,
+    WBP_Hebrew_Letter,
+    WBP_Single_Quote,
+    WBP_Double_Quote
 };
 
 /**

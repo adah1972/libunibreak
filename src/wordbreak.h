@@ -34,6 +34,10 @@
  * Unicode 6.2.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-21.html>
  *
+ * This library has been updated according to Revision 25, for
+ * Unicode 7.0.0:
+ *      <URL:http://www.unicode.org/reports/tr29/tr29-25.html>
+ *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
  */

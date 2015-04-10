@@ -34,6 +34,10 @@
  * Unicode 6.2.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-21.html>
  *
+ * This library has been updated according to Revision 25, for
+ * Unicode 7.0.0:
+ *      <URL:http://www.unicode.org/reports/tr29/tr29-25.html>
+ *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
  */
@@ -256,8 +260,24 @@ static void set_wordbreaks(
             posLast = posCur;
             break;
 
+        case WBP_Hebrew_Letter:
         case WBP_ALetter:
-            if ((wbcSeqStart == WBP_ALetter) || /* WB5,6,7 */
+            if ((wbcSeqStart == WBP_Hebrew_Letter) &&
+                    (wbcLast == WBP_Double_Quote)) /* WB7b,c */
+            {
+               if (wbcCur == WBP_Hebrew_Letter)
+                 {
+                     set_brks_to(s, brks, posLast, posCur, len,
+                             WORDBREAK_NOBREAK, get_next_char);
+                 }
+               else
+                 {
+                     set_brks_to(s, brks, posLast, posCur, len,
+                             WORDBREAK_BREAK, get_next_char);
+                 }
+            }
+            else if (((wbcSeqStart == WBP_ALetter) ||
+                        (wbcSeqStart == WBP_Hebrew_Letter)) || /* WB5,6,7 */
                     (wbcLast == WBP_Numeric) || /* WB10 */
                     (wbcSeqStart == WBP_ExtendNumLet)) /* WB13b */
             {
@@ -274,8 +294,18 @@ static void set_wordbreaks(
             posLast = posCur;
             break;
 
+        case WBP_Single_Quote:
+            if (wbcLast == WBP_Hebrew_Letter) /* WB7a */
+            {
+                set_brks_to(s, brks, posLast, posCur, len,
+                            WORDBREAK_NOBREAK, get_next_char);
+                wbcSeqStart = wbcCur;
+                posLast = posCur;
+            }
+            /* No break on purpose */
         case WBP_MidNumLet:
-            if ((wbcLast == WBP_ALetter) || /* WB6,7 */
+            if (((wbcLast == WBP_ALetter) ||
+                        (wbcLast == WBP_Hebrew_Letter)) || /* WB6,7 */
                     (wbcLast == WBP_Numeric)) /* WB11,12 */
             {
                 /* Go on */
@@ -290,7 +320,8 @@ static void set_wordbreaks(
             break;
 
         case WBP_MidLetter:
-            if (wbcLast == WBP_ALetter) /* WB6,7 */
+            if ((wbcLast == WBP_ALetter) ||
+                    (wbcLast == WBP_Hebrew_Letter)) /* WB6,7 */
             {
                 /* Go on */
             }
@@ -319,7 +350,8 @@ static void set_wordbreaks(
 
         case WBP_Numeric:
             if ((wbcSeqStart == WBP_Numeric) || /* WB8,11,12 */
-                    (wbcLast == WBP_ALetter) || /* WB9 */
+                    ((wbcLast == WBP_ALetter) ||
+                     (wbcLast == WBP_Hebrew_Letter)) || /* WB9 */
                     (wbcSeqStart == WBP_ExtendNumLet)) /* WB13b */
             {
                 set_brks_to(s, brks, posLast, posCur, len,
@@ -339,6 +371,7 @@ static void set_wordbreaks(
             /* WB13a,13b */
             if ((wbcSeqStart == wbcLast) &&
                 ((wbcLast == WBP_ALetter) ||
+                 (wbcLast == WBP_Hebrew_Letter) ||
                  (wbcLast == WBP_Numeric) ||
                  (wbcLast == WBP_Katakana) ||
                  (wbcLast == WBP_ExtendNumLet)))
@@ -365,6 +398,20 @@ static void set_wordbreaks(
             }
             wbcSeqStart = wbcCur;
             posLast = posCur;
+            break;
+
+        case WBP_Double_Quote:
+            if (wbcLast == WBP_Hebrew_Letter) /* WB7b,c */
+            {
+               /* Go on */
+            }
+            else
+            {
+                set_brks_to(s, brks, posLast, posCur, len,
+                            WORDBREAK_BREAK, get_next_char);
+                wbcSeqStart = wbcCur;
+                posLast = posCur;
+            }
             break;
 
         case WBP_Any:
