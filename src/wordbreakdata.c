@@ -941,7 +941,7 @@ static struct WordBreakProperties wb_prop_default[] = {
 	{0x1EEA1, 0x1EEA3, WBP_ALetter},
 	{0x1EEA5, 0x1EEA9, WBP_ALetter},
 	{0x1EEAB, 0x1EEBB, WBP_ALetter},
-	{0x1F1E6, 0x1F1FF, WBP_Regional},
+	{0x1F1E6, 0x1F1FF, WBP_Regional_Indicator},
 	{0xE0001, 0xE0001, WBP_Format},
 	{0xE0020, 0xE007F, WBP_Format},
 	{0xE0100, 0xE01EF, WBP_Extend},

@@ -69,7 +69,7 @@ enum WordBreakClass
     WBP_MidNum,
     WBP_Numeric,
     WBP_ExtendNumLet,
-    WBP_Regional,
+    WBP_Regional_Indicator,
     WBP_Hebrew,
     WBP_Single,
     WBP_Double,

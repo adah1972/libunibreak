@@ -356,9 +356,9 @@ static void set_wordbreaks(
             posLast = posCur;
             break;
 
-        case WBP_Regional:
+        case WBP_Regional_Indicator:
             /* WB13c */
-            if (wbcSeqStart == WBP_Regional)
+            if (wbcSeqStart == WBP_Regional_Indicator)
             {
                 set_brks_to(s, brks, posLast, posCur, len,
                             WORDBREAK_NOBREAK, get_next_char);

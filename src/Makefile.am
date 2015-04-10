@@ -49,7 +49,7 @@ wordbreakdata: WordBreakProperty.txt
 	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
 	${srcdir}/sort_numeric_hex.py tmp2.txt > tmp.txt
 	rm tmp2.txt tmp2.txt.bak
-	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; *([A-Za-z]+).*/'$$'\t''{0x\1, 0x\2, WBP_\3},/p' tmp.txt 
+	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; *([A-Za-z_]+).*/'$$'\t''{0x\1, 0x\2, WBP_\3},/p' tmp.txt
 	echo "/* The content of this file is generated from:" > ${srcdir}/wordbreakdata.c
 	head -2 WordBreakProperty.txt >> ${srcdir}/wordbreakdata.c
 	echo "*/" >> ${srcdir}/wordbreakdata.c
