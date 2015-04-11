@@ -1,3 +1,11 @@
+2015-04-10  Tom Hacohen  <tom@stosb.com>
+
+	Update files according to UAX #29-29, for Unicode 7.0.0.
+	* src/wordbreak.c (set_wordbreaks): Take care of Hebrew letters.
+	* src/wordbreakdata.h (enum WordBreakClass): Add WBP_Hebrew_Letter,
+	WBP_Single_Quote, and WBP_Double_Quote.
+	* src/wordbreakdata.c: Regenerate from WordBreakProperty-7.0.0.txt.
+
 2015-04-05  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* src/linebreak.c: Make pointer alignment consistent.
@@ -11,7 +19,7 @@
 
 2015-04-05  Wu Yongwei  <wuyongwei@gmail.com>
 
-	Implement rule LB21a, as introduced by Revision 28 of UAX#14.
+	Implement rule LB21a, as introduced by Revision 28 of UAX #14.
 	* src/linebreakdef.h (struct LineBreakContext): Add new field
 	fLb21aHebrew.
 	* src/linebreak.c (treat_first_char): Initialize fLb21aHebrew
