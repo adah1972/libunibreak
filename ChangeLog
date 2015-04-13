@@ -1,3 +1,7 @@
+2015-04-13  Tom Hacohen  <tom@stosb.com>
+
+	* src/wordbreakdef.h (enum WordBreakClass): Clean up and reorder.
+
 2015-04-10  Tom Hacohen  <tom@stosb.com>
 
 	Update files according to UAX #29-29, for Unicode 7.0.0.
