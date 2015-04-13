@@ -1,3 +1,9 @@
+2015-04-13  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* src/wordbreak.c: Update copyright and version information.
+	* src/wordbreak.h: Ditto.
+	* src/wordbreakdef.h: Ditto.
+
 2015-04-13  Tom Hacohen  <tom@stosb.com>
 
 	* src/wordbreakdef.h (enum WordBreakClass): Clean up and reorder.
