@@ -64,22 +64,19 @@ enum WordBreakClass
     WBP_LF,
     WBP_Newline,
     WBP_Extend,
+    WBP_Regional_Indicator,
     WBP_Format,
     WBP_Katakana,
+    WBP_Hebrew_Letter,
     WBP_ALetter,
+    WBP_Single_Quote,
+    WBP_Double_Quote,
     WBP_MidNumLet,
     WBP_MidLetter,
     WBP_MidNum,
     WBP_Numeric,
     WBP_ExtendNumLet,
-    WBP_Regional_Indicator,
-    WBP_Hebrew,
-    WBP_Single,
-    WBP_Double,
-    WBP_Any,
-    WBP_Hebrew_Letter,
-    WBP_Single_Quote,
-    WBP_Double_Quote
+    WBP_Any
 };
 
 /**
