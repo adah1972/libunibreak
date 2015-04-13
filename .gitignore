@@ -1,5 +1,6 @@
 *.lo
 *.o
+*.out
 *.swp
 tags
 /Makefile
