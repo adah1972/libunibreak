@@ -43,7 +43,7 @@
  *
  * Header file for the word breaking (segmentation) algorithm.
  *
- * @version 2.4, 2015/04/10
+ * @version 2.5, 2015/04/18
  * @author  Tom Hacohen
  */
 
@@ -51,7 +51,7 @@
 #define WORDBREAK_H
 
 #include <stddef.h>
-#include "linebreak.h"
+#include "unibreakbase.h"
 
 #ifdef __cplusplus
 extern "C" {

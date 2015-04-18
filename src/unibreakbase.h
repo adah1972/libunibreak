@@ -1,10 +1,10 @@
 /* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 
 /*
- * Line breaking in a Unicode sequence.  Designed to be used in a
+ * Break processing in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2015 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2015 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -39,40 +39,35 @@
  */
 
 /**
- * @file    linebreak.h
+ * @file    unibreakbase.h
  *
- * Header file for the line breaking algorithm.
+ * Header file for common definitions in the libunibreak library.
  *
- * @version 2.4, 2015/04/18
+ * @version 1.0, 2015/04/18
  * @author  Wu Yongwei
  */
 
-#ifndef LINEBREAK_H
-#define LINEBREAK_H
+#ifndef UNIBREAKBASE_H
+#define UNIBREAKBASE_H
 
 #include <stddef.h>
-#include "unibreakbase.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define LINEBREAK_MUSTBREAK     0   /**< Break is mandatory */
-#define LINEBREAK_ALLOWBREAK    1   /**< Break is allowed */
-#define LINEBREAK_NOBREAK       2   /**< No break is possible */
-#define LINEBREAK_INSIDEACHAR   3   /**< A UTF-8/16 sequence is unfinished */
+#define UNIBREAK_VERSION   0x0300	/**< Version of the library linebreak */
+extern const int unibreak_version;
 
-void init_linebreak(void);
-void set_linebreaks_utf8(
-        const utf8_t *s, size_t len, const char *lang, char *brks);
-void set_linebreaks_utf16(
-        const utf16_t *s, size_t len, const char *lang, char *brks);
-void set_linebreaks_utf32(
-        const utf32_t *s, size_t len, const char *lang, char *brks);
-int is_line_breakable(utf32_t char1, utf32_t char2, const char *lang);
+#ifndef UNIBREAK_UTF_TYPES_DEFINED
+#define UNIBREAK_UTF_TYPES_DEFINED
+typedef unsigned char   utf8_t;     /**< Type for UTF-8 data points */
+typedef unsigned short  utf16_t;    /**< Type for UTF-16 data points */
+typedef unsigned int    utf32_t;    /**< Type for UTF-32 data points */
+#endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* LINEBREAK_H */
+#endif /* UNIBREAKBASE_H */

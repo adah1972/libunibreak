@@ -1,3 +1,20 @@
+2015-04-18  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* src/unibreakbase.c: New file.
+	* src/unibreakbase.h: New file.
+	* src/linebreak.c (linebreak_version): Remove definition.
+	* src/linebreak.h: Include "unibreakbase.h".
+	(linebreak_version): Remove declaration.
+	(LINEBREAK_VERSION): Remove definition.
+	(utf8_t): Remove typedef.
+	(utf16_t): Remove typedef.
+	(utf32_t): Remove typedef.
+	* src/wordbreak.h: Include "unibreakbase.h" instead of
+	"linebreak.h".
+	* src/Makefile.am (include_HEADERS): Add `unibreakbase.h'.
+	(libunibreak_la_SOURCES): Add `unibreakbase.c'.
+	(libunibreak_la_LDFLAGS): Set the version-info to `3:0:0'.
+
 2015-04-13  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* src/wordbreak.c: Update copyright and version information.

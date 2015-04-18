@@ -23,10 +23,6 @@
 
 #define MAXCHARS    16384
 
-#if !defined(LINEBREAK_VERSION) || LINEBREAK_VERSION < 0x0190
-#define lb_get_next_char_utf8 get_next_char_utf8
-#endif
-
 /* Show usage */
 void usage(const char *progname)
 {

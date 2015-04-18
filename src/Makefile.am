@@ -1,13 +1,15 @@
 #noinst_PROGRAMS = filter_dup
-include_HEADERS = linebreak.h linebreakdef.h wordbreak.h
+include_HEADERS = unibreakbase.h linebreak.h linebreakdef.h wordbreak.h
 lib_LTLIBRARIES = libunibreak.la
 
-libunibreak_la_LDFLAGS = -no-undefined -version-info 2:0:1
+libunibreak_la_LDFLAGS = -no-undefined -version-info 3:0:0
 libunibreak_la_SOURCES = \
+	unibreakbase.c \
 	linebreak.c \
 	linebreakdata.c \
 	linebreakdef.c \
-	wordbreak.c
+	wordbreak.c \
+	wordbreakdata.c
 
 EXTRA_DIST = \
 	LineBreak1.sed \
@@ -17,7 +19,6 @@ EXTRA_DIST = \
 	linebreakdata3.tmpl \
 	wordbreakdata1.tmpl \
 	wordbreakdata2.tmpl \
-	wordbreakdata.c \
 	Makefile.gcc \
 	Makefile.msvc \
 	filter_dup.c \
