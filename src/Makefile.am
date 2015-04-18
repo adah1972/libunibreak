@@ -1,10 +1,17 @@
 #noinst_PROGRAMS = filter_dup
-include_HEADERS = unibreakbase.h linebreak.h linebreakdef.h wordbreak.h
+include_HEADERS = \
+	unibreakbase.h \
+	unibreakdef.h \
+	linebreak.h \
+	linebreakdef.h \
+	wordbreak.h
 lib_LTLIBRARIES = libunibreak.la
 
+libunibreak_la_CFLAGS = -W -Wall
 libunibreak_la_LDFLAGS = -no-undefined -version-info 3:0:0
 libunibreak_la_SOURCES = \
 	unibreakbase.c \
+	unibreakdef.c \
 	linebreak.c \
 	linebreakdata.c \
 	linebreakdef.c \

@@ -1,5 +1,25 @@
 2015-04-18  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/unibreakdef.c: New file.
+	* src/unibreakdef.h: New file.
+	* src/wordbreak.c: Rename reference to `lb_get_next_char...' to
+	`ub_get_next_char...'.
+	* src/linebreak.c: Ditto.
+	(lb_get_next_char_utf8): Remove definition.
+	(lb_get_next_char_utf16): Ditto.
+	(lb_get_next_char_utf32): Ditto.
+	* src/linebreakdef.h: Include "unibreakdef.h".
+	(EOS): Remove definition.
+	(get_next_char_t): Remove typedef.
+	(lb_get_next_char_utf8): Remove declaration.
+	(lb_get_next_char_utf16): Ditto.
+	(lb_get_next_char_utf32): Ditto.
+	* src/Makefile.am (include_HEADERS): Add `unibreakdef.h'.
+	(libunibreak_la_SOURCES): Add `unibreakdef.c'.
+	(libunibreak_la_CFLAGS): Define to `-W -Wall'.
+
+2015-04-18  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* src/unibreakbase.c: New file.
 	* src/unibreakbase.h: New file.
 	* src/linebreak.c (linebreak_version): Remove definition.

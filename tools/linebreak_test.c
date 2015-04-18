@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
     for (i = 0;;)
     {
         j = i;
-        ch = lb_get_next_char_utf8(buffer, count, &i);
+        ch = ub_get_next_char_utf8(buffer, count, &i);
         if (ch == EOS)
             break;
         if (ic != (iconv_t)-1)

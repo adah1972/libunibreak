@@ -44,16 +44,14 @@
  * Implementation of the word breaking algorithm as described in Unicode
  * Standard Annex 29.
  *
- * @version 2.5, 2015/04/10
+ * @version 2.6, 2015/04/18
  * @author  Tom Hacohen
  */
 
 #include <assert.h>
 #include <stddef.h>
 #include <string.h>
-#include "linebreak.h"
-#include "linebreakdef.h"
-
+#include "unibreakdef.h"
 #include "wordbreak.h"
 #include "wordbreakdata.c"
 
@@ -451,7 +449,7 @@ void set_wordbreaks_utf8(
         char *brks)
 {
     set_wordbreaks(s, len, lang, brks,
-                   (get_next_char_t)lb_get_next_char_utf8);
+                   (get_next_char_t)ub_get_next_char_utf8);
 }
 
 /**
@@ -471,7 +469,7 @@ void set_wordbreaks_utf16(
         char *brks)
 {
     set_wordbreaks(s, len, lang, brks,
-                   (get_next_char_t)lb_get_next_char_utf16);
+                   (get_next_char_t)ub_get_next_char_utf16);
 }
 
 /**
@@ -491,5 +489,5 @@ void set_wordbreaks_utf32(
         char *brks)
 {
     set_wordbreaks(s, len, lang, brks,
-                   (get_next_char_t)lb_get_next_char_utf32);
+                   (get_next_char_t)ub_get_next_char_utf32);
 }

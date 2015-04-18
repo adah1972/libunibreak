@@ -45,16 +45,12 @@
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the line breaking algorithm.
  *
- * @version 2.5, 2015/04/05
+ * @version 2.6, 2015/04/18
  * @author  Wu Yongwei
  * @author  Petr Filipsky
  */
 
-/**
- * Constant value to mark the end of string.  It is not a valid Unicode
- * character.
- */
-#define EOS 0xFFFFFFFF
+#include "unibreakdef.h"
 
 /**
  * Line break classes.  This is a direct mapping of Table 1 of Unicode
@@ -146,20 +142,11 @@ struct LineBreakContext
     int fLb21aHebrew;               /**< Flag for Hebrew letters (LB21a) */
 };
 
-/**
- * Abstract function interface for #lb_get_next_char_utf8,
- * #lb_get_next_char_utf16, and #lb_get_next_char_utf32.
- */
-typedef utf32_t (*get_next_char_t)(const void *, size_t, size_t *);
-
 /* Declarations */
 extern struct LineBreakProperties lb_prop_default[];
 extern struct LineBreakPropertiesLang lb_prop_lang_map[];
 
 /* Function Prototype */
-utf32_t lb_get_next_char_utf8(const utf8_t *s, size_t len, size_t *ip);
-utf32_t lb_get_next_char_utf16(const utf16_t *s, size_t len, size_t *ip);
-utf32_t lb_get_next_char_utf32(const utf32_t *s, size_t len, size_t *ip);
 void lb_init_break_context(
         struct LineBreakContext *lbpCtx,
         utf32_t ch,
