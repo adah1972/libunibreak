@@ -3,7 +3,6 @@
 # Date: 2014-02-28, 23:15:00 GMT [KW, LI]
 */
 
-#include "linebreak.h"
 #include "linebreakdef.h"
 
 /** Default line breaking properties as from the Unicode Web site. */

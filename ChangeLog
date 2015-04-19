@@ -1,5 +1,11 @@
 2015-04-19  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/linebreakdata2.tmp: Remove the unnecessary inclusion of
+	"linebreak.h".
+	* src/linebreakdata.c: Ditto.
+
+2015-04-19  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Use extended regexp to simplify expressions.
 	* src/LineBreak1.sed: Simplify with extended regexp.
 	* src/LineBreak2.sed: Ditto.
