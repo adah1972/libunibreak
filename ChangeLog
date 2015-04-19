@@ -1,5 +1,9 @@
 2015-04-19  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/wordbreakdef.h: Include "unibreakdef.h".
+
+2015-04-19  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* purge: Make it remove `compile'.
 
 2015-04-18  Wu Yongwei  <wuyongwei@gmail.com>
