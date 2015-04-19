@@ -47,8 +47,8 @@ WordBreakProperty.txt:
 	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakProperty.txt
 
 linebreakdata: ${builddir}/filter_dup LineBreak.txt
-	sed -n -f ${srcdir}/LineBreak1.sed LineBreak.txt > tmp.txt
-	sed -f ${srcdir}/LineBreak2.sed tmp.txt | ${builddir}/filter_dup > tmp.c
+	sed -E -n -f ${srcdir}/LineBreak1.sed LineBreak.txt > tmp.txt
+	sed -E -f ${srcdir}/LineBreak2.sed tmp.txt | ${builddir}/filter_dup > tmp.c
 	head -2 LineBreak.txt > tmp.txt
 	cat ${srcdir}/linebreakdata1.tmpl tmp.txt ${srcdir}/linebreakdata2.tmpl tmp.c ${srcdir}/linebreakdata3.tmpl > ${srcdir}/linebreakdata.c
 	rm tmp.txt tmp.c

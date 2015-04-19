@@ -1,5 +1,12 @@
 2015-04-19  Wu Yongwei  <wuyongwei@gmail.com>
 
+	Use extended regexp to simplify expressions.
+	* src/LineBreak1.sed: Simplify with extended regexp.
+	* src/LineBreak2.sed: Ditto.
+	* src/Makefile.am: Add `-E' to the command line of sed.
+
+2015-04-19  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Make further clean-up for the 3.0 release.
 	* configure.ac (AC_INIT): Change the library version to `3.0'.
 	* Doxyfile (PROJECT_NUMBER): Change to `3.0'.
