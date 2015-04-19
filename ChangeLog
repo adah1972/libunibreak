@@ -1,5 +1,9 @@
 2015-04-19  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* LICENCE: Update copyright information.
+
+2015-04-19  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* src/linebreakdata2.tmp: Remove the unnecessary inclusion of
 	"linebreak.h".
 	* src/linebreakdata.c: Ditto.
