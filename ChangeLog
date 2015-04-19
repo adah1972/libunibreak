@@ -1,5 +1,14 @@
 2015-04-19  Wu Yongwei  <wuyongwei@gmail.com>
 
+	Make further clean-up for the 3.0 release.
+	* configure.ac (AC_INIT): Change the library version to `3.0'.
+	* Doxyfile (PROJECT_NUMBER): Change to `3.0'.
+	(EXCLUDE): Add the missing `src/' before `filter_dup.c'.
+	* src/wordbreakdata1.tmpl: Remove the inclusion of "linebreak.h".
+	* src/wordbreakdata.c: Ditto.
+
+2015-04-19  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* src/wordbreakdef.h: Include "unibreakdef.h".
 
 2015-04-19  Wu Yongwei  <wuyongwei@gmail.com>

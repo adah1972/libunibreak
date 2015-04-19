@@ -3,7 +3,6 @@
 # Date: 2014-02-19, 15:51:39 GMT [MD]
 */
 
-#include "linebreak.h"
 #include "wordbreakdef.h"
 
 static struct WordBreakProperties wb_prop_default[] = {
