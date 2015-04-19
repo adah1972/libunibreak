@@ -39,11 +39,11 @@
  */
 
 /**
- * @file    unibreakbase.h
+ * @file    unibreakdef.h
  *
  * Header file for private definitions in the libunibreak library.
  *
- * @version 1.0, 2015/04/18
+ * @version 1.1, 2015/04/19
  * @author  Wu Yongwei
  */
 
