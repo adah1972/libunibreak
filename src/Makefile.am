@@ -15,8 +15,7 @@ libunibreak_la_SOURCES = \
 	linebreak.c \
 	linebreakdata.c \
 	linebreakdef.c \
-	wordbreak.c \
-	wordbreakdata.c
+	wordbreak.c
 
 EXTRA_DIST = \
 	LineBreak1.sed \
@@ -26,6 +25,7 @@ EXTRA_DIST = \
 	linebreakdata3.tmpl \
 	wordbreakdata1.tmpl \
 	wordbreakdata2.tmpl \
+	wordbreakdata.c \
 	Makefile.gcc \
 	Makefile.msvc \
 	filter_dup.c \
