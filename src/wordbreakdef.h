@@ -32,6 +32,7 @@
  *
  * This library has been updated according to Revision 25, for
  * Unicode 7.0.0:
+ *      <URL:http://www.unicode.org/reports/tr29/tr29-25.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -43,7 +44,7 @@
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the word breaking algorithm.
  *
- * @version 2.6, 2015/04/19
+ * @version 3.0, 2015/05/10
  * @author  Tom Hacohen
  */
 

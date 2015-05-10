@@ -22,20 +22,6 @@
  *    not be misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source
  *    distribution.
- *
- * The main reference is Unicode Standard Annex 14 (UAX #14):
- *      <URL:http://www.unicode.org/reports/tr14/>
- *
- * When this library was designed, this annex was at Revision 19, for
- * Unicode 5.0.0:
- *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
- *
- * This library has been updated according to Revision 33, for
- * Unicode 7.0.0:
- *      <URL:http://www.unicode.org/reports/tr14/tr14-33.html>
- *
- * The Unicode Terms of Use are available at
- *      <URL:http://www.unicode.org/copyright.html>
  */
 
 /**
@@ -43,14 +29,12 @@
  *
  * Header file for common definitions in the libunibreak library.
  *
- * @version 1.0, 2015/04/18
+ * @version 3.0, 2015/05/10
  * @author  Wu Yongwei
  */
 
 #ifndef UNIBREAKBASE_H
 #define UNIBREAKBASE_H
-
-#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {

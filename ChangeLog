@@ -1,3 +1,19 @@
+2015-05-10  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Update for the libunibreak 3.0 release.
+	* NEWS: Add information about libunibreak 3.0.
+	* src/linebreak.c: Mark file version as 3.0.
+	* src/linebreak.h: Ditto.
+	* src/linebreakdef.c: Ditto.
+	* src/linebreakdef.h: Ditto.
+	* src/unibreakbase.c: Ditto.
+	* src/unibreakbase.h: Ditto.
+	* src/unibreakdef.c: Ditto.
+	* src/unibreakdef.h: Ditto.
+	* src/wordbreak.c: Ditto.
+	* src/wordbreak.h: Ditto.
+	* src/wordbreakdef.h: Ditto.
+
 2015-04-19  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* LICENCE: Update copyright information.

@@ -43,7 +43,7 @@
  *
  * Definition of language-specific data.
  *
- * @version 2.2, 2012/10/06
+ * @version 3.0, 2015/05/10
  * @author  Wu Yongwei
  */
 

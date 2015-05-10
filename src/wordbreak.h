@@ -43,7 +43,7 @@
  *
  * Header file for the word breaking (segmentation) algorithm.
  *
- * @version 2.5, 2015/04/18
+ * @version 3.0, 2015/05/10
  * @author  Tom Hacohen
  */
 

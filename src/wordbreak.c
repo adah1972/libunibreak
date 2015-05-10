@@ -44,7 +44,7 @@
  * Implementation of the word breaking algorithm as described in Unicode
  * Standard Annex 29.
  *
- * @version 2.6, 2015/04/18
+ * @version 3.0, 2015/05/10
  * @author  Tom Hacohen
  */
 

@@ -29,7 +29,7 @@
  *
  * Definition of utility functions used by the libunibreak library.
  *
- * @version 1.0, 2015/04/18
+ * @version 3.0, 2015/05/10
  * @author  Wu Yongwei
  */
 
