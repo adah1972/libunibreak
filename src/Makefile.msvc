@@ -45,6 +45,8 @@ CLEAN :
 	-@erase "$(INTDIR)\linebreakdata.obj"
 	-@erase "$(INTDIR)\linebreakdef.obj"
 	-@erase "$(INTDIR)\wordbreak.obj"
+	-@erase "$(INTDIR)\unibreakbase.obj"
+	-@erase "$(INTDIR)\unibreakdef.obj"
 	-@erase "$(INTDIR)\vc*.idb"
 	-@erase "$(OUTDIR)\unibreak.lib"
 
@@ -62,7 +64,9 @@ LIB32_OBJS= \
 	"$(INTDIR)\linebreak.obj" \
 	"$(INTDIR)\linebreakdata.obj" \
 	"$(INTDIR)\linebreakdef.obj" \
-	"$(INTDIR)\wordbreak.obj"
+	"$(INTDIR)\wordbreak.obj" \
+	"$(INTDIR)\unibreakbase.obj" \
+	"$(INTDIR)\unibreakdef.obj"
 
 "$(OUTDIR)\unibreak.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
@@ -85,6 +89,8 @@ CLEAN :
 	-@erase "$(INTDIR)\linebreakdata.obj"
 	-@erase "$(INTDIR)\linebreakdef.obj"
 	-@erase "$(INTDIR)\wordbreak.obj"
+	-@erase "$(INTDIR)\unibreakbase.obj"
+	-@erase "$(INTDIR)\unibreakdef.obj"
 	-@erase "$(INTDIR)\vc*.idb"
 	-@erase "$(INTDIR)\vc*.pdb"
 	-@erase "$(OUTDIR)\unibreak.lib"
@@ -103,7 +109,9 @@ LIB32_OBJS= \
 	"$(INTDIR)\linebreak.obj" \
 	"$(INTDIR)\linebreakdata.obj" \
 	"$(INTDIR)\linebreakdef.obj" \
-	"$(INTDIR)\wordbreak.obj"
+	"$(INTDIR)\wordbreak.obj" \
+	"$(INTDIR)\unibreakbase.obj" \
+	"$(INTDIR)\unibreakdef.obj"
 
 "$(OUTDIR)\unibreak.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
@@ -146,14 +154,19 @@ LIB32_OBJS= \
 .\linebreak.c : \
 	".\linebreak.h"\
 	".\linebreakdef.h"\
+	".\unibreakbase.h"\
+	".\unibreakdef.h"\
 	
 .\linebreakdata.c : \
-	".\linebreak.h"\
 	".\linebreakdef.h"\
+	".\unibreakbase.h"\
+	".\unibreakdef.h"\
 	
 .\linebreakdef.c : \
 	".\linebreak.h"\
 	".\linebreakdef.h"\
+	".\unibreakbase.h"\
+	".\unibreakdef.h"\
 	
 .\wordbreak.c : \
 	".\linebreak.h"\
@@ -161,6 +174,15 @@ LIB32_OBJS= \
 	".\wordbreak.h"\
 	".\wordbreakdef.h"\
 	".\wordbreakdata.c"\
+	".\unibreakbase.h"\
+	".\unibreakdef.h"\
+	
+.\unibreakbase.c : \
+	".\unibreakbase.h"\
+	
+.\unibreakdef.c : \
+	".\unibreakbase.h"\
+	".\unibreakdef.h"\
 	
 
 !IF "$(CFG)" == "libunibreak - Win32 Release" || "$(CFG)" == "libunibreak - Win32 Debug"
@@ -182,6 +204,16 @@ SOURCE=.\linebreakdef.c
 SOURCE=.\wordbreak.c
 
 "$(INTDIR)\wordbreak.obj" : $(SOURCE) "$(INTDIR)"
+
+
+SOURCE=.\unibreakbase.c
+
+"$(INTDIR)\unibreakbase.obj" : $(SOURCE) "$(INTDIR)"
+
+
+SOURCE=.\unibreakdef.c
+
+"$(INTDIR)\unibreakdef.obj" : $(SOURCE) "$(INTDIR)"
 
 
 
