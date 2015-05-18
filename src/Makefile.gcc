@@ -105,7 +105,8 @@ RELEASE_OBJS = $(patsubst %.o,$(RELEASE)/%.o,$(OBJFILES))
 DEBUG_DEPS   = $(patsubst %.o,%.dep,$(DEBUG_OBJS))
 RELEASE_DEPS = $(patsubst %.o,%.dep,$(RELEASE_OBJS))
 
-CFILES   := linebreak.c linebreakdata.c linebreakdef.c wordbreak.c
+CFILES   := linebreak.c linebreakdata.c linebreakdef.c wordbreak.c \
+            unibreakbase.c unibreakdef.c
 CXXFILES :=
 
 LIBS :=
