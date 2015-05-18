@@ -1,5 +1,9 @@
 2015-05-18  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/wordbreak.c: Eliminate a warning under the release build.
+
+2015-05-18  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* src/Makefile.gcc: Update for the new files unibreakbase.c and
 	unibreakdef.c.
 

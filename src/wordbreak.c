@@ -44,7 +44,7 @@
  * Implementation of the word breaking algorithm as described in Unicode
  * Standard Annex 29.
  *
- * @version 3.0, 2015/05/10
+ * @version 3.1, 2015/05/18
  * @author  Tom Hacohen
  */
 
@@ -127,6 +127,7 @@ static void set_brks_to(
     {
         utf32_t ch;
         ch = get_next_char(s, len, &posNext);
+        (void)ch;
         assert(ch != EOS);
         for (; posStart < posNext - 1; ++posStart)
             brks[posStart] = WORDBREAK_INSIDEACHAR;
