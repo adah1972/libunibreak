@@ -7,4 +7,5 @@ NOT each space is breakable, like the last one in the following sentence (in Eng
 Regretfully it does not work for the alternative quoting style: one should not insert spaces between the last two quotation marks in ‘He said, “Good morning.”’
 Here's an apostrophe; and there’s a right single quotation mark.
 Spanish inverted punctuation marks are always opening (e.g.)¡Foo bar!
-There should be no break after Hebrew + Hyphen like “א-ת”.
+There should be no break after Hebrew + Hyphen like א-ת or Solidus + Hebrew like /ת.
+Lines like this should not have their punctuation broken!… 
