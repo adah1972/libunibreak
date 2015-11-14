@@ -1,3 +1,12 @@
+2015-11-11  novelplus  <novelplus@outlook.com>
+
+	Update to Unicode 8.0.0.
+	* src/linebreak.c (baTable): Update according to Unicode 8.0.0.
+	* src/linebreakdata.c: Regenerate from LineBreak-8.0.0.txt.
+	* src/wordbreak.c: Update comments.
+	* src/wordbreakdata.c: Regenerate from WordBreakProperty-8.0.0.txt.
+	* tools/test.txt: Add more test text for new line-breaking rules.
+
 2015-05-18  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* src/wordbreak.c: Eliminate a warning under the release build.
@@ -153,6 +162,10 @@
 	properly.
 	(lb_init_break_context): Clear fLb21aHebrew.
 	(get_lb_result_lookup): Apply rule LB21a and update fLb21aHebrew.
+
+2014-12-30  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* src/linebreakdata.c: Regenerate from LineBreak-7.0.0.txt.
 
 2014-12-06  Mikhail Polubisok  <mpolubisok@gmail.com>
 
