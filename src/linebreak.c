@@ -503,7 +503,7 @@ static int get_lb_result_simple(
         lbpCtx->lbcCur = LBP_CR;
         return LINEBREAK_NOBREAK;       /* Rule LB6 */
     case LBP_CB:
-        lbpCtx->lbcCur = LBP_BA;
+        lbpCtx->lbcCur = LBP_B2;
         return LINEBREAK_ALLOWBREAK;    /* Rule LB20 */
     default:
         return LINEBREAK_UNDEFINED;     /* Table lookup is needed */

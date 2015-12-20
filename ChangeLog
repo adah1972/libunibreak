@@ -1,3 +1,10 @@
+2015-12-20  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Fix the issue that U+FFFC (Object Replacement Character) does not
+	break correctly after Hebrew letters.
+	* src/linebreak.c (get_lb_result_simple): Resolve `Contingent Break
+	Opportunity' to `Break Opportunity Before and After'.
+
 2015-11-11  novelplus  <novelplus@outlook.com>
 
 	Update to Unicode 8.0.0.
