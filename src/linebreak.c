@@ -266,7 +266,7 @@ static enum BreakAction baTable[LBP_RI][LBP_RI] = {
 struct LineBreakPropertiesIndex
 {
     utf32_t end;                    /**< End coding point */
-    struct LineBreakProperties *lbp;/**< Pointer to line breaking properties */
+    const struct LineBreakProperties *lbp;/**< Pointer to line breaking properties */
 };
 
 /**
@@ -311,9 +311,9 @@ void init_linebreak(void)
  * @return      pointer to the language-specific line breaking
  *              properties array if found; \c NULL otherwise
  */
-static struct LineBreakProperties *get_lb_prop_lang(const char *lang)
+static const struct LineBreakProperties *get_lb_prop_lang(const char *lang)
 {
-    struct LineBreakPropertiesLang *lbplIter;
+    const struct LineBreakPropertiesLang *lbplIter;
     if (lang != NULL)
     {
         for (lbplIter = lb_prop_lang_map; lbplIter->lang != NULL; ++lbplIter)
@@ -337,7 +337,7 @@ static struct LineBreakProperties *get_lb_prop_lang(const char *lang)
  */
 static enum LineBreakClass get_char_lb_class(
         utf32_t ch,
-        struct LineBreakProperties *lbp)
+        const struct LineBreakProperties *lbp)
 {
     while (lbp->prop != LBP_Undefined && ch >= lbp->start)
     {
@@ -379,7 +379,7 @@ static enum LineBreakClass get_char_lb_class_default(
  */
 static enum LineBreakClass get_char_lb_class_lang(
         utf32_t ch,
-        struct LineBreakProperties *lbpLang)
+        const struct LineBreakProperties *lbpLang)
 {
     enum LineBreakClass lbcResult;
 

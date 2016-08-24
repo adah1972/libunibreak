@@ -125,7 +125,7 @@ struct LineBreakPropertiesLang
 {
     const char *lang;                   /**< Language name */
     size_t namelen;                     /**< Length of name to match */
-    struct LineBreakProperties *lbp;    /**< Pointer to associated data */
+    const struct LineBreakProperties *lbp;    /**< Pointer to associated data */
 };
 
 /**
@@ -135,7 +135,7 @@ struct LineBreakPropertiesLang
 struct LineBreakContext
 {
     const char *lang;               /**< Language name */
-    struct LineBreakProperties *lbpLang;/**< Pointer to LineBreakProperties */
+    const struct LineBreakProperties *lbpLang;/**< Pointer to LineBreakProperties */
     enum LineBreakClass lbcCur;     /**< Breaking class of current codepoint */
     enum LineBreakClass lbcNew;     /**< Breaking class of next codepoint */
     enum LineBreakClass lbcLast;    /**< Breaking class of last codepoint */
@@ -143,8 +143,8 @@ struct LineBreakContext
 };
 
 /* Declarations */
-extern struct LineBreakProperties lb_prop_default[];
-extern struct LineBreakPropertiesLang lb_prop_lang_map[];
+extern const struct LineBreakProperties lb_prop_default[];
+extern const struct LineBreakPropertiesLang lb_prop_lang_map[];
 
 /* Function Prototype */
 void lb_init_break_context(

@@ -53,7 +53,7 @@
 /**
  * English-specifc data over the default Unicode rules.
  */
-static struct LineBreakProperties lb_prop_English[] = {
+static const struct LineBreakProperties lb_prop_English[] = {
     { 0x2018, 0x2018, LBP_OP }, /* Left single quotation mark: opening */
     { 0x201C, 0x201C, LBP_OP }, /* Left double quotation mark: opening */
     { 0x201D, 0x201D, LBP_CL }, /* Right double quotation mark: closing */
@@ -63,7 +63,7 @@ static struct LineBreakProperties lb_prop_English[] = {
 /**
  * German-specifc data over the default Unicode rules.
  */
-static struct LineBreakProperties lb_prop_German[] = {
+static const struct LineBreakProperties lb_prop_German[] = {
     { 0x00AB, 0x00AB, LBP_CL }, /* Left double angle quotation mark: closing */
     { 0x00BB, 0x00BB, LBP_OP }, /* Right double angle quotation mark: opening */
     { 0x2018, 0x2018, LBP_CL }, /* Left single quotation mark: closing */
@@ -76,7 +76,7 @@ static struct LineBreakProperties lb_prop_German[] = {
 /**
  * Spanish-specifc data over the default Unicode rules.
  */
-static struct LineBreakProperties lb_prop_Spanish[] = {
+static const struct LineBreakProperties lb_prop_Spanish[] = {
     { 0x00AB, 0x00AB, LBP_OP }, /* Left double angle quotation mark: opening */
     { 0x00BB, 0x00BB, LBP_CL }, /* Right double angle quotation mark: closing */
     { 0x2018, 0x2018, LBP_OP }, /* Left single quotation mark: opening */
@@ -90,7 +90,7 @@ static struct LineBreakProperties lb_prop_Spanish[] = {
 /**
  * French-specifc data over the default Unicode rules.
  */
-static struct LineBreakProperties lb_prop_French[] = {
+static const struct LineBreakProperties lb_prop_French[] = {
     { 0x00AB, 0x00AB, LBP_OP }, /* Left double angle quotation mark: opening */
     { 0x00BB, 0x00BB, LBP_CL }, /* Right double angle quotation mark: closing */
     { 0x2018, 0x2018, LBP_OP }, /* Left single quotation mark: opening */
@@ -104,7 +104,7 @@ static struct LineBreakProperties lb_prop_French[] = {
 /**
  * Russian-specifc data over the default Unicode rules.
  */
-static struct LineBreakProperties lb_prop_Russian[] = {
+static const struct LineBreakProperties lb_prop_Russian[] = {
     { 0x00AB, 0x00AB, LBP_OP }, /* Left double angle quotation mark: opening */
     { 0x00BB, 0x00BB, LBP_CL }, /* Right double angle quotation mark: closing */
     { 0x201C, 0x201C, LBP_CL }, /* Left double quotation mark: closing */
@@ -114,7 +114,7 @@ static struct LineBreakProperties lb_prop_Russian[] = {
 /**
  * Chinese-specifc data over the default Unicode rules.
  */
-static struct LineBreakProperties lb_prop_Chinese[] = {
+static const struct LineBreakProperties lb_prop_Chinese[] = {
     { 0x2018, 0x2018, LBP_OP }, /* Left single quotation mark: opening */
     { 0x2019, 0x2019, LBP_CL }, /* Right single quotation mark: closing */
     { 0x201C, 0x201C, LBP_OP }, /* Left double quotation mark: opening */
@@ -128,7 +128,7 @@ static struct LineBreakProperties lb_prop_Chinese[] = {
  * file.  If you want more flexibility, or do not need the data here,
  * you may want to redefine \e lb_prop_lang_map in your C source file.
  */
-struct LineBreakPropertiesLang lb_prop_lang_map[] = {
+const struct LineBreakPropertiesLang lb_prop_lang_map[] = {
     { "en", 2, lb_prop_English },
     { "de", 2, lb_prop_German },
     { "es", 2, lb_prop_Spanish },
