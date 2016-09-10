@@ -1,3 +1,12 @@
+2016-09-10  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Update to Unicode 9.0.0.
+	* src/linebreak.c (baTable): Update according to Unicode 9.0.0.
+	* src/linebreakdef.h (enum LineBreakClass): Ditto.
+	* src/linebreakdata.c: Regenerate from LineBreak-9.0.0.txt.
+	* src/linebreak.h: Update comments.
+	* src/linebreakdef.c: Ditto.
+
 2015-12-20  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Fix the issue that U+FFFC (Object Replacement Character) does not

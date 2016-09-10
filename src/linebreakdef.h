@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2015 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2016 Wu Yongwei <wuyongwei at gmail dot com>
  * Copyright (C) 2013 Petr Filipsky <philodej at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
@@ -31,9 +31,9 @@
  * Unicode 5.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 33, for
- * Unicode 7.0.0:
- *      <URL:http://www.unicode.org/reports/tr14/tr14-33.html>
+ * This library has been updated according to Revision 37, for
+ * Unicode 9.0.0:
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-37.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -45,7 +45,7 @@
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the line breaking algorithm.
  *
- * @version 3.0, 2015/05/10
+ * @version 3.1, 2016/09/10
  * @author  Wu Yongwei
  * @author  Petr Filipsky
  */
@@ -91,6 +91,9 @@ enum LineBreakClass
     LBP_JV,         /**< Hangul V Jamo */
     LBP_JT,         /**< Hangul T Jamo */
     LBP_RI,         /**< Regional indicator */
+    LBP_EB,         /**< Emoji base */
+    LBP_EM,         /**< Emoji modifier */
+    LBP_ZWJ,        /**< Zero width joiner */
 
     /* The following break classes are not treated in the pair table */
     LBP_AI,         /**< Ambiguous (alphabetic or ideograph) */
