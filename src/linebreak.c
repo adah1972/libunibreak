@@ -283,7 +283,7 @@ static enum BreakAction baTable[LBP_ZWJ][LBP_ZWJ] = {
  */
 struct LineBreakPropertiesIndex
 {
-    utf32_t end;                    /**< End coding point */
+    utf32_t end;                          /**< End coding point */
     const struct LineBreakProperties *lbp;/**< Pointer to line breaking properties */
 };
 

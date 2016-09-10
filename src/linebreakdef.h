@@ -126,9 +126,9 @@ struct LineBreakProperties
  */
 struct LineBreakPropertiesLang
 {
-    const char *lang;                   /**< Language name */
-    size_t namelen;                     /**< Length of name to match */
-    const struct LineBreakProperties *lbp;    /**< Pointer to associated data */
+    const char *lang;                      /**< Language name */
+    size_t namelen;                        /**< Length of name to match */
+    const struct LineBreakProperties *lbp; /**< Pointer to associated data */
 };
 
 /**
