@@ -7,6 +7,46 @@
 	* src/linebreak.h: Update comments.
 	* src/linebreakdef.c: Ditto.
 
+2016-08-24  Tom Hacohen  <tom@stosb.com>
+
+	Make many structures const.
+
+	These structures should never be changed on runtime so they should
+	be marked as constant. This means the compiler can now warn us if we
+	make the mistake of trying to change any of them, but more
+	importantly, it gives the compiler more information about the nature
+	of these and therefor lets the linker map these structures to
+	read-only memory instead of read-write, which should improve page
+	deduplication in many cases and reduce overall system memory usage.
+
+	This has reduced the number of dirty memory pages from 10 to 2,
+	which translates to 32KiB of memory saved per process linking to
+	libunibreak starting from the second process.
+	* src/linebreak.c (struct LineBreakPropertiesIndex): Mark member
+	variable lbp as const pointer.
+	(get_lb_prop_lang): Mark return value as const pointer.
+	(get_char_lb_class): Mark second parameter as const pointer.
+	(get_char_lb_class_lang): Ditto.
+	* src/linebreakdata.c (lb_prop_default): Mark as const.
+	* src/linebreakdata2.tmpl (lb_prop_default): Ditto.
+	* src/linebreakdef.c (lb_prop_English): Ditto.
+	(lb_prop_German): Ditto.
+	(lb_prop_Spanish): Ditto.
+	(lb_prop_French): Ditto.
+	(lb_prop_Russian): Ditto.
+	(lb_prop_Chinese): Ditto.
+	(lb_prop_lang_map): Ditto.
+	* src/linebreakdef.h (struct LineBreakPropertiesLang): Mark member
+	variable lbp as const pointer.
+	(struct LineBreakContext): Mark member variable lbpLang as const
+	pointer.
+	(lb_prop_default): Declare as const.
+	(lb_prop_lang_map): Ditto.
+	* src/wordbreak.c (get_char_wb_class): Mark second parameter as
+	const pointer.
+	* src/wordbreakdata.c (wb_prop_default): Mark as const.
+	* src/wordbreakdata1.tmpl (wb_prop_default): Ditto.
+
 2015-12-20  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Fix the issue that U+FFFC (Object Replacement Character) does not
