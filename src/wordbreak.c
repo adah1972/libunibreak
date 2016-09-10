@@ -75,7 +75,7 @@ void init_wordbreak(void)
  */
 static enum WordBreakClass get_char_wb_class(
         utf32_t ch,
-        struct WordBreakProperties *wbp,
+        const struct WordBreakProperties *wbp,
         size_t len)
 {
     int min = 0;

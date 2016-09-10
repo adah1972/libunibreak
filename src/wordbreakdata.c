@@ -5,7 +5,7 @@
 
 #include "wordbreakdef.h"
 
-static struct WordBreakProperties wb_prop_default[] = {
+static const struct WordBreakProperties wb_prop_default[] = {
 	{0x000A, 0x000A, WBP_LF},
 	{0x000B, 0x000C, WBP_Newline},
 	{0x000D, 0x000D, WBP_CR},
