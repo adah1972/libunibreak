@@ -61,6 +61,7 @@ enum WordBreakClass
     WBP_LF,
     WBP_Newline,
     WBP_Extend,
+    WBP_ZWJ,
     WBP_Regional_Indicator,
     WBP_Format,
     WBP_Katakana,
@@ -73,6 +74,10 @@ enum WordBreakClass
     WBP_MidNum,
     WBP_Numeric,
     WBP_ExtendNumLet,
+    WBP_E_Base,
+    WBP_E_Modifier,
+    WBP_Glue_After_Zwj,
+    WBP_E_Base_GAZ,
     WBP_Any
 };
 
