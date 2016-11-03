@@ -547,8 +547,8 @@ static int get_lb_result_lookup(
 {
     int brk = LINEBREAK_UNDEFINED;
 
-    assert(lbpCtx->lbcCur <= LBP_RI);
-    assert(lbpCtx->lbcNew <= LBP_RI);
+    assert(lbpCtx->lbcCur <= LBP_ZWJ);
+    assert(lbpCtx->lbcNew <= LBP_ZWJ);
     switch (baTable[lbpCtx->lbcCur - 1][lbpCtx->lbcNew - 1])
     {
     case DIR_BRK:
