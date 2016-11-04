@@ -1,3 +1,8 @@
+2016-11-03  Mikhail Polubisok <m_polubisok@wargaming.net>
+
+	* src/linebreak.c (get_lb_result_lookup): Fix assertion test of max
+	available indices.
+
 2016-09-10  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Update to Unicode 9.0.0.
