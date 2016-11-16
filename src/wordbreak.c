@@ -391,6 +391,11 @@ static void set_wordbreaks(
                 set_brks_to(s, brks, posLast, posCur, len,
                             WORDBREAK_NOBREAK, get_next_char);
             }
+            else
+            {
+                set_brks_to(s, brks, posLast, posCur, len,
+                            WORDBREAK_BREAK, get_next_char);
+            }
             wbcSeqStart = wbcCur;
             posLast = posCur;
             break;
