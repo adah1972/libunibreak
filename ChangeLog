@@ -1,3 +1,8 @@
+2016-11-16  Tom Hacohen  <tom@stosb.com>
+
+	* src/wordbreak.c (set_wordbreaks): Fix handling of regional indicators
+	with utf8/16
+
 2016-11-03  Mikhail Polubisok <m_polubisok@wargaming.net>
 
 	* src/linebreak.c (get_lb_result_lookup): Fix assertion test of max
