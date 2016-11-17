@@ -162,6 +162,8 @@ static void set_wordbreaks(
         char *brks,
         get_next_char_t get_next_char)
 {
+    /* Counter of how many time we cam across RI */
+    int riCounter = 0;
     enum WordBreakClass wbcLast = WBP_Undefined;
     /* wbcSeqStart is the class that started the current sequence.
      * WBP_Undefined is a special case that means "sot".
@@ -218,6 +220,25 @@ static void set_wordbreaks(
             posLast = posCur;
             break;
 
+        case WBP_E_Base_GAZ:
+        case WBP_Glue_After_Zwj:
+            /* WB3c */
+            if (wbcSeqStart == WBP_ZWJ)
+            {
+               set_brks_to(s, brks, posLast, posCur, len,
+                       WORDBREAK_NOBREAK, get_next_char);
+            }
+            /* No rule found, reset */
+            else
+            {
+                set_brks_to(s, brks, posLast, posCur, len,
+                            WORDBREAK_BREAK, get_next_char);
+            }
+            wbcSeqStart = wbcCur;
+            posLast = posCur;
+            break;
+
+        case WBP_ZWJ:
         case WBP_Extend:
         case WBP_Format:
             /* WB4 - If not the first char/after a newline (WB3a,3b), skip
@@ -384,17 +405,47 @@ static void set_wordbreaks(
             posLast = posCur;
             break;
 
-        case WBP_Regional_Indicator:
-            /* WB13c */
-            if (wbcSeqStart == WBP_Regional_Indicator)
+        case WBP_E_Base:
+            /* No rule found, reset */
+            set_brks_to(s, brks, posLast, posCur, len,
+                    WORDBREAK_BREAK, get_next_char);
+            wbcSeqStart = wbcCur;
+            posLast = posCur;
+            break;
+
+        case WBP_E_Modifier:
+            /* WB14 */
+            if ((wbcLast == WBP_E_Base) ||
+                (wbcLast == WBP_E_Base_GAZ))
             {
                 set_brks_to(s, brks, posLast, posCur, len,
                             WORDBREAK_NOBREAK, get_next_char);
             }
+            /* No rule found, reset */
             else
             {
                 set_brks_to(s, brks, posLast, posCur, len,
                             WORDBREAK_BREAK, get_next_char);
+            }
+            wbcSeqStart = wbcCur;
+            posLast = posCur;
+            break;
+
+        case WBP_Regional_Indicator:
+            /* WB15,16 */
+            if ((wbcSeqStart == WBP_Regional_Indicator) &&
+                ((riCounter % 2) == 1))
+            {
+                set_brks_to(s, brks, posLast, posCur, len,
+                        WORDBREAK_NOBREAK, get_next_char);
+                riCounter = 0; /* Reset the sequence */
+            }
+            /* No rule found, reset */
+            else
+            {
+                set_brks_to(s, brks, posLast, posCur, len,
+                            WORDBREAK_BREAK, get_next_char);
+                riCounter = 1;
             }
             wbcSeqStart = wbcCur;
             posLast = posCur;
