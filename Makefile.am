@@ -19,3 +19,6 @@ linebreakdata:
 
 wordbreakdata:
 	cd src && ${MAKE} wordbreakdata
+
+graphemebreakdata:
+	cd src && ${MAKE} graphemebreakdata
