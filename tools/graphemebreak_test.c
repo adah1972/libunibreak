@@ -6,36 +6,62 @@
 #include <stdio.h>
 #include <string.h>
 #include <graphemebreak.h>
+#include <assert.h>
 
-static int hex[256] = {
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  0,  0,  0,  0,  0,  0,
-   0, 10, 11, 12, 13, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0, 10, 11, 12, 13, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-};
+#define LINE_LEN 1000
+
+
+void utf32toutf8(utf32_t ch, char * result)
+{
+  if (ch < 0x80)
+  {
+    result[0] = (char)(ch);
+    result[1] = 0;
+  }
+  // U+0080..U+07FF
+  else if (ch < 0x800)
+  {
+    result[0] = (char)(0xC0 | (ch >> 6));
+    result[1] = (char)(0x80 | (ch & 0x3F));
+    result[2] = 0;
+  }
+  // U+0800..U+FFFF
+  else if (ch < 0x10000)
+  {
+    result[0] = (char)(0xE0 | (ch >> 12));
+    result[1] = (char)(0x80 | ((ch >> 6) & 0x3F));
+    result[2] = (char)(0x80 | (ch & 0x3F));
+    result[3] = 0;
+  }
+  else if (ch < 0x110000)
+  {
+    result[0] = (char)(0xF0 | (ch >> 18));
+    result[1] = (char)(0x80 | ((ch >> 12) & 0x3F));
+    result[2] = (char)(0x80 | ((ch >> 6) & 0x3F));
+    result[3] = (char)(0x80 | (ch & 0x3F));
+    result[4] = 0;
+  }
+  else
+  {
+    assert(0);
+  }
+}
+
+
 
 int
 main(int argc, char *argv[])
 {
   FILE *fp = fopen("GraphemeBreakTest.txt", "r");
   int i;
-  char line[500];
-  char breaks_desired[500];
-  char breaks_actual[500];
-  utf32_t txt[500];
+  char line[LINE_LEN];
+  char breaks_desired[LINE_LEN];
+  char breaks_desired_utf8[LINE_LEN];
+  char breaks_actual[LINE_LEN];
+  utf32_t txt[LINE_LEN];
+  utf8_t txtutf8[LINE_LEN];
   int linenumber = 1;
+  int result = 0;
 
   if (fp == 0)
   {
@@ -52,22 +78,25 @@ main(int argc, char *argv[])
 
     for (i = 0; i < l; i++)
     {
-      if (line[i] == '#') line[i] = 0;
+      if (line[i] == '#')
+      {
+        line[i] = 0;
+        break;
+      }
     }
 
     l = strlen(line);
 
-    // skip empty lines
-    if (l >= 5)
+    // only do lines that do contain a minimal amount of information
+    if (l)
     {
-      for (i = 0; i < 500; i++)
-      {
-        txt[i] = 0;
-      }
+      char * linepos = line;
 
-      for (i = 3; i < l; i++)
+      memset(txt, 0, LINE_LEN*sizeof(utf32_t));
+
+      while (*linepos)
       {
-        switch(line[i])
+        switch(*linepos)
         {
           case '0':
           case '1':
@@ -91,33 +120,86 @@ main(int argc, char *argv[])
           case 'D':
           case 'E':
           case 'F':
-            txt[p] = txt[p] * 16 + hex[line[i]];
+            txt[p] = strtol(linepos, &linepos, 16);
+            p++;
             break;
 
           case '\xB7':
             breaks_desired[p] = GRAPHEMEBREAK_BREAK;
-            p++;
+            linepos++;
             break;
           case '\x97':
             breaks_desired[p] = GRAPHEMEBREAK_NOBREAK;
-            p++;
+            linepos++;
             break;
 
           default:
             // ignore this character
+            linepos++;
             break;
         }
       }
 
-      set_graphemebreaks_utf32(txt, p, "", breaks_actual);
+      // the test data contains information for a break BEFORE the string
+      // which we suppose is always a break, so fill that in and let the
+      // breaking function start with the break after that one
+      breaks_actual[0] = GRAPHEMEBREAK_BREAK;
+      set_graphemebreaks_utf32(txt, p, "", breaks_actual+1);
 
-      for (i = 0; i < p-1; i++)
+      for (i = 0; i <= p; i++)
+      {
         if (breaks_actual[i] != breaks_desired[i])
-          printf("problem with line %i %s\n", linenumber, line);
+        {
+          printf("problem with line %i pos %i %s (%i <--> %i)\n", linenumber, i, line, breaks_desired[i], breaks_actual[i]);
+          result = 1;
+          return result;
+        }
+      }
+
+      // try the test again with utf-8 encoding, we need to convert our text
+      // to uft8 for this, we also need to convert the desired array
+      breaks_desired_utf8[0] = breaks_desired[0];
+      txtutf8[0] = 0;
+      for (i = 0; i < p; i++)
+      {
+        char utf8[5];
+        utf32toutf8(txt[i], utf8);
+
+        // store where the first new byte will be placed of the new utf-8 encoded character
+        l = strlen(txtutf8) + 1;
+
+        // append character
+        strcat(txtutf8, utf8);
+
+        // fill in the internal characters with INSIDECHAR
+        while (l < strlen(txtutf8))
+        {
+          breaks_desired_utf8[l] = GRAPHEMEBREAK_INSIDECHAR;
+          l++;
+        }
+
+        // copy the desired information
+        breaks_desired_utf8[l] = breaks_desired[i+1];
+      }
+
+      breaks_actual[0] = GRAPHEMEBREAK_BREAK;
+      set_graphemebreaks_utf8(txtutf8, l, "", breaks_actual+1);
+
+      for (i = 0; i <= l; i++)
+      {
+        if (breaks_actual[i] != breaks_desired_utf8[i])
+        {
+          printf("problem with utf8 line %i pos %i %s (%i <--> %i)\n", linenumber, i, line, breaks_desired_utf8[i], breaks_actual[i]);
+          result = 1;
+          return result;
+        }
+      }
     }
 
     linenumber++;
   }
 
   fclose(fp);
+
+  return result;
 }
