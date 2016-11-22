@@ -1,5 +1,9 @@
 2016-11-22  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/tests.c: Adjust code style.
+
+2016-11-22  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* .clang-format: New file.
 
 2016-11-22  Tom Hacohen  <tom@stosb.com>
