@@ -51,7 +51,8 @@ extern "C" {
 #endif
 
 #define GRAPHEMEBREAK_BREAK         0   /**< Between 2 graphemes */
-#define GRAPHEMEBREAK_NOBREAK       1   /**< Iside a grapheme */
+#define GRAPHEMEBREAK_NOBREAK       1   /**< Inside a grapheme */
+#define GRAPHEMEBREAK_INSIDEACHAR    2   /**< Inside a unicode character */
 
 void init_graphemebreak(void);
 void set_graphemebreaks_utf8(const utf8_t *s, size_t len, const char * lang, char *brks);

@@ -45,6 +45,7 @@
 #include "graphemebreak.h"
 #include "graphemebreakdata.c"
 #include "stdbool.h"
+#include "string.h"
 
 #define ARRAY_LEN(x) (sizeof(x) / sizeof(x[0]))
 
@@ -101,54 +102,83 @@ static void set_graphemebreaks(
 {
     size_t posNext = 0;
     bool rule10Left = false; // is the left side of rule 10 fulfilled?
-    bool EvenRegionalIndicators = true; // is the number of preceeding GBP_RegionalIndicator characters even
+    bool evenRegionalIndicators = true; // is the number of preceeding GBP_RegionalIndicator characters even
 
     utf32_t ch = get_next_char(s, len, &posNext);
-    enum GraphemeBreakClass a = get_char_gb_class(ch);
+    enum GraphemeBreakClass current_class = get_char_gb_class(ch);
 
-    ch = get_next_char(s, len, &posNext);
-    while (ch != EOS)
+    // initialize whole output to inside char
+    memset(brks, GRAPHEMEBREAK_INSIDEACHAR, len);
+
+    while (true)
     {
-        enum GraphemeBreakClass b = get_char_gb_class(ch);
+        enum GraphemeBreakClass prev_class = current_class;
 
-        if (a == GBP_E_Base || a == GBP_E_Base_GAZ)
+        // safe position if current character so that we can store the result there later on
+        size_t brksPos = posNext-1;
+
+        // get nect character
+        ch = get_next_char(s, len, &posNext);
+
+        if (ch == EOS)
+        {
+          // done, place one final break after the last character as per algorithm rule GB1
+          brks[brksPos] = GRAPHEMEBREAK_BREAK;
+          break;
+        }
+
+        // get class of current character
+        current_class = get_char_gb_class(ch);
+
+        // update some helper variables
+        if ((prev_class == GBP_E_Base) || (prev_class == GBP_E_Base_GAZ))
           rule10Left = true;
-        else if (a != GBP_Extend)
+        else if (prev_class != GBP_Extend)
           rule10Left = false;
 
-        if (a == GBP_Regional_Indicator)
-          EvenRegionalIndicators = !EvenRegionalIndicators;
+        if (prev_class == GBP_Regional_Indicator)
+          evenRegionalIndicators = !evenRegionalIndicators;
         else
-          EvenRegionalIndicators = true;
+          evenRegionalIndicators = true;
 
-        if (a == GBP_CR && b == GBP_LF)
-            *brks = GRAPHEMEBREAK_NOBREAK;            // Rule: GB3
-        else if (a == GBP_CR || a == GBP_LF || a == GBP_Control || b == GBP_CR || b == GBP_LF || b == GBP_Control)
-            *brks = GRAPHEMEBREAK_BREAK;              // Rule: GB4 + GB5
-        else if (a == GBP_L && (b == GBP_L || b == GBP_V || b == GBP_LV || b == GBP_LVT))
-            *brks = GRAPHEMEBREAK_NOBREAK;            // Rule: GB6
-        else if ((a == GBP_LV || a == GBP_V) && (b == GBP_V || b == GBP_T))
-            *brks = GRAPHEMEBREAK_NOBREAK;            // Rule: GB7
-        else if ((a == GBP_LVT || a == GBP_T) && (b == GBP_T))
-            *brks = GRAPHEMEBREAK_NOBREAK;            // Rule: GB8
-        else if (b == GBP_Extend || b == GBP_ZWJ)
-            *brks = GRAPHEMEBREAK_NOBREAK;            // Rule: GB9
-        else if (b == GBP_SpacingMark)
-            *brks = GRAPHEMEBREAK_NOBREAK;            // Rule: GB9a
-        else if (a == GBP_Prepend)
-            *brks = GRAPHEMEBREAK_NOBREAK;            // Rule: GB9b
-        else if (rule10Left && b == GBP_E_Modifier)
-            *brks = GRAPHEMEBREAK_NOBREAK;            // Rule: GB10
-        else if (a == GBP_ZWJ && (b == GBP_Glue_After_Zwj || b == GBP_E_Base_GAZ))
-            *brks = GRAPHEMEBREAK_NOBREAK;            // Rule: GB11
-        else if (!EvenRegionalIndicators && (b == GBP_Regional_Indicator))
-            *brks = GRAPHEMEBREAK_NOBREAK;            // Rule: GB12 + GB13
+        // check all rules
+        if (prev_class == GBP_CR && current_class == GBP_LF)
+            brks[brksPos] = GRAPHEMEBREAK_NOBREAK;            // Rule: GB3
+
+        else if ((prev_class == GBP_CR) || (prev_class == GBP_LF) || (prev_class == GBP_Control) ||
+                 (current_class == GBP_CR) || (current_class == GBP_LF) || (current_class == GBP_Control))
+            brks[brksPos] = GRAPHEMEBREAK_BREAK;              // Rule: GB4 + GB5
+
+        else if ((prev_class == GBP_L) && ((current_class == GBP_L) || (current_class == GBP_V) ||
+                                           (current_class == GBP_LV) || (current_class == GBP_LVT)))
+            brks[brksPos] = GRAPHEMEBREAK_NOBREAK;            // Rule: GB6
+
+        else if (((prev_class == GBP_LV) || (prev_class == GBP_V)) && ((current_class == GBP_V) || (current_class == GBP_T)))
+            brks[brksPos] = GRAPHEMEBREAK_NOBREAK;            // Rule: GB7
+
+        else if (((prev_class == GBP_LVT) || (prev_class == GBP_T)) && (current_class == GBP_T))
+            brks[brksPos] = GRAPHEMEBREAK_NOBREAK;            // Rule: GB8
+
+        else if ((current_class == GBP_Extend) || (current_class == GBP_ZWJ))
+            brks[brksPos] = GRAPHEMEBREAK_NOBREAK;            // Rule: GB9
+
+        else if (current_class == GBP_SpacingMark)
+            brks[brksPos] = GRAPHEMEBREAK_NOBREAK;            // Rule: GB9a
+
+        else if (prev_class == GBP_Prepend)
+            brks[brksPos] = GRAPHEMEBREAK_NOBREAK;            // Rule: GB9b
+
+        else if (rule10Left && (current_class == GBP_E_Modifier))
+            brks[brksPos] = GRAPHEMEBREAK_NOBREAK;            // Rule: GB10
+
+        else if ((prev_class == GBP_ZWJ) && ((current_class == GBP_Glue_After_Zwj) || (current_class == GBP_E_Base_GAZ)))
+            brks[brksPos] = GRAPHEMEBREAK_NOBREAK;            // Rule: GB11
+
+        else if (!evenRegionalIndicators && (current_class == GBP_Regional_Indicator))
+            brks[brksPos] = GRAPHEMEBREAK_NOBREAK;            // Rule: GB12 + GB13
+
         else
-            *brks = GRAPHEMEBREAK_BREAK;              // Rule: GB999
-
-        brks++;
-        a = b;
-        ch = get_next_char(s, len, &posNext);
+            brks[brksPos] = GRAPHEMEBREAK_BREAK;              // Rule: GB999
     }
 }
 
@@ -170,6 +200,7 @@ void set_graphemebreaks_utf8(
         const char *lang,
         char *brks)
 {
+    (void)lang;
     set_graphemebreaks(s, len, brks,
                    (get_next_char_t)ub_get_next_char_utf8);
 }
@@ -192,6 +223,7 @@ void set_graphemebreaks_utf16(
         const char *lang,
         char *brks)
 {
+    (void)lang;
     set_graphemebreaks(s, len, brks,
                    (get_next_char_t)ub_get_next_char_utf16);
 }
@@ -214,6 +246,7 @@ void set_graphemebreaks_utf32(
         const char *lang,
         char *brks)
 {
+    (void)lang;
     set_graphemebreaks(s, len, brks,
                    (get_next_char_t)ub_get_next_char_utf32);
 }
