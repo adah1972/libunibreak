@@ -30,13 +30,15 @@
 #include <string.h>
 #include "linebreak.h"
 #include "wordbreak.h"
+#include "graphemebreak.h"
 
 #define TEST_LINE_LEN 1000
 
 typedef enum
 {
     TEST_TYPE_LINE,
-    TEST_TYPE_WORD
+    TEST_TYPE_WORD,
+    TEST_TYPE_GRAPHEME
 } Test_Type;
 
 int main(int argc, char *argv[])
@@ -71,6 +73,13 @@ int main(int argc, char *argv[])
         noBreak = WORDBREAK_NOBREAK;
         mustBreak = WORDBREAK_BREAK;
         insideChar = WORDBREAK_INSIDEACHAR;
+        break;
+    case 'g':
+        filename = "GraphemeBreakTest.txt";
+        testType = TEST_TYPE_GRAPHEME;
+        noBreak = GRAPHEMEBREAK_NOBREAK;
+        mustBreak = GRAPHEMEBREAK_BREAK;
+        insideChar = GRAPHEMEBREAK_INSIDEACHAR;
         break;
     default:
         return 1;
@@ -149,6 +158,10 @@ int main(int argc, char *argv[])
         case TEST_TYPE_WORD:
             breaksActual[0] = mustBreak;
             set_wordbreaks_utf32(txt, len, "", breaksActual + 1);
+            break;
+        case TEST_TYPE_GRAPHEME:
+            breaksActual[0] = mustBreak;
+            set_graphemebreaks_utf32(txt, len, "", breaksActual + 1);
             break;
         }
 
