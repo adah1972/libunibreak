@@ -32,6 +32,7 @@ tags
 /src/WordBreakProperty.txt
 /src/LineBreakTest.txt
 /src/WordBreakTest.txt
+/src/GraphemeBreakTest.txt
 /src/tests
 /src/filter_dup
 /src/libunibreak.la
