@@ -1,3 +1,20 @@
+2016-11-22  Andreas Röver  <roever@users.sf.net>
+
+	Add grapheme breaking support.
+	* AUTHORS: Add `Andreas Röver'.
+	* src/Makefile.am (include_HEADERS): Add header files for grapheme breaking.
+	(libunibreak_la_SOURCES): Add source files for grapheme breaking.
+	(distclean-local): Clean also `GraphemeBreakData.txt'.
+	(GraphemeBreakProperty.txt): New target.
+	(graphemebreakdata): New target.
+	* src/graphemebreak.c: New file.
+	* src/graphemebreak.h: New file.
+	* src/graphemebreakdef.h: New file.
+	* src/graphemebreakdata.c: New file.
+	* src/graphemebreakdata1.tmpl: New file.
+	* src/graphemebreakdata2.tmpl: New file.
+	* tools/graphemebreak_test.c
+
 2016-11-22  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* src/tests.c: Adjust code style.
