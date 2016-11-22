@@ -73,6 +73,7 @@ wordbreakdata: WordBreakProperty.txt
 	cat ${srcdir}/wordbreakdata1.tmpl tmp.txt ${srcdir}/wordbreakdata2.tmpl >> ${srcdir}/wordbreakdata.c
 	rm tmp.txt tmp.txt.bak
 
+
 graphemebreakdata: GraphemeBreakProperty.txt
 	sed -E -n 's/(^[0-9A-F.]+)/\1/p' GraphemeBreakProperty.txt > tmp2.txt
 	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
@@ -84,3 +85,24 @@ graphemebreakdata: GraphemeBreakProperty.txt
 	echo "*/" >> ${srcdir}/graphemebreakdata.c
 	cat ${srcdir}/graphemebreakdata1.tmpl tmp.txt ${srcdir}/graphemebreakdata2.tmpl >> ${srcdir}/graphemebreakdata.c
 	rm tmp.txt tmp.txt.bak
+
+# Tests
+
+check_PROGRAMS = tests
+
+tests_SOURCES = \
+				tests.c
+tests_CPPFLAGS = -I$(srcdir)
+tests_LDADD = libunibreak.la
+tests_DEPENDENCIES = libunibreak.la
+
+check: LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt $(check_PROGRAMS)
+	./tests word
+	./tests line
+
+LineBreakTest.txt:
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/LineBreakTest.txt
+
+WordBreakTest.txt:
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.txt
+

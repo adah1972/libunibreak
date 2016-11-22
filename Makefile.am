@@ -22,3 +22,7 @@ wordbreakdata:
 
 graphemebreakdata:
 	cd src && ${MAKE} graphemebreakdata
+
+check:
+	cd src && ${MAKE} check
+
