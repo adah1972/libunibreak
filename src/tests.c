@@ -182,6 +182,6 @@ loop_break: // Hard exit from the above loop
   fclose(fp);
 
   unsigned int testsPassed = testsTotal - testsFailed;
-  printf("\nPassed %d out of %d (%d%%)\n", testsPassed, testsTotal, testsPassed * 100 / testsTotal);
+  printf("\n%s: Passed %d out of %d (%d%%)\n", filename, testsPassed, testsTotal, testsPassed * 100 / testsTotal);
   return (testsFailed > 0);
 }
