@@ -1,21 +1,21 @@
 2016-11-22  Tom Hacohen  <tom@stosb.com>
 
-    * src/tests.c: Add a test suite (make check)
-	* Makefile.am: Ditto
-	* src/Makefile.am: Ditto
+	* src/tests.c: Add a test suite (make check).
+	* Makefile.am: Ditto.
+	* src/Makefile.am: Ditto.
 
 2016-11-17  Tom Hacohen  <tom@stosb.com>
 
-	* src/wordbreak.c: Update to Unicode 9.0.0
-	* src/wordbreakdata.c: Ditto
-	* src/wordbreakdef.h: Ditto
+	* src/wordbreak.c: Update to Unicode 9.0.0.
+	* src/wordbreakdata.c: Ditto.
+	* src/wordbreakdef.h: Ditto.
 
 2016-11-16  Tom Hacohen  <tom@stosb.com>
 
-	* src/wordbreak.c (set_wordbreaks): Fix handling of regional indicators
-	with utf8/16
+	* src/wordbreak.c (set_wordbreaks): Fix handling of regional
+	indicators with utf-8/16.
 
-2016-11-03  Mikhail Polubisok <m_polubisok@wargaming.net>
+2016-11-03  Mikhail Polubisok  <m_polubisok@wargaming.net>
 
 	* src/linebreak.c (get_lb_result_lookup): Fix assertion test of max
 	available indices.
