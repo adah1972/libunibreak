@@ -19,3 +19,6 @@ linebreakdata:
 
 wordbreakdata:
 	cd src && ${MAKE} wordbreakdata
+
+check:
+	cd src && ${MAKE} check

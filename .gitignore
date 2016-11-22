@@ -30,6 +30,9 @@ tags
 /src/Makefile
 /src/Makefile.in
 /src/WordBreakProperty.txt
+/src/LineBreakTest.txt
+/src/WordBreakTest.txt
+/src/tests
 /src/filter_dup
 /src/libunibreak.la
 /stamp-h1

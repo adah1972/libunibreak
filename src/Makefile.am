@@ -64,3 +64,23 @@ wordbreakdata: WordBreakProperty.txt
 	echo "*/" >> ${srcdir}/wordbreakdata.c
 	cat ${srcdir}/wordbreakdata1.tmpl tmp.txt ${srcdir}/wordbreakdata2.tmpl >> ${srcdir}/wordbreakdata.c
 	rm tmp.txt tmp.txt.bak
+
+# Tests
+
+check_PROGRAMS = tests
+
+tests_SOURCES = \
+				tests.c
+tests_CPPFLAGS = -I$(srcdir)
+tests_LDADD = libunibreak.la
+tests_DEPENDENCIES = libunibreak.la
+
+check: LineBreakTest.txt WordBreakTest.txt $(check_PROGRAMS)
+	./tests word
+	./tests line
+
+LineBreakTest.txt:
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/LineBreakTest.txt
+
+WordBreakTest.txt:
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.txt
