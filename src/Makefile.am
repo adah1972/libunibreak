@@ -43,7 +43,7 @@ install-exec-hook:
 	${LN_S} $(DESTDIR)/${libdir}/libunibreak.a $(DESTDIR)/${libdir}/liblinebreak.a
 
 distclean-local:
-	rm -f LineBreak.txt WordBreakData.txt filter_dup${EXEEXT}
+	rm -f LineBreak.txt WordBreakData.txt GraphemeBreakData.txt filter_dup${EXEEXT}
 
 LineBreak.txt:
 	wget http://unicode.org/Public/UNIDATA/LineBreak.txt
