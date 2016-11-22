@@ -99,10 +99,14 @@ tests_DEPENDENCIES = libunibreak.la
 check: LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt $(check_PROGRAMS)
 	./tests word
 	./tests line
+	./tests grapheme
 
 LineBreakTest.txt:
 	wget http://www.unicode.org/Public/UNIDATA/auxiliary/LineBreakTest.txt
 
 WordBreakTest.txt:
 	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.txt
+
+GraphemeBreakTest.txt:
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.txt
 
