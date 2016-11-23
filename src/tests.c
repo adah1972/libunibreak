@@ -109,14 +109,14 @@ int main(int argc, char *argv[])
         {
             switch (*linepos)
             {
-            case (char)0xC3:
+            case '\xC3':
                 // Makeshift utf8 parser for the two relevant chars
                 linepos++;
-                if (*linepos == (char)0xB7)
+                if (*linepos == '\xB7')
                 {
                     breaksDesired[len] = mustBreak;
                 }
-                else if (*linepos == (char)0x97)
+                else if (*linepos == '\x97')
                 {
                     breaksDesired[len] = noBreak;
                 }
