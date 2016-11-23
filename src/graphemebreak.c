@@ -151,51 +151,64 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
 
         // check all rules
         if (prev_class == GBP_CR && current_class == GBP_LF)
+        {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB3
-
+        }
         else if ((prev_class == GBP_CR) || (prev_class == GBP_LF) ||
                  (prev_class == GBP_Control) || (current_class == GBP_CR) ||
                  (current_class == GBP_LF) ||
                  (current_class == GBP_Control))
+        {
             brks[brksPos] = GRAPHEMEBREAK_BREAK;  // Rule: GB4 + GB5
-
+        }
         else if ((prev_class == GBP_L) &&
                  ((current_class == GBP_L) || (current_class == GBP_V) ||
                   (current_class == GBP_LV) || (current_class == GBP_LVT)))
+        {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB6
-
+        }
         else if (((prev_class == GBP_LV) || (prev_class == GBP_V)) &&
                  ((current_class == GBP_V) || (current_class == GBP_T)))
+        {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB7
-
+        }
         else if (((prev_class == GBP_LVT) || (prev_class == GBP_T)) &&
                  (current_class == GBP_T))
+        {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB8
-
+        }
         else if ((current_class == GBP_Extend) ||
                  (current_class == GBP_ZWJ))
+        {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB9
-
+        }
         else if (current_class == GBP_SpacingMark)
+        {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB9a
-
+        }
         else if (prev_class == GBP_Prepend)
+        {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB9b
-
+        }
         else if (rule10Left && (current_class == GBP_E_Modifier))
+        {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB10
-
+        }
         else if ((prev_class == GBP_ZWJ) &&
                  ((current_class == GBP_Glue_After_Zwj) ||
                   (current_class == GBP_E_Base_GAZ)))
+        {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB11
-
+        }
         else if (!evenRegionalIndicators &&
                  (current_class == GBP_Regional_Indicator))
+        {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB12 + GB13
-
+        }
         else
+        {
             brks[brksPos] = GRAPHEMEBREAK_BREAK;  // Rule: GB999
+        }
     }
 }
 
