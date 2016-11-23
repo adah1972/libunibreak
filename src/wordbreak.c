@@ -223,7 +223,7 @@ static void set_wordbreaks(
         case WBP_E_Base_GAZ:
         case WBP_Glue_After_Zwj:
             /* WB3c */
-            if (wbcSeqStart == WBP_ZWJ)
+            if (wbcLast == WBP_ZWJ)
             {
                set_brks_to(s, brks, posLast, posCur, len,
                        WORDBREAK_NOBREAK, get_next_char);
@@ -255,8 +255,12 @@ static void set_wordbreaks(
             {
                 /* It's surely not the first */
                 brks[posCur - 1] = WORDBREAK_NOBREAK;
-                /* "inherit" the previous class. */
-                wbcCur = wbcLast;
+                /* WB3c precedes 4, so no intervening Extend chars allowed. */
+                if (wbcSeqStart != WBP_ZWJ)
+                {
+                    /* "inherit" the previous class. */
+                    wbcCur = wbcLast;
+                }
             }
             break;
 
