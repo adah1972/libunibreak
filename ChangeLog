@@ -5,7 +5,7 @@
 
 2016-11-23  Tom Hacohen  <tom@stosb.com>
 
-	* src/wordbreak.c: Fix to pass the test suite.
+	* src/wordbreak.c (set_wordbreaks): Fix to pass the test suite.
 
 2016-11-22  Andreas Röver  <roever@users.sf.net>
 
