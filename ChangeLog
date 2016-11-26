@@ -1,12 +1,13 @@
 2016-11-23  Tom Hacohen  <tom@stosb.com>
 
-	* src/wordbreak.c: Fix to pass the test suite
+	* src/wordbreak.c: Fix to pass the test suite.
 
 2016-11-22  Andreas Röver  <roever@users.sf.net>
 
 	Add grapheme breaking support.
 	* AUTHORS: Add `Andreas Röver'.
-	* src/Makefile.am (include_HEADERS): Add header files for grapheme breaking.
+	* src/Makefile.am (include_HEADERS): Add header files for grapheme
+	breaking.
 	(libunibreak_la_SOURCES): Add source files for grapheme breaking.
 	(distclean-local): Clean also `GraphemeBreakData.txt'.
 	(GraphemeBreakProperty.txt): New target.
@@ -17,7 +18,7 @@
 	* src/graphemebreakdata.c: New file.
 	* src/graphemebreakdata1.tmpl: New file.
 	* src/graphemebreakdata2.tmpl: New file.
-	* tools/graphemebreak_test.c
+	* tools/graphemebreak_test.c: New file.
 
 2016-11-22  Wu Yongwei  <wuyongwei@gmail.com>
 
