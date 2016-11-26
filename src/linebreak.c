@@ -45,7 +45,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version 3.1, 2016/09/10
+ * @version 3.2, 2016/11/26
  * @author  Wu Yongwei
  * @author  Petr Filipsky
  */
@@ -554,11 +554,18 @@ static int get_lb_result_lookup(
     case DIR_BRK:
         brk = LINEBREAK_ALLOWBREAK;
         break;
-    case CMI_BRK:
     case IND_BRK:
         brk = (lbpCtx->lbcLast == LBP_SP)
             ? LINEBREAK_ALLOWBREAK
             : LINEBREAK_NOBREAK;
+        break;
+    case CMI_BRK:
+        brk = LINEBREAK_ALLOWBREAK;
+        if (lbpCtx->lbcLast != LBP_SP)
+        {
+            brk = LINEBREAK_NOBREAK;
+            return brk;                 /* Do not update lbcCur */
+        }
         break;
     case CMP_BRK:
         brk = LINEBREAK_NOBREAK;
