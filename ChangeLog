@@ -1,3 +1,9 @@
+2016-11-28  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* src/linebreak.c (resolve_lb_class): Resolve LBP_CJ to LBP_NS if
+	lang ends with "-strict".
+	* src/tests.c: Use "-strict" in line breaking test.
+
 2016-11-26  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* .clang-format: `Modernize' the clang-format configuration with

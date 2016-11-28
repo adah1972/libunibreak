@@ -45,7 +45,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version 3.2, 2016/11/26
+ * @version 3.2, 2016/11/28
  * @author  Wu Yongwei
  * @author  Petr Filipsky
  */
@@ -428,6 +428,7 @@ static enum LineBreakClass resolve_lb_class(
         enum LineBreakClass lbc,
         const char *lang)
 {
+    unsigned len;
     switch (lbc)
     {
     case LBP_AI:
@@ -443,10 +444,20 @@ static enum LineBreakClass resolve_lb_class(
             return LBP_AL;
         }
     case LBP_CJ:
-        /* Simplified for `normal' line breaking.  See
-         * <url:http://www.unicode.org/reports/tr14/tr14-30.html#CJ>
+        /* `Strict' and `normal' line breaking.  See
+         * <url:http://www.unicode.org/reports/tr14/#CJ>
          * for details. */
-        return LBP_ID;
+        len = (lang == NULL) ? 0 : strlen(lang);
+        if (len >= sizeof("-strict") - 1 &&
+            memcmp(lang + len - (sizeof("-strict") - 1), "-strict",
+                   sizeof("-strict") - 1) == 0)
+        {
+            return LBP_NS;
+        }
+        else
+        {
+            return LBP_ID;
+        }
     case LBP_SA:
     case LBP_SG:
     case LBP_XX:

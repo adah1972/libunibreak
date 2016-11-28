@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
         {
         case TEST_TYPE_LINE:
             breaksActual[0] = noBreak;
-            set_linebreaks_utf32(txt, len, "", breaksActual + 1);
+            set_linebreaks_utf32(txt, len, "-strict", breaksActual + 1);
             break;
         case TEST_TYPE_WORD:
             breaksActual[0] = mustBreak;
