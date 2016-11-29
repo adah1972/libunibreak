@@ -45,7 +45,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version 3.2, 2016/11/28
+ * @version 3.2, 2016/11/29
  * @author  Wu Yongwei
  * @author  Petr Filipsky
  */
@@ -296,6 +296,36 @@ static struct LineBreakPropertiesIndex lb_prop_index[LINEBREAK_INDEX_SIZE] =
 };
 
 /**
+ * Checks whether the \a str ends with \a suffix, which has length
+ * \a suffix_len.
+ *
+ * @param str        string whose ending is to be checked
+ * @param suffix     string to check
+ * @param suffixLen  length of \a suffix
+ * @return           non-zero if true; zero otherwise
+ */
+static __inline int ends_with(const char *str, const char *suffix,
+                              unsigned suffixLen)
+{
+    if (str == NULL)
+    {
+        return 0;
+    }
+    unsigned len = strlen(str);
+    if (len >= suffixLen &&
+        memcmp(str + len - suffixLen, suffix, suffixLen) == 0)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+#define ENDS_WITH(str, suffix) ends_with((str), (suffix), sizeof(suffix) - 1)
+
+/**
  * Initializes the second-level index to the line breaking properties.
  * If it is not called, the performance of #get_char_lb_class_lang (and
  * thus the main functionality) can be pretty bad, especially for big
@@ -428,7 +458,6 @@ static enum LineBreakClass resolve_lb_class(
         enum LineBreakClass lbc,
         const char *lang)
 {
-    unsigned len;
     switch (lbc)
     {
     case LBP_AI:
@@ -447,10 +476,7 @@ static enum LineBreakClass resolve_lb_class(
         /* `Strict' and `normal' line breaking.  See
          * <url:http://www.unicode.org/reports/tr14/#CJ>
          * for details. */
-        len = (lang == NULL) ? 0 : strlen(lang);
-        if (len >= sizeof("-strict") - 1 &&
-            memcmp(lang + len - (sizeof("-strict") - 1), "-strict",
-                   sizeof("-strict") - 1) == 0)
+        if (ENDS_WITH(lang, "-strict"))
         {
             return LBP_NS;
         }
