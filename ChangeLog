@@ -1,5 +1,9 @@
 2016-12-03  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/linebreak.c (baTable): Fix a few missing entries.
+
+2016-12-03  Wu Yongwei  <wuyongwei@gmail.com>
+
 	Fix test failure regarding Object Replacement Character (U+FFFC).
 	* src/linebreak.c (baTable): Add break action about LBP_CB.
 	(treat_first_char): Remove customization about LBP_CB.
