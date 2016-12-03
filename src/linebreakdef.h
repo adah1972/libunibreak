@@ -45,7 +45,7 @@
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the line breaking algorithm.
  *
- * @version 3.1, 2016/09/10
+ * @version 3.2, 2016/12/03
  * @author  Wu Yongwei
  * @author  Petr Filipsky
  */
@@ -95,10 +95,13 @@ enum LineBreakClass
     LBP_EM,         /**< Emoji modifier */
     LBP_ZWJ,        /**< Zero width joiner */
 
+    /* The following break class is treated in the pair table, but it is
+     * not part of Table 2 of UAX #14. */
+    LBP_CB,         /**< Contingent break */
+
     /* The following break classes are not treated in the pair table */
     LBP_AI,         /**< Ambiguous (alphabetic or ideograph) */
     LBP_BK,         /**< Break (mandatory) */
-    LBP_CB,         /**< Contingent break */
     LBP_CJ,         /**< Conditional Japanese starter */
     LBP_CR,         /**< Carriage return */
     LBP_LF,         /**< Line feed */

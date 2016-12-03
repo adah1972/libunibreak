@@ -1,3 +1,14 @@
+2016-12-03  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Fix test failure regarding Object Replacement Character (U+FFFC).
+	* src/linebreak.c (baTable): Add break action about LBP_CB.
+	(treat_first_char): Remove customization about LBP_CB.
+	(get_lb_result_simple): Ditto.
+	(get_lb_result_lookup): Change assertion about the maximum valid
+	baTable index.
+	* src/linebreakdef.h (LineBreakClass): Move LBP_CB so that it can be
+	included in the pair table.
+
 2016-11-29  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* src/linebreak.c (ends_with): New static function.
