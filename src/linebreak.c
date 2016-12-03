@@ -520,6 +520,8 @@ static void treat_first_char(
         break;
     case LBP_HL:
         lbpCtx->fLb21aHebrew = 1;       /* Rule LB21a */
+    case LBP_RI:
+        lbpCtx->cLb30aRI = 1;           /* Rule LB30a */
     default:
         break;
     }
@@ -584,6 +586,16 @@ static int get_lb_result_lookup(
 {
     int brk = LINEBREAK_UNDEFINED;
 
+    /* Count consecutive RI characters */
+    if (lbpCtx->lbcNew == LBP_RI)
+    {
+        lbpCtx->cLb30aRI++;
+    }
+    else
+    {
+        lbpCtx->cLb30aRI = 0;
+    }
+
     assert(lbpCtx->lbcCur <= LBP_CB);
     assert(lbpCtx->lbcNew <= LBP_CB);
     switch (baTable[lbpCtx->lbcCur - 1][lbpCtx->lbcNew - 1])
@@ -626,6 +638,13 @@ static int get_lb_result_lookup(
         lbpCtx->fLb21aHebrew = (lbpCtx->lbcNew == LBP_HL);
     }
 
+    /* Special processing due to rule LB30a */
+    if (lbpCtx->cLb30aRI == 3)
+    {
+        brk = LINEBREAK_ALLOWBREAK;
+        lbpCtx->cLb30aRI = 1;
+    }
+
     lbpCtx->lbcCur = lbpCtx->lbcNew;
     return brk;
 }
@@ -651,6 +670,7 @@ void lb_init_break_context(
                         get_char_lb_class_lang(ch, lbpCtx->lbpLang),
                         lbpCtx->lang);
     lbpCtx->fLb21aHebrew = 0;
+    lbpCtx->cLb30aRI = 0;
     treat_first_char(lbpCtx);
 }
 

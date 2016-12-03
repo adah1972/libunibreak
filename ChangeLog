@@ -1,17 +1,26 @@
 2016-12-03  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/linebreakdef.h (struct LineBreakContext): Add new field
+	cLb30aRI.
+	* src/linebreak.c (lb_init_break_context): Initialize cLb30aRI.
+	(treat_first_char): Deal with leading RI.
+	(get_lb_result_lookup): Count RI characters and allow breaking
+	between each pair occurrence.
+
+2016-12-03  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* src/linebreak.c (baTable): Fix a few missing entries.
 
 2016-12-03  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Fix test failure regarding Object Replacement Character (U+FFFC).
+	* src/linebreakdef.h (enum LineBreakClass): Move LBP_CB so that it
+	can be included in the pair table.
 	* src/linebreak.c (baTable): Add break action about LBP_CB.
 	(treat_first_char): Remove customization about LBP_CB.
 	(get_lb_result_simple): Ditto.
 	(get_lb_result_lookup): Change assertion about the maximum valid
 	baTable index.
-	* src/linebreakdef.h (LineBreakClass): Move LBP_CB so that it can be
-	included in the pair table.
 
 2016-11-29  Wu Yongwei  <wuyongwei@gmail.com>
 
