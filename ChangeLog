@@ -1,5 +1,12 @@
 2016-12-03  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/linebreak.c (get_lb_result_lookup): Simplify code and fix a
+	corner case about LB21a.
+	(treat_first_char): There is no need to treat first character of
+	Hebrew specially now.
+
+2016-12-03  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* src/linebreakdef.h (struct LineBreakContext): Add new field
 	cLb30aRI.
 	* src/linebreak.c (lb_init_break_context): Initialize cLb30aRI.

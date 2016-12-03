@@ -518,8 +518,6 @@ static void treat_first_char(
     case LBP_SP:
         lbpCtx->lbcCur = LBP_WJ;        /* Leading space treated as WJ */
         break;
-    case LBP_HL:
-        lbpCtx->fLb21aHebrew = 1;       /* Rule LB21a */
     case LBP_RI:
         lbpCtx->cLb30aRI = 1;           /* Rule LB30a */
     default:
@@ -633,9 +631,9 @@ static int get_lb_result_lookup(
         brk = LINEBREAK_NOBREAK;
         lbpCtx->fLb21aHebrew = 0;
     }
-    else if (!(lbpCtx->lbcNew == LBP_HY || lbpCtx->lbcNew == LBP_BA))
+    else
     {
-        lbpCtx->fLb21aHebrew = (lbpCtx->lbcNew == LBP_HL);
+        lbpCtx->fLb21aHebrew = (lbpCtx->lbcCur == LBP_HL);
     }
 
     /* Special processing due to rule LB30a */
