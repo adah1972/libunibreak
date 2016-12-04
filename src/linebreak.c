@@ -45,7 +45,7 @@
  * Implementation of the line breaking algorithm as described in Unicode
  * Standard Annex 14.
  *
- * @version 3.2, 2016/12/03
+ * @version 3.2, 2016/12/04
  * @author  Wu Yongwei
  * @author  Petr Filipsky
  */
@@ -518,8 +518,6 @@ static void treat_first_char(
     case LBP_SP:
         lbpCtx->lbcCur = LBP_WJ;        /* Leading space treated as WJ */
         break;
-    case LBP_RI:
-        lbpCtx->cLb30aRI = 1;           /* Rule LB30a */
     default:
         break;
     }
@@ -584,16 +582,6 @@ static int get_lb_result_lookup(
 {
     int brk = LINEBREAK_UNDEFINED;
 
-    /* Count consecutive RI characters */
-    if (lbpCtx->lbcNew == LBP_RI)
-    {
-        lbpCtx->cLb30aRI++;
-    }
-    else
-    {
-        lbpCtx->cLb30aRI = 0;
-    }
-
     assert(lbpCtx->lbcCur <= LBP_CB);
     assert(lbpCtx->lbcNew <= LBP_CB);
     switch (baTable[lbpCtx->lbcCur - 1][lbpCtx->lbcNew - 1])
@@ -637,10 +625,18 @@ static int get_lb_result_lookup(
     }
 
     /* Special processing due to rule LB30a */
-    if (lbpCtx->cLb30aRI == 3)
+    if (lbpCtx->lbcCur == LBP_RI)
     {
-        brk = LINEBREAK_ALLOWBREAK;
-        lbpCtx->cLb30aRI = 1;
+        lbpCtx->cLb30aRI++;
+        if (lbpCtx->cLb30aRI == 2 && lbpCtx->lbcNew == LBP_RI)
+        {
+            brk = LINEBREAK_ALLOWBREAK;
+            lbpCtx->cLb30aRI = 0;
+        }
+    }
+    else
+    {
+        lbpCtx->cLb30aRI = 0;
     }
 
     lbpCtx->lbcCur = lbpCtx->lbcNew;

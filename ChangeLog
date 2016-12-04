@@ -1,3 +1,10 @@
+2016-12-04  Wu Yongwei  <wuyongwei@gmail.com>
+
+	Simpify implementation about RI pairing.
+	* src/linebreak.c (treat_first_char): Get rid of the special
+	processing in the first character.
+	(get_lb_result_lookup): Refactor implementation.
+
 2016-12-03  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* tools/test.txt: Make a statement more precise.
