@@ -32,6 +32,8 @@
 #include "wordbreak.h"
 #include "graphemebreak.h"
 
+#include "test_skips.h"
+
 #define TEST_LINE_LEN 1000
 
 typedef enum
@@ -47,11 +49,13 @@ int main(int argc, char *argv[])
     FILE *fp;
     char line[TEST_LINE_LEN];
     unsigned int linenumber = 0;
+    unsigned int testsSkipped = 0;
     unsigned int testsFailed = 0;
     unsigned int testsTotal = 0;
     Test_Type testType;
 
     char noBreak, mustBreak, insideChar;
+    const unsigned int *testSkips; /* Zero terminated array of line numbers to skip in the test. */
 
     if (argc != 2)
     {
@@ -66,6 +70,7 @@ int main(int argc, char *argv[])
         noBreak = LINEBREAK_NOBREAK;
         mustBreak = LINEBREAK_MUSTBREAK;
         insideChar = LINEBREAK_INSIDEACHAR;
+        testSkips = testSkipsLine;
         break;
     case 'w':
         filename = "WordBreakTest.txt";
@@ -73,6 +78,7 @@ int main(int argc, char *argv[])
         noBreak = WORDBREAK_NOBREAK;
         mustBreak = WORDBREAK_BREAK;
         insideChar = WORDBREAK_INSIDEACHAR;
+        testSkips = testSkipsWord;
         break;
     case 'g':
         filename = "GraphemeBreakTest.txt";
@@ -80,6 +86,7 @@ int main(int argc, char *argv[])
         noBreak = GRAPHEMEBREAK_NOBREAK;
         mustBreak = GRAPHEMEBREAK_BREAK;
         insideChar = GRAPHEMEBREAK_INSIDEACHAR;
+        testSkips = testSkipsGrapheme;
         break;
     default:
         return 1;
@@ -103,6 +110,13 @@ int main(int argc, char *argv[])
 
         if (line[0] == '#')
             continue;
+
+        if (linenumber == *testSkips)
+        {
+            testsSkipped++;
+            testSkips++;
+            continue;
+        }
 
         len = 0;
         while (*linepos)
@@ -195,7 +209,11 @@ int main(int argc, char *argv[])
     fclose(fp);
 
     unsigned int testsPassed = testsTotal - testsFailed;
-    printf("\n%s: Passed %d out of %d (%d%%)\n", filename, testsPassed,
+    printf("\n%s: Passed %d out of %d (%d%%)", filename, testsPassed,
            testsTotal, testsPassed * 100 / testsTotal);
+    if (testsSkipped > 0)
+       printf(", and skipped %d", testsSkipped);
+    printf("\n");
+
     return (testsFailed > 0);
 }
