@@ -26,6 +26,7 @@
  *
  * When this library was designed, this annex was at Revision 29, for
  * Unicode 9.0.0:
+ *      <URL:http://www.unicode.org/reports/tr29/tr29-29.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
