@@ -4,7 +4,7 @@
  * Word breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2013-2015 Tom Hacohen <tom at stosb dot com>
+ * Copyright (C) 2013-2016 Tom Hacohen <tom at stosb dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -44,7 +44,6 @@
  * Implementation of the word breaking algorithm as described in Unicode
  * Standard Annex 29.
  *
- * @version 3.1, 2015/05/18
  * @author  Tom Hacohen
  */
 

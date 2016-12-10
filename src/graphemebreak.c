@@ -37,7 +37,6 @@
  * Implementation of the grapheme breaking algorithm as described in Unicode
  * Standard Annex 29.
  *
- * @version 1.0, 2016
  * @author  Andreas Roever
  */
 

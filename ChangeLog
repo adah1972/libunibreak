@@ -1,5 +1,22 @@
 2016-12-10  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/linebreak.c: Remove `@version' and update copyright header.
+	* src/linebreak.h: Ditto.
+	* src/linebreakdef.c: Ditto.
+	* src/linebreakdef.h: Ditto.
+	* src/wordbreak.c: Ditto.
+	* src/wordbreak.h: Ditto.
+	* src/wordbreakdef.h: Ditto.
+	* src/graphemebreak.c: Ditto.
+	* src/graphemebreak.h: Ditto.
+	* src/graphemebreakdef.h: Ditto.
+	* src/unibreakbase.c: Ditto.
+	* src/unibreakbase.h: Ditto.
+	* src/unibreakdef.c: Ditto.
+	* src/unibreakdef.h: Ditto.
+
+2016-12-10  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* src/Makefile.msvc: Add graphemebreak.c.
 	* src/graphemebreak.c: Add a workaround of stdbool.h for MSVC
 	versions earlier than 2013.

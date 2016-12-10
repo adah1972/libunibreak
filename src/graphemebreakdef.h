@@ -37,7 +37,6 @@
  * Definitions of internal data structures, declarations of global
  * variables, and function prototypes for the grapheme breaking algorithm.
  *
- * @version 1.0, 2016
  * @author  Andreas Röver
  */
 
