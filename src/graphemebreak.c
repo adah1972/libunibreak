@@ -41,10 +41,17 @@
  * @author  Andreas Roever
  */
 
+#if defined(_MSC_VER) && _MSC_VER < 1800
+typedef int bool;
+#define false 0
+#define true 1
+#else
+#include <stdbool.h>
+#endif
+
+#include <string.h>
 #include "graphemebreak.h"
 #include "graphemebreakdata.c"
-#include "stdbool.h"
-#include "string.h"
 #include "unibreakdef.h"
 
 #define ARRAY_LEN(x) (sizeof(x) / sizeof(x[0]))

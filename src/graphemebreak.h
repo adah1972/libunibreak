@@ -43,8 +43,8 @@
 #ifndef GRAPHEMEBREAK_H
 #define GRAPHEMEBREAK_H
 
-#include "unibreakbase.h"
 #include <stddef.h>
+#include "unibreakbase.h"
 
 #ifdef __cplusplus
 extern "C" {

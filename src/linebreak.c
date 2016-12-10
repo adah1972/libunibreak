@@ -313,11 +313,12 @@ static struct LineBreakPropertiesIndex lb_prop_index[LINEBREAK_INDEX_SIZE] =
 static __inline int ends_with(const char *str, const char *suffix,
                               unsigned suffixLen)
 {
+    unsigned len;
     if (str == NULL)
     {
         return 0;
     }
-    unsigned len = strlen(str);
+    len = strlen(str);
     if (len >= suffixLen &&
         memcmp(str + len - suffixLen, suffix, suffixLen) == 0)
     {

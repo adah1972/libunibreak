@@ -1,5 +1,13 @@
 2016-12-10  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/Makefile.msvc: Add graphemebreak.c.
+	* src/graphemebreak.c: Add a workaround of stdbool.h for MSVC
+	versions earlier than 2013.
+	* src/graphemebreak.h: Make include order consistent.
+	* src/linebreak.c (ends_with): Make the code compile under C89.
+
+2016-12-10  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* src/Makefile.gcc (CFILES): Add graphemebreak.c.
 	(graphemebreakdata): New phony target.
 	(GraphemeBreakProperty.txt): New target.

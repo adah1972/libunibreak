@@ -45,6 +45,7 @@ CLEAN :
 	-@erase "$(INTDIR)\linebreakdata.obj"
 	-@erase "$(INTDIR)\linebreakdef.obj"
 	-@erase "$(INTDIR)\wordbreak.obj"
+	-@erase "$(INTDIR)\graphemebreak.obj"
 	-@erase "$(INTDIR)\unibreakbase.obj"
 	-@erase "$(INTDIR)\unibreakdef.obj"
 	-@erase "$(INTDIR)\vc*.idb"
@@ -65,6 +66,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\linebreakdata.obj" \
 	"$(INTDIR)\linebreakdef.obj" \
 	"$(INTDIR)\wordbreak.obj" \
+	"$(INTDIR)\graphemebreak.obj" \
 	"$(INTDIR)\unibreakbase.obj" \
 	"$(INTDIR)\unibreakdef.obj"
 
@@ -89,6 +91,7 @@ CLEAN :
 	-@erase "$(INTDIR)\linebreakdata.obj"
 	-@erase "$(INTDIR)\linebreakdef.obj"
 	-@erase "$(INTDIR)\wordbreak.obj"
+	-@erase "$(INTDIR)\graphemebreak.obj"
 	-@erase "$(INTDIR)\unibreakbase.obj"
 	-@erase "$(INTDIR)\unibreakdef.obj"
 	-@erase "$(INTDIR)\vc*.idb"
@@ -110,6 +113,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\linebreakdata.obj" \
 	"$(INTDIR)\linebreakdef.obj" \
 	"$(INTDIR)\wordbreak.obj" \
+	"$(INTDIR)\graphemebreak.obj" \
 	"$(INTDIR)\unibreakbase.obj" \
 	"$(INTDIR)\unibreakdef.obj"
 
@@ -169,11 +173,15 @@ LIB32_OBJS= \
 	".\unibreakdef.h"\
 	
 .\wordbreak.c : \
-	".\linebreak.h"\
-	".\linebreakdef.h"\
 	".\wordbreak.h"\
 	".\wordbreakdef.h"\
 	".\wordbreakdata.c"\
+	".\unibreakbase.h"\
+	".\unibreakdef.h"\
+
+.\graphemebreak.c : \
+	".\graphemebreak.h"\
+	".\graphemebreakdata.c"\
 	".\unibreakbase.h"\
 	".\unibreakdef.h"\
 	
@@ -204,6 +212,11 @@ SOURCE=.\linebreakdef.c
 SOURCE=.\wordbreak.c
 
 "$(INTDIR)\wordbreak.obj" : $(SOURCE) "$(INTDIR)"
+
+
+SOURCE=.\graphemebreak.c
+
+"$(INTDIR)\graphemebreak.obj" : $(SOURCE) "$(INTDIR)"
 
 
 SOURCE=.\unibreakbase.c
