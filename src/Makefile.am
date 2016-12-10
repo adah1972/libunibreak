@@ -5,6 +5,7 @@ include_HEADERS = \
 	linebreak.h \
 	linebreakdef.h \
 	graphemebreak.h \
+	graphemebreakdef.h \
 	wordbreak.h
 lib_LTLIBRARIES = libunibreak.la
 
