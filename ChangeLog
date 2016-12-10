@@ -1,5 +1,9 @@
 2016-12-10  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* Doxyfile (EXCLUDE): Add `src/tests.c'.
+
+2016-12-10  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* src/wordbreak.c: Update Unicode version and link information.
 	* src/wordbreak.h: Ditto.
 	* src/wordbreakdef.h: Ditto.
