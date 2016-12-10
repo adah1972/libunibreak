@@ -1,3 +1,10 @@
+New in libunibreak 4.0
+
+- Update the code and data to conform to Unicode 9.0.0
+- Add grapheme breaking support
+- Tested and enhanced according to the Unicode test suite
+- Make bug fixes
+
 New in libunibreak 3.0
 
 - Update the code and data to conform to Unicode 7.0.0

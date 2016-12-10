@@ -1,5 +1,15 @@
 2016-12-10  Wu Yongwei  <wuyongwei@gmail.com>
 
+	Update for the libunibreak 4.0 release.
+	* NEWS: Add information about libunibreak 4.0.
+	* Doxyfile (PROJECT_NUMBER): Change to `4.0'.
+	* configure.ac (AC_INIT): Change the library version to `4.0'.
+	* src/Makefile.am (libunibreak_la_LDFLAGS): Set the version-info to
+	`4:0:1'.
+	* src/unibreakbase.h (UNIBREAK_VERSION): Set to 0x0400.
+
+2016-12-10  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* src/Makefile.am (include_HEADERS): Add a missing file
 	graphemebreakdef.h.
 

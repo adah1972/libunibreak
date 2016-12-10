@@ -10,7 +10,7 @@ include_HEADERS = \
 lib_LTLIBRARIES = libunibreak.la
 
 libunibreak_la_CFLAGS = -W -Wall
-libunibreak_la_LDFLAGS = -no-undefined -version-info 3:0:0
+libunibreak_la_LDFLAGS = -no-undefined -version-info 4:0:1
 libunibreak_la_SOURCES = \
 	unibreakbase.c \
 	unibreakdef.c \

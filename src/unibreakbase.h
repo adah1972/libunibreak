@@ -39,7 +39,7 @@
 extern "C" {
 #endif
 
-#define UNIBREAK_VERSION   0x0300	/**< Version of the library linebreak */
+#define UNIBREAK_VERSION   0x0400	/**< Version of the library linebreak */
 extern const int unibreak_version;
 
 #ifndef UNIBREAK_UTF_TYPES_DEFINED
