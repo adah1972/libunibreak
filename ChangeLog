@@ -1,3 +1,11 @@
+2016-12-10  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* src/Makefile.gcc (CFILES): Add graphemebreak.c.
+	(graphemebreakdata): New phony target.
+	(GraphemeBreakProperty.txt): New target.
+	(distclean): Add WordBreakProperty.txt and GraphemeBreakProperty.txt
+	as well.
+
 2016-12-04  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Simpify implementation about RI pairing.
