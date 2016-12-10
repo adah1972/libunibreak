@@ -1,5 +1,9 @@
 2016-12-10  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* bootstrap: Add a missing `--copy' argument to glibtoolize.
+
+2016-12-10  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* README.md: Update for grapheme break and links.
 	* LICENCE: Add Andreas Röver and update copyright information.
 
