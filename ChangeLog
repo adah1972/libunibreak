@@ -1,5 +1,11 @@
 2016-12-14  Wu Yongwei  <wuyongwei@gmail.com>
 
+	* src/linebreak.c: Adjust documentation comment.
+	* src/wordbreak.c: Ditto.
+	* src/graphemebreak.c: Ditto.
+
+2016-12-14  Wu Yongwei  <wuyongwei@gmail.com>
+
 	* Doxyfile (FULL_PATH_NAMES): Set to `NO'.
 	(DOT_IMAGE_FORMAT): Set to `svg'.
 	(SEARCHENGINE): Set to `YES'.

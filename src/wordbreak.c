@@ -148,7 +148,7 @@ static void set_brks_to(
  *
  * @param[in]  s             input string
  * @param[in]  len           length of the input
- * @param[in]  lang          language of the input
+ * @param[in]  lang          language of the input (reserved for future use)
  * @param[out] brks          pointer to the output breaking data, containing
  *                           #WORDBREAK_BREAK, #WORDBREAK_NOBREAK, or
  *                           #WORDBREAK_INSIDEACHAR
@@ -498,7 +498,7 @@ static void set_wordbreaks(
  *
  * @param[in]  s     input UTF-8 string
  * @param[in]  len   length of the input
- * @param[in]  lang  language of the input
+ * @param[in]  lang  language of the input (reserved for future use)
  * @param[out] brks  pointer to the output breaking data, containing
  *                   #WORDBREAK_BREAK, #WORDBREAK_NOBREAK, or
  *                   #WORDBREAK_INSIDEACHAR
@@ -518,7 +518,7 @@ void set_wordbreaks_utf8(
  *
  * @param[in]  s     input UTF-16 string
  * @param[in]  len   length of the input
- * @param[in]  lang  language of the input
+ * @param[in]  lang  language of the input (reserved for future use)
  * @param[out] brks  pointer to the output breaking data, containing
  *                   #WORDBREAK_BREAK, #WORDBREAK_NOBREAK, or
  *                   #WORDBREAK_INSIDEACHAR
@@ -538,7 +538,7 @@ void set_wordbreaks_utf16(
  *
  * @param[in]  s     input UTF-32 string
  * @param[in]  len   length of the input
- * @param[in]  lang  language of the input
+ * @param[in]  lang  language of the input (reserved for future use)
  * @param[out] brks  pointer to the output breaking data, containing
  *                   #WORDBREAK_BREAK, #WORDBREAK_NOBREAK, or
  *                   #WORDBREAK_INSIDEACHAR

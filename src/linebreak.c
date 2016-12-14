@@ -67,7 +67,7 @@
 
 /**
  * Enumeration of break actions.  They are used in the break action
- * pair table below.
+ * pair table #baTable.
  */
 enum BreakAction
 {
@@ -80,7 +80,7 @@ enum BreakAction
 
 /**
  * Break action pair table.  This is a direct mapping of Table 2 of
- * Unicode Standard Annex 14, Revision 37.
+ * Unicode Standard Annex 14, Revision 37, except the "CB" part.
  */
 static enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* OP */
@@ -706,6 +706,23 @@ int lb_process_next_char(
 /**
  * Sets the line breaking information for a generic input string.
  *
+ * Currently, this implementation has customization for the following
+ * ISO 639-1 language codes (for \a lang):
+ *
+ *  - de (German)
+ *  - en (English)
+ *  - es (Spanish)
+ *  - fr (French)
+ *  - ja (Japanese)
+ *  - ko (Korean)
+ *  - ru (Russian)
+ *  - zh (Chinese)
+ *
+ * In addition, a suffix <code>"-strict"</code> may be added to indicate
+ * strict (as versus normal) line-breaking behaviour.  See the <a
+ * href="http://www.unicode.org/reports/tr14/#CJ">Conditional Japanese
+ * Starter section of UAX #14</a> for more details.
+ *
  * @param[in]  s             input string
  * @param[in]  len           length of the input
  * @param[in]  lang          language of the input
@@ -766,6 +783,7 @@ void set_linebreaks(
  * @param[out] brks  pointer to the output breaking data, containing
  *                   #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
  *                   #LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
+ * @see #set_linebreaks for a note about \a lang.
  */
 void set_linebreaks_utf8(
         const utf8_t *s,
@@ -786,6 +804,7 @@ void set_linebreaks_utf8(
  * @param[out] brks  pointer to the output breaking data, containing
  *                   #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
  *                   #LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
+ * @see #set_linebreaks for a note about \a lang.
  */
 void set_linebreaks_utf16(
         const utf16_t *s,
@@ -806,6 +825,7 @@ void set_linebreaks_utf16(
  * @param[out] brks  pointer to the output breaking data, containing
  *                   #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
  *                   #LINEBREAK_NOBREAK, or #LINEBREAK_INSIDEACHAR
+ * @see #set_linebreaks for a note about \a lang.
  */
 void set_linebreaks_utf32(
         const utf32_t *s,

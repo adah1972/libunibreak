@@ -224,8 +224,7 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
  *
  * @param[in]  s     input UTF-8 string
  * @param[in]  len   length of the input
- * @param[in]  lang  language of the input, right now this does not
- *                   influence the algorithm
+ * @param[in]  lang  language of the input (reserved for future use)
  * @param[out] brks  pointer to the output breaking data, containing
  *                   #GRAPHEMEBREAK_BREAK or #GRAPHEMEBREAK_NOBREAK.
  *                   First element in output array is for the break behind
@@ -246,8 +245,7 @@ void set_graphemebreaks_utf8(const utf8_t *s, size_t len, const char *lang,
  *
  * @param[in]  s     input UTF-16 string
  * @param[in]  len   length of the input
- * @param[in]  lang  language of the input, right now this does not
- *                   influence the algorithm
+ * @param[in]  lang  language of the input (reserved for future use)
  * @param[out] brks  pointer to the output breaking data, containing
  *                   #GRAPHEMEBREAK_BREAK or #GRAPHEMEBREAK_NOBREAK.
  *                   First element in output array is for the break behind
@@ -268,8 +266,7 @@ void set_graphemebreaks_utf16(const utf16_t *s, size_t len,
  *
  * @param[in]  s     input UTF-32 string
  * @param[in]  len   length of the input
- * @param[in]  lang  language of the input, right now this does not
- *                   influence the algorithm
+ * @param[in]  lang  language of the input (reserved for future use)
  * @param[out] brks  pointer to the output breaking data, containing
  *                   #GRAPHEMEBREAK_BREAK or #GRAPHEMEBREAK_NOBREAK.
  *                   First element in output array is for the break behind
