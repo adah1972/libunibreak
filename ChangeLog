@@ -1,3 +1,9 @@
+2016-12-14  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* Doxyfile (FULL_PATH_NAMES): Set to `NO'.
+	(DOT_IMAGE_FORMAT): Set to `svg'.
+	(SEARCHENGINE): Set to `YES'.
+
 2016-12-10  Wu Yongwei  <wuyongwei@gmail.com>
 
 	Update for the libunibreak 4.0 release.
