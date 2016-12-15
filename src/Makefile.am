@@ -5,7 +5,6 @@ include_HEADERS = \
 	linebreak.h \
 	linebreakdef.h \
 	graphemebreak.h \
-	graphemebreakdef.h \
 	wordbreak.h
 lib_LTLIBRARIES = libunibreak.la
 
@@ -36,7 +35,9 @@ EXTRA_DIST = \
 	Makefile.msvc \
 	filter_dup.c \
 	sort_numeric_hex.py \
-	wordbreakdef.h
+	wordbreakdef.h \
+	graphemebreakdef.h \
+	test_skips.h
 
 install-exec-hook:
 	- [ -f $(DESTDIR)/${libdir}/libunibreak.a ] && \

@@ -1,3 +1,9 @@
+2016-12-15  Wu Yongwei  <wuyongwei@gmail.com>
+
+	* src/Makefile.am (include_HEADERS): Move graphemebreakdef.h to
+	EXTRA_DIST.
+	(EXTRA_DIST): Add graphemebreakdef.h and test_skips.h.
+
 2016-12-14  Wu Yongwei  <wuyongwei@gmail.com>
 
 	* src/linebreak.c: Adjust documentation comment.
@@ -79,6 +85,10 @@
 	(GraphemeBreakProperty.txt): New target.
 	(distclean): Add WordBreakProperty.txt and GraphemeBreakProperty.txt
 	as well.
+
+2016-12-05  Tom Hacohen  <tom@stosb.com>
+
+	* src/test_skips.h: New file.
 
 2016-12-04  Wu Yongwei  <wuyongwei@gmail.com>
 
