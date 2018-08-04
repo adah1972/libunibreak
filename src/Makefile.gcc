@@ -136,6 +136,15 @@ $(RELEASE_TARGET): $(RELEASE_DEPS) $(RELEASE_OBJS)
 doc:
 	doxygen
 
+LineBreak.txt:
+	wget http://unicode.org/Public/UNIDATA/LineBreak.txt
+
+WordBreakProperty.txt:
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakProperty.txt
+
+GraphemeBreakProperty.txt:
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakProperty.txt
+
 linebreakdata: filter_dup$(EXEEXT) LineBreak.txt
 	sed -E -n -f LineBreak1.sed LineBreak.txt > tmp.txt
 	sed -E -f LineBreak2.sed tmp.txt | .$(PATHSEP)filter_dup > tmp.c
@@ -169,15 +178,6 @@ graphemebreakdata: GraphemeBreakProperty.txt
 
 filter_dup$(EXEEXT): filter_dup.c
 	gcc -O2 -o filter_dup$(EXEEXT) $<
-
-LineBreak.txt:
-	wget http://unicode.org/Public/UNIDATA/LineBreak.txt
-
-WordBreakProperty.txt:
-	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakProperty.txt
-
-GraphemeBreakProperty.txt:
-	wget http://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakProperty.txt
 
 .PHONY: all debug release clean distclean doc linebreakdata wordbreakdata
 
