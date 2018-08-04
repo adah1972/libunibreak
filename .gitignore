@@ -26,9 +26,10 @@ tags
 /missing
 /src/.deps/
 /src/.libs/
-/src/LineBreak.txt
 /src/Makefile
 /src/Makefile.in
+/src/LineBreak.txt
+/src/GraphemeBreakProperty.txt
 /src/WordBreakProperty.txt
 /src/LineBreakTest.txt
 /src/WordBreakTest.txt
