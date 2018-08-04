@@ -220,24 +220,6 @@ static void set_wordbreaks(
             posLast = posCur;
             break;
 
-        case WBP_E_Base_GAZ:
-        case WBP_Glue_After_Zwj:
-            /* WB3c */
-            if (wbcLast == WBP_ZWJ)
-            {
-               set_brks_to(s, brks, posLast, posCur, len,
-                       WORDBREAK_NOBREAK, get_next_char);
-            }
-            /* No rule found, reset */
-            else
-            {
-                set_brks_to(s, brks, posLast, posCur, len,
-                            WORDBREAK_BREAK, get_next_char);
-            }
-            wbcSeqStart = wbcCur;
-            posLast = posCur;
-            break;
-
         case WBP_ZWJ:
         case WBP_Extend:
         case WBP_Format:
@@ -396,32 +378,6 @@ static void set_wordbreaks(
                  (wbcLast == WBP_Numeric) ||
                  (wbcLast == WBP_Katakana) ||
                  (wbcLast == WBP_ExtendNumLet)))
-            {
-                set_brks_to(s, brks, posLast, posCur, len,
-                            WORDBREAK_NOBREAK, get_next_char);
-            }
-            /* No rule found, reset */
-            else
-            {
-                set_brks_to(s, brks, posLast, posCur, len,
-                            WORDBREAK_BREAK, get_next_char);
-            }
-            wbcSeqStart = wbcCur;
-            posLast = posCur;
-            break;
-
-        case WBP_E_Base:
-            /* No rule found, reset */
-            set_brks_to(s, brks, posLast, posCur, len,
-                    WORDBREAK_BREAK, get_next_char);
-            wbcSeqStart = wbcCur;
-            posLast = posCur;
-            break;
-
-        case WBP_E_Modifier:
-            /* WB14 */
-            if ((wbcLast == WBP_E_Base) ||
-                (wbcLast == WBP_E_Base_GAZ))
             {
                 set_brks_to(s, brks, posLast, posCur, len,
                             WORDBREAK_NOBREAK, get_next_char);
