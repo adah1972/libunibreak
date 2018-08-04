@@ -137,8 +137,8 @@ doc:
 	doxygen
 
 linebreakdata: filter_dup$(EXEEXT) LineBreak.txt
-	sed -n -f LineBreak1.sed LineBreak.txt > tmp.txt
-	sed -f LineBreak2.sed tmp.txt | .$(PATHSEP)filter_dup > tmp.c
+	sed -E -n -f LineBreak1.sed LineBreak.txt > tmp.txt
+	sed -E -f LineBreak2.sed tmp.txt | .$(PATHSEP)filter_dup > tmp.c
 	head -2 LineBreak.txt > tmp.txt
 	cat linebreakdata1.tmpl tmp.txt linebreakdata2.tmpl tmp.c linebreakdata3.tmpl > linebreakdata.c
 	$(RM) tmp.txt tmp.c
@@ -148,7 +148,7 @@ wordbreakdata: WordBreakProperty.txt
 	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
 	./sort_numeric_hex.py tmp2.txt > tmp.txt
 	rm tmp2.txt tmp2.txt.bak
-	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; *([A-Za-z]+).*/'$$'\t''{0x\1, 0x\2, WBP_\3},/p' tmp.txt 
+	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; *([A-Za-z_]+).*/'$$'\t''{0x\1, 0x\2, WBP_\3},/p' tmp.txt
 	echo "/* The content of this file is generated from:" > wordbreakdata.c
 	head -2 WordBreakProperty.txt >> wordbreakdata.c
 	echo "*/" >> wordbreakdata.c
