@@ -4,7 +4,8 @@
  * Word breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2013-16 Tom Hacohen <tom at stosb dot com>
+ * Copyright (C) 2013-2016 Tom Hacohen <tom at stosb dot com>
+ * Copyright (C) 2018 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -30,9 +31,9 @@
  * Unicode 6.0.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-17.html>
  *
- * This library has been updated according to Revision 29, for
- * Unicode 9.0.0:
- *      <URL:http://www.unicode.org/reports/tr29/tr29-29.html>
+ * This library has been updated according to Revision 33, for
+ * Unicode 11.0.0:
+ *      <URL:http://www.unicode.org/reports/tr29/tr29-33.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -51,7 +52,7 @@
 
 /**
  * Word break classes.  This is a direct mapping of Table 3 of Unicode
- * Standard Annex 29, Revision 23.
+ * Standard Annex 29, Revision 33.
  */
 enum WordBreakClass
 {
@@ -77,6 +78,7 @@ enum WordBreakClass
     WBP_E_Modifier,
     WBP_Glue_After_Zwj,
     WBP_E_Base_GAZ,
+    WBP_WSegSpace,
     WBP_Any
 };
 
