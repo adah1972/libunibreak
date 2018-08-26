@@ -52,6 +52,8 @@ enum GraphemeBreakClass
     GBP_CR,
     GBP_LF,
     GBP_Control,
+    GBP_Virama,
+    GBP_LinkingConsonant,
     GBP_Extend,
     GBP_ZWJ,
     GBP_Regional_Indicator,
@@ -62,10 +64,6 @@ enum GraphemeBreakClass
     GBP_T,
     GBP_LV,
     GBP_LVT,
-    GBP_E_Base,
-    GBP_E_Modifier,
-    GBP_Glue_After_Zwj,
-    GBP_E_Base_GAZ,
     GBP_Other,
     GBP_Undefined
 };
@@ -80,3 +78,16 @@ struct GraphemeBreakProperties
     utf32_t end;                  /**< End coding point, including */
     enum GraphemeBreakClass prop; /**< The grapheme breaking property */
 };
+
+/**
+ * Struct for entries of extended pictographic properties.  The array of the
+ * entries \e must be sorted.
+ * All codepoints within this list have the property of being extended pictographic
+ */
+struct ExtendedPictograpic
+{
+    utf32_t start;                /**< Starting coding point */
+    utf32_t end;                  /**< End coding point, including */
+};
+
+
