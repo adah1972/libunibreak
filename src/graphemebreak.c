@@ -67,8 +67,8 @@ void init_graphemebreak(void)
 /**
  * Gets the grapheme breaking class of a character.
  *
- * @param ch   character to check
- * @return     the grapheme breaking class if found; \c GBP_Other otherwise
+ * @param[in] ch     character to check
+ * @return           the grapheme breaking class if found; \c GBP_Other otherwise
  */
 static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
 {
@@ -92,10 +92,10 @@ static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
 }
 
 /**
- * find out if a codepoint is an extended pictographic point
+ * finds out if a codepoint is an extended pictographic code point
  *
- * @param ch   character to check
- * @return     true, if the codepoint is extended pictographic
+ * @param[in] ch     character to check
+ * @return           true, if the codepoint is extended pictographic
  */
 static bool is_char_extended_pictographic(utf32_t ch)
 {
@@ -120,8 +120,7 @@ static bool is_char_extended_pictographic(utf32_t ch)
 
 /**
  * Sets the grapheme breaking information for a generic input string.
- * It uses the extended grapheme cluster ruleset, except for rule 9c. Rule 9c only
- * get relevant when implementing CLDR, which we don't at the moment
+ * It uses the extended grapheme cluster ruleset.
  *
  * @param[in]  s             input string
  * @param[in]  len           length of the input
