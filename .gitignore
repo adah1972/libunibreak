@@ -25,12 +25,16 @@
 /missing
 /src/.deps/
 /src/.libs/
+/src/Debug/
+/src/DebugDir/
 /src/GraphemeBreakProperty.txt
 /src/GraphemeBreakTest.txt
 /src/LineBreak.txt
 /src/LineBreakTest.txt
 /src/Makefile
 /src/Makefile.in
+/src/Release/
+/src/ReleaseDir/
 /src/WordBreakProperty.txt
 /src/WordBreakTest.txt
 /src/emoji-data.txt
