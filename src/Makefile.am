@@ -56,6 +56,9 @@ WordBreakProperty.txt:
 GraphemeBreakProperty.txt:
 	wget http://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakProperty.txt
 
+emoji-data.txt:
+	wget https://www.unicode.org/Public/emoji/11.0/emoji-data.txt
+
 linebreakdata: ${builddir}/filter_dup LineBreak.txt
 	sed -E -n -f ${srcdir}/LineBreak1.sed LineBreak.txt > tmp.txt
 	sed -E -f ${srcdir}/LineBreak2.sed tmp.txt | ${builddir}/filter_dup > tmp.c
@@ -76,7 +79,7 @@ wordbreakdata: WordBreakProperty.txt
 	rm tmp.txt tmp.txt.bak
 
 
-graphemebreakdata: GraphemeBreakProperty.txt
+graphemebreakdata: GraphemeBreakProperty.txt emoji-data.txt
 	sed -E -n 's/(^[0-9A-F.]+)/\1/p' GraphemeBreakProperty.txt > tmp2.txt
 	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
 	${srcdir}/sort_numeric_hex.py tmp2.txt > tmp.txt
@@ -84,8 +87,19 @@ graphemebreakdata: GraphemeBreakProperty.txt
 	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; *([A-Za-z_]+).*/'$$'\t''{0x\1, 0x\2, GBP_\3},/p' tmp.txt
 	echo "/* The content of this file is generated from:" > ${srcdir}/graphemebreakdata.c
 	head -2 GraphemeBreakProperty.txt >> ${srcdir}/graphemebreakdata.c
+	echo "and" >> ${srcdir}/graphemebreakdata.c
+	head -2 emoji-data.txt >> ${srcdir}/graphemebreakdata.c
 	echo "*/" >> ${srcdir}/graphemebreakdata.c
 	cat ${srcdir}/graphemebreakdata1.tmpl tmp.txt ${srcdir}/graphemebreakdata2.tmpl >> ${srcdir}/graphemebreakdata.c
+	rm tmp.txt tmp.txt.bak
+	grep "; Extended_Pictographic#" emoji-data.txt > tmp1.txt
+	sed -E -n 's/(^[0-9A-F.]+)/\1/p' tmp1.txt > tmp2.txt
+	rm tmp1.txt
+	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
+	${srcdir}/sort_numeric_hex.py tmp2.txt > tmp.txt
+	rm tmp2.txt tmp2.txt.bak
+	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; .*/'$$'\t''{0x\1, 0x\2},/p' tmp.txt
+	cat ${srcdir}/graphemebreakdata3.tmpl tmp.txt ${srcdir}/graphemebreakdata4.tmpl >> ${srcdir}/graphemebreakdata.c
 	rm tmp.txt tmp.txt.bak
 
 # Tests

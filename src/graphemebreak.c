@@ -67,8 +67,8 @@ void init_graphemebreak(void)
 /**
  * Gets the grapheme breaking class of a character.
  *
- * @param ch   character to check
- * @return     the grapheme breaking class if found; \c GBP_Other otherwise
+ * @param[in] ch     character to check
+ * @return           the grapheme breaking class if found; \c GBP_Other otherwise
  */
 static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
 {
@@ -92,7 +92,35 @@ static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
 }
 
 /**
+ * finds out if a codepoint is an extended pictographic code point
+ *
+ * @param[in] ch     character to check
+ * @return           true, if the codepoint is extended pictographic
+ */
+static bool is_char_extended_pictographic(utf32_t ch)
+{
+    int min = 0;
+    int max = ARRAY_LEN(ep_prop) - 1;
+    int mid;
+
+    do
+    {
+        mid = (min + max) / 2;
+
+        if (ch < ep_prop[mid].start)
+            max = mid - 1;
+        else if (ch > ep_prop[mid].end)
+            min = mid + 1;
+        else
+            return true;
+    } while (min <= max);
+
+    return false;
+}
+
+/**
  * Sets the grapheme breaking information for a generic input string.
+ * It uses the extended grapheme cluster ruleset.
  *
  * @param[in]  s             input string
  * @param[in]  len           length of the input
@@ -104,7 +132,7 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
                                get_next_char_t get_next_char)
 {
     size_t posNext = 0;
-    bool rule10Left = false;  // is the left side of rule 10 fulfilled?
+    int rule11Detector = 0;
     bool evenRegionalIndicators = true;  // is the number of preceeding
                                          // GBP_RegionalIndicator characters
                                          // even
@@ -117,6 +145,47 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
 
     while (true)
     {
+
+        // this state-machine recognizes the following pattern:
+        // extended_pictograph Extended* ZWJ
+        // when that pattern has been detected rule11Detector will be
+        // 3 and rule 11 can be applied below
+        switch (current_class)
+        {
+            case GBP_ZWJ:
+                if (rule11Detector == 1 || rule11Detector == 2)
+                {
+                    rule11Detector = 3;
+                }
+                else
+                {
+                    rule11Detector = 0;
+                }
+                break;
+
+            case GBP_Extend:
+                if (rule11Detector == 1 || rule11Detector == 2)
+                {
+                    rule11Detector = 2;
+                }
+                else
+                {
+                    rule11Detector = 0;
+                }
+                break;
+
+            default:
+                if (is_char_extended_pictographic(ch))
+                {
+                    rule11Detector = 1;
+                }
+                else
+                {
+                    rule11Detector = 0;
+                }
+                break;
+        }
+
         enum GraphemeBreakClass prev_class = current_class;
 
         // safe position if current character so that we can store the
@@ -136,16 +205,6 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
 
         // get class of current character
         current_class = get_char_gb_class(ch);
-
-        // update some helper variables
-        if ((prev_class == GBP_E_Base) || (prev_class == GBP_E_Base_GAZ))
-        {
-            rule10Left = true;
-        }
-        else if (prev_class != GBP_Extend)
-        {
-            rule10Left = false;
-        }
 
         if (prev_class == GBP_Regional_Indicator)
         {
@@ -185,7 +244,8 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB8
         }
         else if ((current_class == GBP_Extend) ||
-                 (current_class == GBP_ZWJ))
+                 (current_class == GBP_ZWJ) ||
+                 (current_class == GBP_Virama))
         {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB9
         }
@@ -197,13 +257,7 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
         {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB9b
         }
-        else if (rule10Left && (current_class == GBP_E_Modifier))
-        {
-            brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB10
-        }
-        else if ((prev_class == GBP_ZWJ) &&
-                 ((current_class == GBP_Glue_After_Zwj) ||
-                  (current_class == GBP_E_Base_GAZ)))
+        else if ((rule11Detector == 3) && is_char_extended_pictographic(ch))
         {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB11
         }
