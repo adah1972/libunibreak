@@ -30,6 +30,8 @@ EXTRA_DIST = \
 	wordbreakdata.c \
 	graphemebreakdata1.tmpl \
 	graphemebreakdata2.tmpl \
+	graphemebreakdata3.tmpl \
+	graphemebreakdata4.tmpl \
 	graphemebreakdata.c \
 	Makefile.gcc \
 	Makefile.msvc \
@@ -47,6 +49,7 @@ install-exec-hook:
 distclean-local:
 	rm -f LineBreak.txt WordBreakData.txt GraphemeBreakData.txt filter_dup${EXEEXT}
 
+
 LineBreak.txt:
 	wget http://unicode.org/Public/UNIDATA/LineBreak.txt
 
@@ -58,6 +61,7 @@ GraphemeBreakProperty.txt:
 
 emoji-data.txt:
 	wget https://www.unicode.org/Public/emoji/11.0/emoji-data.txt
+
 
 linebreakdata: ${builddir}/filter_dup LineBreak.txt
 	sed -E -n -f ${srcdir}/LineBreak1.sed LineBreak.txt > tmp.txt
@@ -77,7 +81,6 @@ wordbreakdata: WordBreakProperty.txt
 	echo "*/" >> ${srcdir}/wordbreakdata.c
 	cat ${srcdir}/wordbreakdata1.tmpl tmp.txt ${srcdir}/wordbreakdata2.tmpl >> ${srcdir}/wordbreakdata.c
 	rm tmp.txt tmp.txt.bak
-
 
 graphemebreakdata: GraphemeBreakProperty.txt emoji-data.txt
 	sed -E -n 's/(^[0-9A-F.]+)/\1/p' GraphemeBreakProperty.txt > tmp2.txt
@@ -102,6 +105,7 @@ graphemebreakdata: GraphemeBreakProperty.txt emoji-data.txt
 	cat ${srcdir}/graphemebreakdata3.tmpl tmp.txt ${srcdir}/graphemebreakdata4.tmpl >> ${srcdir}/graphemebreakdata.c
 	rm tmp.txt tmp.txt.bak
 
+
 # Tests
 
 check_PROGRAMS = tests
@@ -125,4 +129,3 @@ WordBreakTest.txt:
 
 GraphemeBreakTest.txt:
 	wget http://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.txt
-
