@@ -2,7 +2,7 @@
  * Grapheme breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2016 Andreas Röver <roever at users dot sf dot net>
+ * Copyright (C) 2016-2018 Andreas Röver <roever at users dot sf dot net>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -27,6 +27,10 @@
  * When this library was designed, this annex was at Revision 29, for
  * Unicode 9.0.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-29.html>
+ *
+ * This library has been updated according to Revision 33, for
+ * Unicode 11.0.0:
+ *      <URL:http://www.unicode.org/reports/tr29/tr29-33.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
