@@ -47,7 +47,7 @@ There are three ways to build the library:
    - type `make wordbreakdata` to regenerate *wordbreakdata.c* from
      *WordBreakProperty.txt*.
    - type `make graphemebreakdata` to regenerate *graphemebreakdata.c*
-     from *GraphemeBreakProperty.txt*.
+     from *GraphemeBreakProperty.txt* and *emoji-data.txt*.
 
 2. On systems where GCC and Binutils are supported, one can type
 
@@ -64,7 +64,7 @@ There are three ways to build the library:
    - type `make wordbreakdata` to regenerate *wordbreakdata.c* from
      *WordBreakProperty.txt*.
    - type `make graphemebreakdata` to regenerate *graphemebreakdata.c*
-     from *GraphemeBreakProperty.txt*.
+     from *GraphemeBreakProperty.txt* and *emoji-data.txt*.
 
 3. On Windows, apart from using method 1 (Cygwin/MSYS) and method 2
    (MinGW), MSVC can also be used.  Type
