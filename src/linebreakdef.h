@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2016 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2018 Wu Yongwei <wuyongwei at gmail dot com>
  * Copyright (C) 2013 Petr Filipsky <philodej at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
@@ -31,9 +31,9 @@
  * Unicode 5.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 37, for
- * Unicode 9.0.0:
- *      <URL:http://www.unicode.org/reports/tr14/tr14-37.html>
+ * This library has been updated according to Revision 41, for
+ * Unicode 11.0.0:
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-41.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -95,7 +95,7 @@ enum LineBreakClass
     LBP_ZWJ,        /**< Zero width joiner */
 
     /* The following break class is treated in the pair table, but it is
-     * not part of Table 2 of UAX #14. */
+     * not part of Table 2 of UAX #14-37. */
     LBP_CB,         /**< Contingent break */
 
     /* The following break classes are not treated in the pair table */
@@ -140,7 +140,8 @@ struct LineBreakPropertiesLang
 struct LineBreakContext
 {
     const char *lang;               /**< Language name */
-    const struct LineBreakProperties *lbpLang;/**< Pointer to LineBreakProperties */
+    const struct LineBreakProperties *lbpLang; /**< Pointer to
+                                                    LineBreakProperties */
     enum LineBreakClass lbcCur;     /**< Breaking class of current codepoint */
     enum LineBreakClass lbcNew;     /**< Breaking class of next codepoint */
     enum LineBreakClass lbcLast;    /**< Breaking class of last codepoint */

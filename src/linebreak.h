@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2016 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2018 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -30,9 +30,9 @@
  * Unicode 5.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 37, for
- * Unicode 9.0.0:
- *      <URL:http://www.unicode.org/reports/tr14/tr14-37.html>
+ * This library has been updated according to Revision 41, for
+ * Unicode 11.0.0:
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-41.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
