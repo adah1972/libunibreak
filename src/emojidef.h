@@ -2,7 +2,7 @@
  * Grapheme breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2016-2018 Andreas Röver <roever at users dot sf dot net>
+ * Copyright (C) 2018 Andreas Röver <roever at users dot sf dot net>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -37,10 +37,9 @@
  */
 
 /**
- * @file    graphemebreakdef.h
+ * @file    emojidef.h
  *
- * Definitions of internal data structures, declarations of global
- * variables, and function prototypes for the grapheme breaking algorithm.
+ * Definitions of internal data structures for extended pictographic.
  *
  * @author  Andreas Röver
  */
@@ -48,37 +47,14 @@
 #include "unibreakdef.h"
 
 /**
- * Word break classes.  This is a direct mapping of Table 2 of Unicode
- * Standard Annex 29.
+ * Struct for entries of extended pictographic properties.  The array of
+ * the entries \e must be sorted.  All codepoints within this list have
+ * the property of being extended pictographic.
  */
-enum GraphemeBreakClass
-{
-    GBP_CR,
-    GBP_LF,
-    GBP_Control,
-    GBP_Virama,
-    GBP_LinkingConsonant,
-    GBP_Extend,
-    GBP_ZWJ,
-    GBP_Regional_Indicator,
-    GBP_Prepend,
-    GBP_SpacingMark,
-    GBP_L,
-    GBP_V,
-    GBP_T,
-    GBP_LV,
-    GBP_LVT,
-    GBP_Other,
-    GBP_Undefined
-};
-
-/**
- * Struct for entries of grapheme break properties.  The array of the
- * entries \e must be sorted.
- */
-struct GraphemeBreakProperties
+struct ExtendedPictograpic
 {
     utf32_t start;                /**< Start codepoint */
     utf32_t end;                  /**< End codepoint, inclusive */
-    enum GraphemeBreakClass prop; /**< The grapheme breaking property */
 };
+
+bool is_char_extended_pictographic(utf32_t ch);

@@ -2,7 +2,7 @@
  * Grapheme breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2016-2018 Andreas Röver <roever at users dot sf dot net>
+ * Copyright (C) 2018 Andreas Röver <roever at users dot sf dot net>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -37,48 +37,42 @@
  */
 
 /**
- * @file    graphemebreakdef.h
+ * @file    emojidef.c
  *
- * Definitions of internal data structures, declarations of global
- * variables, and function prototypes for the grapheme breaking algorithm.
+ * Emoji-related routines.
  *
  * @author  Andreas Röver
  */
 
-#include "unibreakdef.h"
+#include "emojidef.h"
+#include "emojidata.c"
+
+#define ARRAY_LEN(x) (sizeof(x) / sizeof(x[0]))
 
 /**
- * Word break classes.  This is a direct mapping of Table 2 of Unicode
- * Standard Annex 29.
+ * Finds out if a codepoint is an extended pictographic codepoint.
+ *
+ * @param[in] ch  character to check
+ * @return        \c true if the codepoint is extended pictographic;
+ *                \c false otherwise
  */
-enum GraphemeBreakClass
+bool is_char_extended_pictographic(utf32_t ch)
 {
-    GBP_CR,
-    GBP_LF,
-    GBP_Control,
-    GBP_Virama,
-    GBP_LinkingConsonant,
-    GBP_Extend,
-    GBP_ZWJ,
-    GBP_Regional_Indicator,
-    GBP_Prepend,
-    GBP_SpacingMark,
-    GBP_L,
-    GBP_V,
-    GBP_T,
-    GBP_LV,
-    GBP_LVT,
-    GBP_Other,
-    GBP_Undefined
-};
+    int min = 0;
+    int max = ARRAY_LEN(ep_prop) - 1;
+    int mid;
 
-/**
- * Struct for entries of grapheme break properties.  The array of the
- * entries \e must be sorted.
- */
-struct GraphemeBreakProperties
-{
-    utf32_t start;                /**< Start codepoint */
-    utf32_t end;                  /**< End codepoint, inclusive */
-    enum GraphemeBreakClass prop; /**< The grapheme breaking property */
-};
+    do
+    {
+        mid = (min + max) / 2;
+
+        if (ch < ep_prop[mid].start)
+            max = mid - 1;
+        else if (ch > ep_prop[mid].end)
+            min = mid + 1;
+        else
+            return true;
+    } while (min <= max);
+
+    return false;
+}

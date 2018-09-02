@@ -4,7 +4,7 @@
  * Break processing in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2015-2016 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2015-2018 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -34,6 +34,14 @@
 
 #ifndef UNIBREAKDEF_H
 #define UNIBREAKDEF_H
+
+#if defined(_MSC_VER) && _MSC_VER < 1800
+typedef int bool;
+#define false 0
+#define true 1
+#else
+#include <stdbool.h>
+#endif
 
 #include <stddef.h>
 #include "unibreakbase.h"

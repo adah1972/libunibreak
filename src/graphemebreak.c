@@ -45,18 +45,11 @@
  * @author  Andreas Röver
  */
 
-#if defined(_MSC_VER) && _MSC_VER < 1800
-typedef int bool;
-#define false 0
-#define true 1
-#else
-#include <stdbool.h>
-#endif
-
 #include <string.h>
 #include "graphemebreak.h"
 #include "graphemebreakdata.c"
 #include "unibreakdef.h"
+#include "emojidef.h"
 
 #define ARRAY_LEN(x) (sizeof(x) / sizeof(x[0]))
 
@@ -93,34 +86,6 @@ static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
     } while (min <= max);
 
     return GBP_Other;
-}
-
-/**
- * Finds out if a codepoint is an extended pictographic codepoint.
- *
- * @param[in] ch  character to check
- * @return        \c true if the codepoint is extended pictographic;
- *                \c false otherwise
- */
-static bool is_char_extended_pictographic(utf32_t ch)
-{
-    int min = 0;
-    int max = ARRAY_LEN(ep_prop) - 1;
-    int mid;
-
-    do
-    {
-        mid = (min + max) / 2;
-
-        if (ch < ep_prop[mid].start)
-            max = mid - 1;
-        else if (ch > ep_prop[mid].end)
-            min = mid + 1;
-        else
-            return true;
-    } while (min <= max);
-
-    return false;
 }
 
 /**
