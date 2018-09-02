@@ -31,7 +31,7 @@ void usage(const char *progname)
             progname);
 }
 
-/* Simplistic function to output a maximum three-byte sequence. */
+/* Simplistic function to output a maximum four-byte sequence. */
 void putchar_utf8(utf32_t ch)
 {
     if (ch < 0x80)
@@ -41,9 +41,16 @@ void putchar_utf8(utf32_t ch)
         putchar(0xC0 | (ch >> 6));
         putchar(0x80 | (ch & 0x3F));
     }
-    else
+    else if (ch < 0x10000)
     {
         putchar(0xE0 | (ch >> 12));
+        putchar(0x80 | ((ch >> 6) & 0x3F));
+        putchar(0x80 | (ch & 0x3F));
+    }
+    else
+    {
+        putchar(0xF0 | (ch >> 18));
+        putchar(0x80 | ((ch >> 12) & 0x3F));
         putchar(0x80 | ((ch >> 6) & 0x3F));
         putchar(0x80 | (ch & 0x3F));
     }
