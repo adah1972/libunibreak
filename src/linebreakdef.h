@@ -117,8 +117,8 @@ enum LineBreakClass
  */
 struct LineBreakProperties
 {
-    utf32_t start;              /**< Starting coding point */
-    utf32_t end;                /**< End coding point */
+    utf32_t start;              /**< Start codepoint */
+    utf32_t end;                /**< End codepoint, inclusive */
     enum LineBreakClass prop;   /**< The line breaking property */
 };
 

@@ -84,7 +84,7 @@ enum WordBreakClass
  */
 struct WordBreakProperties
 {
-    utf32_t start;              /**< Starting coding point */
-    utf32_t end;                /**< End coding point */
+    utf32_t start;              /**< Start codepoint */
+    utf32_t end;                /**< End codepoint, inclusive */
     enum WordBreakClass prop;   /**< The word breaking property */
 };

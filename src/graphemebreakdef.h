@@ -78,18 +78,18 @@ enum GraphemeBreakClass
  */
 struct GraphemeBreakProperties
 {
-    utf32_t start;                /**< Starting coding point */
-    utf32_t end;                  /**< End coding point, including */
+    utf32_t start;                /**< Start codepoint */
+    utf32_t end;                  /**< End codepoint, inclusive */
     enum GraphemeBreakClass prop; /**< The grapheme breaking property */
 };
 
 /**
- * Struct for entries of extended pictographic properties.  The array of the
- * entries \e must be sorted.  All code points within this list have the
- * property of being extended pictographic
+ * Struct for entries of extended pictographic properties.  The array of
+ * the entries \e must be sorted.  All codepoints within this list have
+ * the property of being extended pictographic.
  */
 struct ExtendedPictograpic
 {
-    utf32_t start;                /**< Starting coding point */
-    utf32_t end;                  /**< End coding point, including */
+    utf32_t start;                /**< Start codepoint */
+    utf32_t end;                  /**< End codepoint, inclusive */
 };

@@ -289,8 +289,9 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
  */
 struct LineBreakPropertiesIndex
 {
-    utf32_t end;                          /**< End coding point */
-    const struct LineBreakProperties *lbp;/**< Pointer to line breaking properties */
+    utf32_t end;                           /**< End codepoint */
+    const struct LineBreakProperties *lbp; /**< Pointer to line breaking
+                                                properties */
 };
 
 /**
@@ -336,7 +337,7 @@ static __inline int ends_with(const char *str, const char *suffix,
  * Initializes the second-level index to the line breaking properties.
  * If it is not called, the performance of #get_char_lb_class_lang (and
  * thus the main functionality) can be pretty bad, especially for big
- * code points like those of Chinese.
+ * codepoints like those of Chinese.
  */
 void init_linebreak(void)
 {
@@ -670,11 +671,11 @@ void lb_init_break_context(
 }
 
 /**
- * Updates LineBreakingContext for the next code point and returns
+ * Updates LineBreakingContext for the next codepoint and returns
  * the detected break.
  *
  * @param[in,out] lbpCtx  pointer to the line breaking context
- * @param[in]     ch      Unicode code point
+ * @param[in]     ch      Unicode codepoint
  * @return                break result, one of #LINEBREAK_MUSTBREAK,
  *                        #LINEBREAK_ALLOWBREAK, and #LINEBREAK_NOBREAK
  * @post                  the line breaking context is updated

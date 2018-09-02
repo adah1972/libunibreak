@@ -96,7 +96,7 @@ static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
 }
 
 /**
- * Finds out if a codepoint is an extended pictographic code point.
+ * Finds out if a codepoint is an extended pictographic codepoint.
  *
  * @param[in] ch  character to check
  * @return        \c true if the codepoint is extended pictographic;
