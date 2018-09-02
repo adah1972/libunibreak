@@ -11,6 +11,8 @@ EXTRA_DIST = \
 	doc \
 	tools
 
+.PHONY: doc linebreakdata wordbreakdata graphemebreakdata
+
 doc:
 	cd ${srcdir} && doxygen
 
