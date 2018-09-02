@@ -237,8 +237,9 @@ static void set_wordbreaks(
             {
                 /* It's surely not the first */
                 brks[posCur - 1] = WORDBREAK_NOBREAK;
-                /* WB3c precedes 4, so no intervening Extend chars allowed. */
-                if (wbcSeqStart != WBP_ZWJ)
+                /* WB3c and WB3d precede 4, so no intervening Extend
+                 * chars allowed. */
+                if (wbcSeqStart != WBP_ZWJ && wbcSeqStart != WBP_WSegSpace)
                 {
                     /* "inherit" the previous class. */
                     wbcCur = wbcLast;
@@ -306,6 +307,7 @@ static void set_wordbreaks(
                 posLast = posCur;
             }
             /* Fall through */
+
         case WBP_MidNumLet:
             if (((wbcLast == WBP_ALetter) ||
                         (wbcLast == WBP_Hebrew_Letter)) || /* WB6,7 */
@@ -427,7 +429,7 @@ static void set_wordbreaks(
             break;
 
         case WBP_WSegSpace:
-            if (wbcSeqStart == WBP_WSegSpace) /* WB3d */
+            if (wbcLast == WBP_WSegSpace) /* WB3d */
             {
                 set_brks_to(s, brks, posLast, posCur, len,
                             WORDBREAK_NOBREAK, get_next_char);
