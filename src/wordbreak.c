@@ -442,7 +442,7 @@ static void set_wordbreaks(
 
         case WBP_Any:
             /* Check for rule WB3c */
-            if (wbcLast == WBP_ZWJ && is_char_extended_pictographic(ch))
+            if (wbcLast == WBP_ZWJ && ub_is_extended_pictographic(ch))
             {
                 set_brks_to(s, brks, posLast, posCur, len,
                             WORDBREAK_NOBREAK, get_next_char);

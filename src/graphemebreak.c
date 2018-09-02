@@ -145,7 +145,7 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
                 break;
 
             default:
-                if (is_char_extended_pictographic(ch))
+                if (ub_is_extended_pictographic(ch))
                 {
                     rule11Detector = 1;
                 }
@@ -227,7 +227,7 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
         {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB9b
         }
-        else if ((rule11Detector == 3) && is_char_extended_pictographic(ch))
+        else if ((rule11Detector == 3) && ub_is_extended_pictographic(ch))
         {
             brks[brksPos] = GRAPHEMEBREAK_NOBREAK;  // Rule: GB11
         }

@@ -57,4 +57,4 @@ struct ExtendedPictograpic
     utf32_t end;                  /**< End codepoint, inclusive */
 };
 
-bool is_char_extended_pictographic(utf32_t ch);
+bool ub_is_extended_pictographic(utf32_t ch);

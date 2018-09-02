@@ -50,13 +50,13 @@
 #define ARRAY_LEN(x) (sizeof(x) / sizeof(x[0]))
 
 /**
- * Finds out if a codepoint is an extended pictographic codepoint.
+ * Finds out if a codepoint is extended pictographic.
  *
  * @param[in] ch  character to check
  * @return        \c true if the codepoint is extended pictographic;
  *                \c false otherwise
  */
-bool is_char_extended_pictographic(utf32_t ch)
+bool ub_is_extended_pictographic(utf32_t ch)
 {
     int min = 0;
     int max = ARRAY_LEN(ep_prop) - 1;
