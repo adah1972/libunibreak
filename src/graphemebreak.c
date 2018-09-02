@@ -71,8 +71,8 @@ void init_graphemebreak(void)
 /**
  * Gets the grapheme breaking class of a character.
  *
- * @param[in] ch     character to check
- * @return           the grapheme breaking class if found; \c GBP_Other otherwise
+ * @param[in] ch  character to check
+ * @return        the grapheme breaking class if found; \c GBP_Other otherwise
  */
 static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
 {
@@ -96,10 +96,11 @@ static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
 }
 
 /**
- * finds out if a codepoint is an extended pictographic code point
+ * Finds out if a codepoint is an extended pictographic code point.
  *
- * @param[in] ch     character to check
- * @return           true, if the codepoint is extended pictographic
+ * @param[in] ch  character to check
+ * @return        \c true if the codepoint is extended pictographic;
+ *                \c false otherwise
  */
 static bool is_char_extended_pictographic(utf32_t ch)
 {

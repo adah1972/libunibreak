@@ -49,7 +49,7 @@
 
 /**
  * Word break classes.  This is a direct mapping of Table 2 of Unicode
- * Standard Annex 29
+ * Standard Annex 29.
  */
 enum GraphemeBreakClass
 {
@@ -85,13 +85,11 @@ struct GraphemeBreakProperties
 
 /**
  * Struct for entries of extended pictographic properties.  The array of the
- * entries \e must be sorted.
- * All codepoints within this list have the property of being extended pictographic
+ * entries \e must be sorted.  All code points within this list have the
+ * property of being extended pictographic
  */
 struct ExtendedPictograpic
 {
     utf32_t start;                /**< Starting coding point */
     utf32_t end;                  /**< End coding point, including */
 };
-
-

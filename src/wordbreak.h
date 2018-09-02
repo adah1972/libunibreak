@@ -73,4 +73,4 @@ void set_wordbreaks_utf32(
 }
 #endif
 
-#endif
+#endif /* WORDBREAK_H */

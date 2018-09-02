@@ -70,4 +70,4 @@ void set_graphemebreaks_utf32(const utf32_t *s, size_t len,
 }
 #endif
 
-#endif
+#endif /* GRAPHEMEBREAK_H */
