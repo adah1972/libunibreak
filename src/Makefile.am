@@ -44,7 +44,7 @@ EXTRA_DIST = \
 install-exec-hook:
 	- [ -f $(DESTDIR)/${libdir}/libunibreak.a ] && \
 	rm -f $(DESTDIR)/${libdir}/liblinebreak.a && \
-	${LN_S} $(DESTDIR)/${libdir}/libunibreak.a $(DESTDIR)/${libdir}/liblinebreak.a
+	${LN_S} libunibreak.a $(DESTDIR)/${libdir}/liblinebreak.a
 
 distclean-local:
 	rm -f LineBreak.txt WordBreakData.txt GraphemeBreakData.txt filter_dup${EXEEXT}
