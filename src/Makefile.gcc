@@ -134,7 +134,7 @@ $(RELEASE_TARGET): $(RELEASE_DEPS) $(RELEASE_OBJS)
 	$(AR) -r $(RELEASE_TARGET) $(RELEASE_OBJS)
 
 doc:
-	doxygen
+	cd .. && doxygen
 
 LineBreak.txt:
 	wget http://unicode.org/Public/UNIDATA/LineBreak.txt
@@ -193,7 +193,8 @@ graphemebreakdata: GraphemeBreakProperty.txt emoji-data.txt
 filter_dup$(EXEEXT): filter_dup.c
 	gcc -O2 -o filter_dup$(EXEEXT) $<
 
-.PHONY: all debug release clean distclean doc linebreakdata wordbreakdata
+.PHONY: all debug release clean distclean doc \
+	linebreakdata wordbreakdata graphemebreakdata
 
 clean:
 	$(RM) $(DEBUG)/*.o $(DEBUG)/*.dep $(DEBUG_TARGET)
