@@ -1,5 +1,5 @@
 Combining marks and accented letters behave as expected: Your naïveté amuses me!
-Unbreakable:  $(12.35) 2,1234 (12)¢ 12.54¢ (s)he file(s); breakable: ()()
+Unbreakable: $(12.35) 2,1234 (12)¢ 12.54¢ (s)he file(s); breakable: ()()
 Unbreakable pairs: ‘$9’, ‘$[’, ‘$-’, ‘-9’, ‘/9’, ‘99’, ‘,9’, ‘9%’ ‘]%’
 Hyphenated words is now breakable: server-side
 Em dashes can be broken on either side, but not in the middle: A——B
@@ -10,3 +10,4 @@ Here's an apostrophe; and there’s a right single quotation mark.
 Spanish inverted punctuation marks are always opening (e.g.)¡Foo bar!
 There should be no break after Hebrew + Hyphen like א-ת, or between solidus and Hebrew like /ת.
 Lines like this should not have their punctuation broken!… 
+Emojis joined by ZWJs should not be broken: 👩‍❤️‍👩.
