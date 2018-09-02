@@ -210,7 +210,7 @@ static void set_wordbreaks(
                 posLast = posCur;
                 break;
             }
-            /* Fall off */
+            /* Fall through */
 
         case WBP_Newline:
             /* WB3a,3b */
@@ -305,7 +305,7 @@ static void set_wordbreaks(
                 wbcSeqStart = wbcCur;
                 posLast = posCur;
             }
-            /* No break on purpose */
+            /* Fall through */
         case WBP_MidNumLet:
             if (((wbcLast == WBP_ALetter) ||
                         (wbcLast == WBP_Hebrew_Letter)) || /* WB6,7 */
@@ -434,7 +434,7 @@ static void set_wordbreaks(
                 posLast = posCur;
                 break;
             }
-            /* Fall off */
+            /* Fall through */
 
         case WBP_Any:
             /* Allow breaks and reset */
