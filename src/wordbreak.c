@@ -54,6 +54,7 @@
 #include "unibreakdef.h"
 #include "wordbreak.h"
 #include "wordbreakdata.c"
+#include "emojidef.h"
 
 #define ARRAY_LEN(x) (sizeof(x) / sizeof(x[0]))
 
@@ -239,7 +240,8 @@ static void set_wordbreaks(
                 brks[posCur - 1] = WORDBREAK_NOBREAK;
                 /* WB3c and WB3d precede 4, so no intervening Extend
                  * chars allowed. */
-                if (wbcSeqStart != WBP_ZWJ && wbcSeqStart != WBP_WSegSpace)
+                if (wbcCur != WBP_ZWJ && wbcSeqStart != WBP_ZWJ &&
+                    wbcSeqStart != WBP_WSegSpace)
                 {
                     /* "inherit" the previous class. */
                     wbcCur = wbcLast;
@@ -439,6 +441,15 @@ static void set_wordbreaks(
             /* Fall through */
 
         case WBP_Any:
+            /* Check for rule WB3c */
+            if (wbcLast == WBP_ZWJ && is_char_extended_pictographic(ch))
+            {
+                set_brks_to(s, brks, posLast, posCur, len,
+                            WORDBREAK_NOBREAK, get_next_char);
+                posLast = posCur;
+                break;
+            }
+
             /* Allow breaks and reset */
             set_brks_to(s, brks, posLast, posCur, len,
                         WORDBREAK_BREAK, get_next_char);
