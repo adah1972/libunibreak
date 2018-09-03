@@ -80,8 +80,9 @@ enum BreakAction
 
 /**
  * Break action pair table.  This is a direct mapping of Table 2 of
- * Unicode Standard Annex 14, Revision 37, except for ZWJ (as per LB8a
- * of Revision 41) and CB (manually added as per LB20).
+ * Unicode Standard Annex 14, Revision 37, except for ZWJ (manually
+ * adjusted after special processing as per LB8a of Revision 41) and CB
+ * (manually added as per LB20).
  */
 static enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* OP */
@@ -273,15 +274,15 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* ZWJ */
         IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
-        IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
-        CMI_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
-        IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK },
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* CB */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, DIR_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
 };
 
 /**
@@ -614,6 +615,12 @@ static int get_lb_result_lookup(
         break;
     }
 
+    /* Special processing due to rule LB8a */
+    if (lbpCtx->fLb8aZwj)
+    {
+        brk = LINEBREAK_NOBREAK;
+    }
+
     /* Special processing due to rule LB21a */
     if (lbpCtx->fLb21aHebrew &&
         (lbpCtx->lbcCur == LBP_HY || lbpCtx->lbcCur == LBP_BA))
@@ -665,6 +672,8 @@ void lb_init_break_context(
     lbpCtx->lbcCur = resolve_lb_class(
                         get_char_lb_class_lang(ch, lbpCtx->lbpLang),
                         lbpCtx->lang);
+    lbpCtx->fLb8aZwj =
+        (get_char_lb_class_lang(ch, lbpCtx->lbpLang) == LBP_ZWJ);
     lbpCtx->fLb21aHebrew = 0;
     lbpCtx->cLb30aRI = 0;
     treat_first_char(lbpCtx);
@@ -702,6 +711,17 @@ int lb_process_next_char(
     default:
         break;
     }
+
+    /* Special processing due to rule LB8a */
+    if (lbpCtx->lbcNew == LBP_ZWJ)
+    {
+        lbpCtx->fLb8aZwj = true;
+    }
+    else
+    {
+        lbpCtx->fLb8aZwj = false;
+    }
+
     return brk;
 }
 
