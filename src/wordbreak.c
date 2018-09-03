@@ -56,8 +56,6 @@
 #include "wordbreakdata.c"
 #include "emojidef.h"
 
-#define ARRAY_LEN(x) (sizeof(x) / sizeof(x[0]))
-
 /**
  * Initializes the wordbreak internals.  It currently does nothing, but
  * it may in the future.

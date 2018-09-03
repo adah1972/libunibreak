@@ -47,8 +47,6 @@
 #include "emojidef.h"
 #include "emojidata.c"
 
-#define ARRAY_LEN(x) (sizeof(x) / sizeof(x[0]))
-
 /**
  * Finds out if a codepoint is extended pictographic.
  *
