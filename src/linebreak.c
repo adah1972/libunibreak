@@ -626,7 +626,7 @@ static int get_lb_result_lookup(
         (lbpCtx->lbcCur == LBP_HY || lbpCtx->lbcCur == LBP_BA))
     {
         brk = LINEBREAK_NOBREAK;
-        lbpCtx->fLb21aHebrew = 0;
+        lbpCtx->fLb21aHebrew = false;
     }
     else
     {
@@ -674,7 +674,7 @@ void lb_init_break_context(
                         lbpCtx->lang);
     lbpCtx->fLb8aZwj =
         (get_char_lb_class_lang(ch, lbpCtx->lbpLang) == LBP_ZWJ);
-    lbpCtx->fLb21aHebrew = 0;
+    lbpCtx->fLb21aHebrew = false;
     lbpCtx->cLb30aRI = 0;
     treat_first_char(lbpCtx);
 }
