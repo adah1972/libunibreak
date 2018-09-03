@@ -11,7 +11,7 @@ EXTRA_DIST = \
 	doc \
 	tools
 
-.PHONY: doc linebreakdata wordbreakdata graphemebreakdata
+.PHONY: doc linebreakdata wordbreakdata graphemebreakdata emojidata
 
 doc:
 	cd ${srcdir} && doxygen
@@ -24,3 +24,6 @@ wordbreakdata:
 
 graphemebreakdata:
 	cd src && ${MAKE} graphemebreakdata
+
+emojidata:
+	cd src && ${MAKE} emojidata
