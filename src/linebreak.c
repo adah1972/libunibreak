@@ -674,6 +674,8 @@ void lb_init_break_context(
                         lbpCtx->lang);
     lbpCtx->fLb8aZwj =
         (get_char_lb_class_lang(ch, lbpCtx->lbpLang) == LBP_ZWJ);
+    lbpCtx->fLb10LeadSpace =
+        (get_char_lb_class_lang(ch, lbpCtx->lbpLang) == LBP_SP);
     lbpCtx->fLb21aHebrew = false;
     lbpCtx->cLb30aRI = 0;
     treat_first_char(lbpCtx);
@@ -720,6 +722,14 @@ int lb_process_next_char(
     else
     {
         lbpCtx->fLb8aZwj = false;
+    }
+
+    /* Special processing due to rule LB10 */
+    if (lbpCtx->fLb10LeadSpace)
+    {
+        if (lbpCtx->lbcNew == LBP_CM || lbpCtx->lbcNew == LBP_ZWJ)
+            brk = LINEBREAK_ALLOWBREAK;
+        lbpCtx->fLb10LeadSpace = false;
     }
 
     return brk;

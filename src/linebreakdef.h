@@ -146,6 +146,7 @@ struct LineBreakContext
     enum LineBreakClass lbcNew;     /**< Breaking class of next codepoint */
     enum LineBreakClass lbcLast;    /**< Breaking class of last codepoint */
     bool fLb8aZwj;                  /**< Flag for ZWJ (LB8a) */
+    bool fLb10LeadSpace;            /**< Flag for leading space (LB10) */
     bool fLb21aHebrew;              /**< Flag for Hebrew letters (LB21a) */
     int cLb30aRI;                   /**< Count of RI characters (LB30a) */
 };
