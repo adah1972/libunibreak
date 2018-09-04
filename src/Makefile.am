@@ -50,7 +50,7 @@ install-exec-hook:
 	${LN_S} libunibreak.a $(DESTDIR)/${libdir}/liblinebreak.a
 
 distclean-local:
-	rm -f LineBreak.txt WordBreakData.txt GraphemeBreakData.txt filter_dup${EXEEXT}
+	rm -f LineBreak.txt WordBreakData.txt GraphemeBreakData.txt emoji-data.txt LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt filter_dup${EXEEXT}
 
 
 LineBreak.txt:
@@ -116,8 +116,7 @@ emojidata: emoji-data.txt
 
 check_PROGRAMS = tests
 
-tests_SOURCES = \
-				tests.c
+tests_SOURCES = tests.c
 tests_CPPFLAGS = -I$(srcdir)
 tests_LDADD = libunibreak.la
 tests_DEPENDENCIES = libunibreak.la

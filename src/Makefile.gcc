@@ -204,7 +204,7 @@ clean:
 	$(RM) $(RELEASE)/*.o $(RELEASE)/*.dep $(RELEASE_TARGET)
 
 distclean: clean
-	$(RM) $(DEBUG)/* $(RELEASE)/* filter_dup$(EXEEXT) tags LineBreak.txt WordBreakProperty.txt GraphemeBreakProperty.txt
+	$(RM) $(DEBUG)/* $(RELEASE)/* filter_dup$(EXEEXT) tags LineBreak.txt WordBreakProperty.txt GraphemeBreakProperty.txt emoji-data.txt
 	-rmdir $(DEBUG) 2> $(DEVNUL)
 	-rmdir $(RELEASE) 2> $(DEVNUL)
 
