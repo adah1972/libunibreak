@@ -209,11 +209,13 @@ int main(int argc, char *argv[])
     fclose(fp);
 
     unsigned int testsPassed = testsTotal - testsFailed;
-    printf("\n%s: Passed %d out of %d (%d%%)", filename, testsPassed,
+    if (testsFailed > 0)
+        putchar('\n');
+    printf("%s: Passed %d out of %d (%d%%)", filename, testsPassed,
            testsTotal, testsPassed * 100 / testsTotal);
     if (testsSkipped > 0)
        printf(", and skipped %d", testsSkipped);
-    printf("\n");
+    printf("\n\n");
 
     return (testsFailed > 0);
 }
