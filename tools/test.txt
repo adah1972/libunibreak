@@ -1,6 +1,6 @@
 Combining marks and accented letters behave as expected: Your naïveté amuses me!
 Unbreakable: $(12.35) 2,1234 (12)¢ 12.54¢ (s)he file(s); breakable: ()()
-Unbreakable pairs: ‘$9’, ‘$[’, ‘$-’, ‘-9’, ‘/9’, ‘99’, ‘,9’, ‘9%’ ‘]%’
+Unbreakable pairs: ‘$9’, ‘$[’, ‘$-’, ‘-9’, ‘/9’, ‘99’, ‘,9’, ‘9%’, ‘]%’
 Hyphenated words is now breakable: server-side
 Em dashes can be broken on either side, but not in the middle: A——B
 NOT each space is breakable, like the last one in the following sentence (in English): He did say, “He said, ‘Good morning.’ ”
