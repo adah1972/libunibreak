@@ -1,6 +1,5 @@
 /*
- * Grapheme breaking in a Unicode sequence.  Designed to be used in a
- * generic text renderer.
+ * Emoji-related routine and data.
  *
  * Copyright (C) 2018 Andreas Röver <roever at users dot sf dot net>
  *
@@ -20,26 +19,12 @@
  *    not be misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source
  *    distribution.
- *
- * The main reference is Unicode Standard Annex 29 (UAX #29):
- *      <URL:http://unicode.org/reports/tr29>
- *
- * When this library was designed, this annex was at Revision 29, for
- * Unicode 9.0.0:
- *      <URL:http://www.unicode.org/reports/tr29/tr29-29.html>
- *
- * This library has been updated according to Revision 33, for
- * Unicode 11.0.0:
- *      <URL:http://www.unicode.org/reports/tr29/tr29-33.html>
- *
- * The Unicode Terms of Use are available at
- *      <URL:http://www.unicode.org/copyright.html>
  */
 
 /**
  * @file    emojidef.c
  *
- * Emoji-related routines.
+ * Emoji-related routine and data that are used internally.
  *
  * @author  Andreas Röver
  */
