@@ -122,8 +122,8 @@ tests_LDADD = libunibreak.la
 tests_DEPENDENCIES = libunibreak.la
 
 check: LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt $(check_PROGRAMS)
-	./tests word
 	./tests line
+	./tests word
 	./tests grapheme
 
 LineBreakTest.txt:
