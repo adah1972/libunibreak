@@ -1,3 +1,10 @@
+New in libunibreak 4.1
+
+- Update the code and data to conform to Unicode 11.0.0, especially
+  adding support for extended pictographs in word and grapheme breaking
+- ZWJ support has been much improved (it was broken)
+- Make minor tweaks to the project files
+
 New in libunibreak 4.0
 
 - Update the code and data to conform to Unicode 9.0.0
@@ -22,7 +29,8 @@ New in libunibreak 1.1
 New in libunibreak 1.0
 
 - Add word breaking support
-- Change the library name to "libunibreak", while keeping maximum compatibility
+- Change the library name to "libunibreak", while keeping maximum
+  compatibility
 - Add pkg-config support
 
 New in liblinebreak 2.1
