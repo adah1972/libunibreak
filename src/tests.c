@@ -1,11 +1,10 @@
 /* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 
 /*
- * Word breaking in a Unicode sequence.  Designed to be used in a
- * generic text renderer.
+ * Test executer for libunibreak.
  *
- * Copyright (C) 2016 Andreas Röver <roever at users dot sf dot net>
  * Copyright (C) 2016 Tom Hacohen <tom at stosb dot com>
+ * Copyright (C) 2016 Andreas Röver <roever at users dot sf dot net>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
