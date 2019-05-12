@@ -28,12 +28,8 @@
  * Unicode 9.0.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-29.html>
  *
- * This library has been updated according to Revision 33, for
- * Unicode 11.0.0:
- *      <URL:http://www.unicode.org/reports/tr29/tr29-33.html>
- *
  * This library has been updated according to Revision 35, for
- * Unicode 11.0.0:
+ * Unicode 12.0.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-35.html>
  *
  * The Unicode Terms of Use are available at
