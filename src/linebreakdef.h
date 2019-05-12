@@ -31,9 +31,9 @@
  * Unicode 5.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 41, for
- * Unicode 11.0.0:
- *      <URL:http://www.unicode.org/reports/tr14/tr14-41.html>
+ * This library has been updated according to Revision 43, for
+ * Unicode 12.0.0:
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-43.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -52,8 +52,8 @@
 #include "unibreakdef.h"
 
 /**
- * Line break classes.  This is a direct mapping of Table 1 of Unicode
- * Standard Annex 14, Revision 26.
+ * Line break classes.  This is a mapping of Table 1 of Unicode
+ * Standard Annex 14.
  */
 enum LineBreakClass
 {

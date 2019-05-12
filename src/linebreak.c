@@ -31,7 +31,7 @@
  * Unicode 5.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 41, for
+ * This library has been updated according to Revision 43, for
  * Unicode 12.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-43.html>
  *

@@ -31,7 +31,7 @@
  * Unicode 6.0.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-17.html>
  *
- * This library has been updated according to Revision 33, for
+ * This library has been updated according to Revision 35, for
  * Unicode 12.0.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-35.html>
  *
