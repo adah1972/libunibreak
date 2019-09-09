@@ -99,27 +99,33 @@ void putchar_iconv(iconv_t ic, const char* buf, size_t count)
     }
 }
 
+/* Get the byte length of a UTF-8 sequence */
+size_t get_utf8_char_len(char lead)
+{
+    unsigned char ch = (unsigned char)lead;
+    if (ch < 0xC2 || ch > 0xF4) {
+        /* One-byte sequence, tail (should not occur), or invalid */
+        return 1;
+    } else if (ch < 0xE0) {
+        /* Two-byte sequence */
+        return 2;
+    } else if (ch < 0xF0) {
+        /* Three-byte sequence */
+        return 3;
+    } else {
+        /* Four-byte sequence */
+        return 4;
+    }
+}
+
 /* Output a UTF-8 string via libiconv */
 void puts_iconv(const char *s, iconv_t ic)
 {
     unsigned char ch;
-    while ( (ch = (unsigned char)*s))
-    {
-        if (ch < 0xC0)
-        {
-            putchar_iconv(ic, s, 1);
-            s += 1;
-        }
-        else if (ch < 0xE0)
-        {
-            putchar_iconv(ic, s, 2);
-            s += 2;
-        }
-        else
-        {
-            putchar_iconv(ic, s, 3);
-            s += 3;
-        }
+    while ( (ch = (unsigned char)*s)) {
+        size_t char_len = get_utf8_char_len(ch);
+        putchar_iconv(ic, s, char_len);
+        s += char_len;
     }
 }
 
