@@ -1,6 +1,6 @@
 /* The content of this file is generated from:
-# GraphemeBreakProperty-12.1.0.txt
-# Date: 2019-03-10, 10:53:12 GMT
+# GraphemeBreakProperty-13.0.0.txt
+# Date: 2019-10-21, 14:30:35 GMT
 */
 
 #include "graphemebreakdef.h"
@@ -99,7 +99,7 @@ static const struct GraphemeBreakProperties gb_prop_default[] = {
 	{0x0B47, 0x0B48, GBP_SpacingMark},
 	{0x0B4B, 0x0B4C, GBP_SpacingMark},
 	{0x0B4D, 0x0B4D, GBP_Extend},
-	{0x0B56, 0x0B56, GBP_Extend},
+	{0x0B55, 0x0B56, GBP_Extend},
 	{0x0B57, 0x0B57, GBP_Extend},
 	{0x0B62, 0x0B63, GBP_Extend},
 	{0x0B82, 0x0B82, GBP_Extend},
@@ -146,6 +146,7 @@ static const struct GraphemeBreakProperties gb_prop_default[] = {
 	{0x0D4E, 0x0D4E, GBP_Prepend},
 	{0x0D57, 0x0D57, GBP_Extend},
 	{0x0D62, 0x0D63, GBP_Extend},
+	{0x0D81, 0x0D81, GBP_Extend},
 	{0x0D82, 0x0D83, GBP_SpacingMark},
 	{0x0DCA, 0x0DCA, GBP_Extend},
 	{0x0DCF, 0x0DCF, GBP_Extend},
@@ -233,6 +234,7 @@ static const struct GraphemeBreakProperties gb_prop_default[] = {
 	{0x1A7F, 0x1A7F, GBP_Extend},
 	{0x1AB0, 0x1ABD, GBP_Extend},
 	{0x1ABE, 0x1ABE, GBP_Extend},
+	{0x1ABF, 0x1AC0, GBP_Extend},
 	{0x1B00, 0x1B03, GBP_Extend},
 	{0x1B04, 0x1B04, GBP_SpacingMark},
 	{0x1B34, 0x1B34, GBP_Extend},
@@ -306,6 +308,7 @@ static const struct GraphemeBreakProperties gb_prop_default[] = {
 	{0xA823, 0xA824, GBP_SpacingMark},
 	{0xA825, 0xA826, GBP_Extend},
 	{0xA827, 0xA827, GBP_SpacingMark},
+	{0xA82C, 0xA82C, GBP_Extend},
 	{0xA880, 0xA881, GBP_SpacingMark},
 	{0xA8B4, 0xA8C3, GBP_SpacingMark},
 	{0xA8C4, 0xA8C5, GBP_Extend},
@@ -1167,6 +1170,7 @@ static const struct GraphemeBreakProperties gb_prop_default[] = {
 	{0x10A3F, 0x10A3F, GBP_Extend},
 	{0x10AE5, 0x10AE6, GBP_Extend},
 	{0x10D24, 0x10D27, GBP_Extend},
+	{0x10EAB, 0x10EAC, GBP_Extend},
 	{0x10F46, 0x10F50, GBP_Extend},
 	{0x11000, 0x11000, GBP_SpacingMark},
 	{0x11001, 0x11001, GBP_Extend},
@@ -1193,6 +1197,8 @@ static const struct GraphemeBreakProperties gb_prop_default[] = {
 	{0x111BF, 0x111C0, GBP_SpacingMark},
 	{0x111C2, 0x111C3, GBP_Prepend},
 	{0x111C9, 0x111CC, GBP_Extend},
+	{0x111CE, 0x111CE, GBP_SpacingMark},
+	{0x111CF, 0x111CF, GBP_Extend},
 	{0x1122C, 0x1122E, GBP_SpacingMark},
 	{0x1122F, 0x11231, GBP_Extend},
 	{0x11232, 0x11233, GBP_SpacingMark},
@@ -1264,6 +1270,17 @@ static const struct GraphemeBreakProperties gb_prop_default[] = {
 	{0x1182F, 0x11837, GBP_Extend},
 	{0x11838, 0x11838, GBP_SpacingMark},
 	{0x11839, 0x1183A, GBP_Extend},
+	{0x11930, 0x11930, GBP_Extend},
+	{0x11931, 0x11935, GBP_SpacingMark},
+	{0x11937, 0x11938, GBP_SpacingMark},
+	{0x1193B, 0x1193C, GBP_Extend},
+	{0x1193D, 0x1193D, GBP_SpacingMark},
+	{0x1193E, 0x1193E, GBP_Extend},
+	{0x1193F, 0x1193F, GBP_Prepend},
+	{0x11940, 0x11940, GBP_SpacingMark},
+	{0x11941, 0x11941, GBP_Prepend},
+	{0x11942, 0x11942, GBP_SpacingMark},
+	{0x11943, 0x11943, GBP_Extend},
 	{0x119D1, 0x119D3, GBP_SpacingMark},
 	{0x119D4, 0x119D7, GBP_Extend},
 	{0x119DA, 0x119DB, GBP_Extend},
@@ -1315,6 +1332,8 @@ static const struct GraphemeBreakProperties gb_prop_default[] = {
 	{0x16F4F, 0x16F4F, GBP_Extend},
 	{0x16F51, 0x16F87, GBP_SpacingMark},
 	{0x16F8F, 0x16F92, GBP_Extend},
+	{0x16FE4, 0x16FE4, GBP_Extend},
+	{0x16FF0, 0x16FF1, GBP_SpacingMark},
 	{0x1BC9D, 0x1BC9E, GBP_Extend},
 	{0x1BCA0, 0x1BCA3, GBP_Control},
 	{0x1D165, 0x1D165, GBP_Extend},
