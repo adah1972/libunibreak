@@ -14,7 +14,9 @@ int main()
 	for (;;)
 	{
 		if (fgets(s, sizeof s, stdin) == NULL)
+        {
 			break;
+        }
 		if (strstr(s, "LBP_") == NULL || strstr(s, "LBP_Undef") != NULL)
 		{
 			if (lastprop[0])
