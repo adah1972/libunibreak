@@ -524,6 +524,7 @@ static void treat_first_char(
         break;
     case LBP_SP:
         lbpCtx->lbcCur = LBP_WJ;        /* Leading space treated as WJ */
+        lbpCtx->lbcNew = LBP_SP;
         break;
     default:
         break;
