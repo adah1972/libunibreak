@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2019 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2020 Wu Yongwei <wuyongwei at gmail dot com>
  * Copyright (C) 2013 Petr Filipsky <philodej at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
@@ -31,8 +31,8 @@
  * Unicode 5.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 43, for
- * Unicode 12.0.0:
+ * This library has been updated according to Revision 45, for
+ * Unicode 13.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-43.html>
  *
  * The Unicode Terms of Use are available at
@@ -80,9 +80,13 @@ enum BreakAction
 
 /**
  * Break action pair table.  This is a direct mapping of Table 2 of
- * Unicode Standard Annex 14, Revision 37, except for ZWJ (manually
- * adjusted after special processing as per LB8a of Revision 41) and CB
- * (manually added as per LB20).
+ * Unicode Standard Annex 14, Revision 37, except for the following:
+ *
+ * - CB (manually added as per LB20)
+ * - ZWJ (manually adjusted after special processing as per LB8a of
+ *   Revision 41)
+ * - CL, CP, NS, SY, IS, PR, PO, HY, BA,B2, and RI (manually adjusted as
+ *   per LB22 of Revision 45)
  */
 static enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* OP */
@@ -94,13 +98,13 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* CL */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, PRH_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* CP */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, PRH_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
-        DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* QU */
@@ -118,7 +122,7 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* NS */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* EX */
@@ -130,25 +134,25 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* SY */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, IND_BRK,
-        DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* IS */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, IND_BRK,
-        DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* PR */
         IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, IND_BRK,
-        IND_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        IND_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK },
     {   /* PO */
         IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, IND_BRK,
-        DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* NU */
@@ -184,13 +188,13 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* HY */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, DIR_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* BA */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, DIR_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* BB */
@@ -202,7 +206,7 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* B2 */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, PRH_BRK, PRH_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, PRH_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* ZW */
@@ -256,7 +260,7 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* RI */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         IND_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* EB */
