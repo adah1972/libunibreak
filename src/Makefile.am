@@ -63,7 +63,7 @@ GraphemeBreakProperty.txt:
 	wget http://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakProperty.txt
 
 emoji-data.txt:
-	wget https://www.unicode.org/Public/emoji/12.0/emoji-data.txt
+	wget https://www.unicode.org/Public/UNIDATA/emoji/emoji-data.txt
 
 
 linebreakdata: ${builddir}/filter_dup LineBreak.txt
