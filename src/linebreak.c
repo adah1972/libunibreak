@@ -353,7 +353,9 @@ void init_linebreak(void)
 
     len = 0;
     while (lb_prop_default[len].prop != LBP_Undefined)
+    {
         ++len;
+    }
     step = len / LINEBREAK_INDEX_SIZE;
     iPropDefault = 0;
     for (i = 0; i < LINEBREAK_INDEX_SIZE; ++i)
@@ -403,7 +405,9 @@ static enum LineBreakClass get_char_lb_class(
     while (lbp->prop != LBP_Undefined && ch >= lbp->start)
     {
         if (ch <= lbp->end)
+        {
             return lbp->prop;
+        }
         ++lbp;
     }
     return LBP_XX;
@@ -421,7 +425,9 @@ static enum LineBreakClass get_char_lb_class_default(
 {
     size_t i = 0;
     while (ch > lb_prop_index[i].end)
+    {
         ++i;
+    }
     assert(i < LINEBREAK_INDEX_SIZE);
     return get_char_lb_class(ch, lb_prop_index[i].lbp);
 }
@@ -449,7 +455,9 @@ static enum LineBreakClass get_char_lb_class_lang(
     {
         lbcResult = get_char_lb_class(ch, lbpLang);
         if (lbcResult != LBP_XX)
+        {
             return lbcResult;
+        }
     }
 
     /* Find the generic language-specific line breaking class, if no
@@ -613,7 +621,9 @@ static int get_lb_result_lookup(
     case CMP_BRK:
         brk = LINEBREAK_NOBREAK;
         if (lbpCtx->lbcLast != LBP_SP)
+        {
             return brk;                 /* Do not update lbcCur */
+        }
         break;
     case PRH_BRK:
         brk = LINEBREAK_NOBREAK;
@@ -733,7 +743,9 @@ int lb_process_next_char(
     if (lbpCtx->fLb10LeadSpace)
     {
         if (lbpCtx->lbcNew == LBP_CM || lbpCtx->lbcNew == LBP_ZWJ)
+        {
             brk = LINEBREAK_ALLOWBREAK;
+        }
         lbpCtx->fLb10LeadSpace = false;
     }
 
@@ -784,7 +796,9 @@ void set_linebreaks(
     --posLast;  /* To be ++'d later */
     ch = get_next_char(s, len, &posCur);
     if (ch == EOS)
+    {
         return;
+    }
     lb_init_break_context(&lbCtx, ch, lang);
 
     /* Process a line till an explicit break or end of string */
@@ -797,7 +811,9 @@ void set_linebreaks(
         assert(posLast == posCur - 1);
         ch = get_next_char(s, len, &posCur);
         if (ch == EOS)
+        {
             break;
+        }
         brks[posLast] = lb_process_next_char(&lbCtx, ch);
     }
 

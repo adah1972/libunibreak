@@ -50,11 +50,17 @@ bool ub_is_extended_pictographic(utf32_t ch)
         mid = (min + max) / 2;
 
         if (ch < ep_prop[mid].start)
+        {
             max = mid - 1;
+        }
         else if (ch > ep_prop[mid].end)
+        {
             min = mid + 1;
+        }
         else
+        {
             return true;
+        }
     } while (min <= max);
 
     return false;

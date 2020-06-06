@@ -28,9 +28,9 @@
  * Unicode 9.0.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-29.html>
  *
- * This library has been updated according to Revision 35, for
- * Unicode 12.0.0:
- *      <URL:http://www.unicode.org/reports/tr29/tr29-35.html>
+ * This library has been updated according to Revision 37, for
+ * Unicode 13.0.0:
+ *      <URL:http://www.unicode.org/reports/tr29/tr29-37.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -76,11 +76,17 @@ static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
         mid = (min + max) / 2;
 
         if (ch < gb_prop_default[mid].start)
+        {
             max = mid - 1;
+        }
         else if (ch > gb_prop_default[mid].end)
+        {
             min = mid + 1;
+        }
         else
+        {
             return gb_prop_default[mid].prop;
+        }
     } while (min <= max);
 
     return GBP_Other;
@@ -120,38 +126,38 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
         // 3 and rule 11 can be applied below
         switch (current_class)
         {
-            case GBP_ZWJ:
-                if (rule11Detector == 1 || rule11Detector == 2)
-                {
-                    rule11Detector = 3;
-                }
-                else
-                {
-                    rule11Detector = 0;
-                }
-                break;
+        case GBP_ZWJ:
+            if (rule11Detector == 1 || rule11Detector == 2)
+            {
+                rule11Detector = 3;
+            }
+            else
+            {
+                rule11Detector = 0;
+            }
+            break;
 
-            case GBP_Extend:
-                if (rule11Detector == 1 || rule11Detector == 2)
-                {
-                    rule11Detector = 2;
-                }
-                else
-                {
-                    rule11Detector = 0;
-                }
-                break;
+        case GBP_Extend:
+            if (rule11Detector == 1 || rule11Detector == 2)
+            {
+                rule11Detector = 2;
+            }
+            else
+            {
+                rule11Detector = 0;
+            }
+            break;
 
-            default:
-                if (ub_is_extended_pictographic(ch))
-                {
-                    rule11Detector = 1;
-                }
-                else
-                {
-                    rule11Detector = 0;
-                }
-                break;
+        default:
+            if (ub_is_extended_pictographic(ch))
+            {
+                rule11Detector = 1;
+            }
+            else
+            {
+                rule11Detector = 0;
+            }
+            break;
         }
 
         enum GraphemeBreakClass prev_class = current_class;

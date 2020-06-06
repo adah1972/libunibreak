@@ -57,7 +57,9 @@ utf32_t ub_get_next_char_utf8(
 
     assert(*ip <= len);
     if (*ip == len)
+    {
         return EOS;
+    }
     ch = s[*ip];
 
     if (ch < 0xC2 || ch > 0xF4)
@@ -68,7 +70,9 @@ utf32_t ub_get_next_char_utf8(
     else if (ch < 0xE0)
     {   /* Two-byte sequence */
         if (*ip + 2 > len)
+        {
             return EOS;
+        }
         res = ((ch & 0x1F) << 6) + (s[*ip + 1] & 0x3F);
         *ip += 2;
         return res;
@@ -76,7 +80,9 @@ utf32_t ub_get_next_char_utf8(
     else if (ch < 0xF0)
     {   /* Three-byte sequence */
         if (*ip + 3 > len)
+        {
             return EOS;
+        }
         res = ((ch & 0x0F) << 12) +
               ((s[*ip + 1] & 0x3F) << 6) +
               ((s[*ip + 2] & 0x3F));
@@ -86,7 +92,9 @@ utf32_t ub_get_next_char_utf8(
     else
     {   /* Four-byte sequence */
         if (*ip + 4 > len)
+        {
             return EOS;
+        }
         res = ((ch & 0x07) << 18) +
               ((s[*ip + 1] & 0x3F) << 12) +
               ((s[*ip + 2] & 0x3F) << 6) +
@@ -116,7 +124,9 @@ utf32_t ub_get_next_char_utf16(
 
     assert(*ip <= len);
     if (*ip == len)
+    {
         return EOS;
+    }
     ch = s[(*ip)++];
 
     if (ch < 0xD800 || ch > 0xDBFF)
@@ -153,6 +163,8 @@ utf32_t ub_get_next_char_utf32(
 {
     assert(*ip <= len);
     if (*ip == len)
+    {
         return EOS;
+    }
     return s[(*ip)++];
 }
