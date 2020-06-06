@@ -1,4 +1,3 @@
-#noinst_PROGRAMS = filter_dup
 include_HEADERS = \
 	unibreakbase.h \
 	unibreakdef.h \
@@ -21,8 +20,9 @@ libunibreak_la_SOURCES = \
 	wordbreak.c
 
 EXTRA_DIST = \
-	LineBreak1.sed \
-	LineBreak2.sed \
+	extract_data.sed \
+	expand_single.sed \
+	filter_dup.py \
 	linebreakdata1.tmpl \
 	linebreakdata2.tmpl \
 	linebreakdata3.tmpl \
@@ -37,7 +37,6 @@ EXTRA_DIST = \
 	emojidata.c \
 	Makefile.gcc \
 	Makefile.msvc \
-	filter_dup.c \
 	sort_numeric_hex.py \
 	wordbreakdef.h \
 	graphemebreakdef.h \
@@ -50,7 +49,7 @@ install-exec-hook:
 	${LN_S} libunibreak.a $(DESTDIR)/${libdir}/liblinebreak.a
 
 distclean-local:
-	rm -f LineBreak.txt WordBreakData.txt GraphemeBreakData.txt emoji-data.txt LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt filter_dup${EXEEXT}
+	rm -f LineBreak.txt WordBreakData.txt GraphemeBreakData.txt emoji-data.txt LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt
 
 
 LineBreak.txt:
@@ -66,50 +65,48 @@ emoji-data.txt:
 	wget https://www.unicode.org/Public/UNIDATA/emoji/emoji-data.txt
 
 
-linebreakdata: ${builddir}/filter_dup LineBreak.txt
-	sed -E -n -f ${srcdir}/LineBreak1.sed LineBreak.txt > tmp.txt
-	sed -E -f ${srcdir}/LineBreak2.sed tmp.txt | ${builddir}/filter_dup > tmp.c
+linebreakdata: LineBreak.txt
+	sed -E -n -f ${srcdir}/extract_data.sed LineBreak.txt | \
+	sed -E -f ${srcdir}/expand_single.sed | \
+	${srcdir}/filter_dup.py | \
+	sed -E 's/^([0-9A-F]+)\.\.([0-9A-F]+); *(.*)/'$$'\t''{ 0x\1, 0x\2, LBP_\3 },/' > tmp.c
 	head -2 LineBreak.txt > tmp.txt
 	cat ${srcdir}/linebreakdata1.tmpl tmp.txt ${srcdir}/linebreakdata2.tmpl tmp.c ${srcdir}/linebreakdata3.tmpl > ${srcdir}/linebreakdata.c
 	rm tmp.txt tmp.c
 
 wordbreakdata: WordBreakProperty.txt
-	sed -E -n 's/(^[0-9A-F.]+)/\1/p' WordBreakProperty.txt > tmp2.txt
-	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
-	${srcdir}/sort_numeric_hex.py tmp2.txt > tmp.txt
-	rm tmp2.txt tmp2.txt.bak
-	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; *([A-Za-z_]+).*/'$$'\t''{0x\1, 0x\2, WBP_\3},/p' tmp.txt
+	sed -E -n -f ${srcdir}/extract_data.sed WordBreakProperty.txt | \
+	sed -E -f ${srcdir}/expand_single.sed | \
+	${srcdir}/sort_numeric_hex.py | \
+	sed -E 's/^([0-9A-F]+)\.\.([0-9A-F]+); *(.*)/'$$'\t''{0x\1, 0x\2, WBP_\3},/' > tmp.txt
 	echo "/* The content of this file is generated from:" > ${srcdir}/wordbreakdata.c
 	head -2 WordBreakProperty.txt >> ${srcdir}/wordbreakdata.c
 	echo "*/" >> ${srcdir}/wordbreakdata.c
 	cat ${srcdir}/wordbreakdata1.tmpl tmp.txt ${srcdir}/wordbreakdata2.tmpl >> ${srcdir}/wordbreakdata.c
-	rm tmp.txt tmp.txt.bak
+	rm tmp.txt
 
 graphemebreakdata: GraphemeBreakProperty.txt
-	sed -E -n 's/(^[0-9A-F.]+)/\1/p' GraphemeBreakProperty.txt > tmp2.txt
-	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
-	${srcdir}/sort_numeric_hex.py tmp2.txt > tmp.txt
-	rm tmp2.txt tmp2.txt.bak
-	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; *([A-Za-z_]+).*/'$$'\t''{0x\1, 0x\2, GBP_\3},/p' tmp.txt
+	sed -E -n -f ${srcdir}/extract_data.sed GraphemeBreakProperty.txt | \
+	sed -E -f ${srcdir}/expand_single.sed | \
+	${srcdir}/sort_numeric_hex.py | \
+	sed -E 's/^([0-9A-F]+)\.\.([0-9A-F]+); *(.*)/'$$'\t''{0x\1, 0x\2, GBP_\3},/' > tmp.txt
 	echo "/* The content of this file is generated from:" > ${srcdir}/graphemebreakdata.c
 	head -2 GraphemeBreakProperty.txt >> ${srcdir}/graphemebreakdata.c
 	echo "*/" >> ${srcdir}/graphemebreakdata.c
 	cat ${srcdir}/graphemebreakdata1.tmpl tmp.txt ${srcdir}/graphemebreakdata2.tmpl >> ${srcdir}/graphemebreakdata.c
-	rm tmp.txt tmp.txt.bak
+	rm tmp.txt
 
 emojidata: emoji-data.txt
 	echo "/* The content of this file is generated from:" > ${srcdir}/emojidata.c
 	head -2 emoji-data.txt >> ${srcdir}/emojidata.c
 	echo "*/" >> ${srcdir}/emojidata.c
-	grep "; Extended_Pictographic#" emoji-data.txt > tmp1.txt
-	sed -E -n 's/(^[0-9A-F.]+)/\1/p' tmp1.txt > tmp2.txt
-	rm tmp1.txt
-	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
-	${srcdir}/sort_numeric_hex.py tmp2.txt > tmp.txt
-	rm tmp2.txt tmp2.txt.bak
-	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; .*/'$$'\t''{0x\1, 0x\2},/p' tmp.txt
+	sed -E -n -f ${srcdir}/extract_data.sed emoji-data.txt | \
+	sed -E -f ${srcdir}/expand_single.sed | \
+	grep "; Extended_Pictographic" | \
+	${srcdir}/sort_numeric_hex.py | \
+	sed -E 's/^([0-9A-F]+)\.\.([0-9A-F]+);.*/'$$'\t''{0x\1, 0x\2},/' > tmp.txt
 	cat ${srcdir}/emojidata1.tmpl tmp.txt ${srcdir}/emojidata2.tmpl >> ${srcdir}/emojidata.c
-	rm tmp.txt tmp.txt.bak
+	rm tmp.txt
 
 
 # Tests
