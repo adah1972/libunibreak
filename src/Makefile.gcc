@@ -119,8 +119,6 @@ debug:   $(DEBUG) $(DEBUG_TARGET)
 
 release: $(RELEASE) $(RELEASE_TARGET)
 
-
-
 $(DEBUG):
 	mkdir $(DEBUG)
 
@@ -133,78 +131,18 @@ $(DEBUG_TARGET): $(DEBUG_DEPS) $(DEBUG_OBJS)
 $(RELEASE_TARGET): $(RELEASE_DEPS) $(RELEASE_OBJS)
 	$(AR) -r $(RELEASE_TARGET) $(RELEASE_OBJS)
 
+
+.PHONY: all debug release clean distclean doc
+
 doc:
 	cd .. && doxygen
-
-LineBreak.txt:
-	wget http://unicode.org/Public/UNIDATA/LineBreak.txt
-
-WordBreakProperty.txt:
-	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakProperty.txt
-
-GraphemeBreakProperty.txt:
-	wget http://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakProperty.txt
-
-emoji-data.txt:
-	wget https://www.unicode.org/Public/emoji/11.0/emoji-data.txt
-
-linebreakdata: filter_dup$(EXEEXT) LineBreak.txt
-	sed -E -n -f LineBreak1.sed LineBreak.txt > tmp.txt
-	sed -E -f LineBreak2.sed tmp.txt | .$(PATHSEP)filter_dup > tmp.c
-	head -2 LineBreak.txt > tmp.txt
-	cat linebreakdata1.tmpl tmp.txt linebreakdata2.tmpl tmp.c linebreakdata3.tmpl > linebreakdata.c
-	$(RM) tmp.txt tmp.c
-
-wordbreakdata: WordBreakProperty.txt
-	sed -E -n 's/(^[0-9A-F.]+)/\1/p' WordBreakProperty.txt > tmp2.txt
-	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
-	./sort_numeric_hex.py tmp2.txt > tmp.txt
-	rm tmp2.txt tmp2.txt.bak
-	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; *([A-Za-z_]+).*/'$$'\t''{0x\1, 0x\2, WBP_\3},/p' tmp.txt
-	echo "/* The content of this file is generated from:" > wordbreakdata.c
-	head -2 WordBreakProperty.txt >> wordbreakdata.c
-	echo "*/" >> wordbreakdata.c
-	cat wordbreakdata1.tmpl tmp.txt wordbreakdata2.tmpl >> wordbreakdata.c
-	rm tmp.txt tmp.txt.bak
-
-graphemebreakdata: GraphemeBreakProperty.txt
-	sed -E -n 's/(^[0-9A-F.]+)/\1/p' GraphemeBreakProperty.txt > tmp2.txt
-	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
-	./sort_numeric_hex.py tmp2.txt > tmp.txt
-	rm tmp2.txt tmp2.txt.bak
-	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; *([A-Za-z_]+).*/'$$'\t''{0x\1, 0x\2, GBP_\3},/p' tmp.txt
-	echo "/* The content of this file is generated from:" > graphemebreakdata.c
-	head -2 GraphemeBreakProperty.txt >> graphemebreakdata.c
-	echo "*/" >> graphemebreakdata.c
-	cat graphemebreakdata1.tmpl tmp.txt graphemebreakdata2.tmpl >> graphemebreakdata.c
-	rm tmp.txt tmp.txt.bak
-
-emojidata: emoji-data.txt
-	echo "/* The content of this file is generated from:" > emojidata.c
-	head -2 emoji-data.txt >> emojidata.c
-	echo "*/" >> emojidata.c
-	grep "; Extended_Pictographic#" emoji-data.txt > tmp1.txt
-	sed -E -n 's/(^[0-9A-F.]+)/\1/p' tmp1.txt > tmp2.txt
-	rm tmp1.txt
-	sed -E -i.bak 's/^([0-9A-F]+) +/\1..\1/' tmp2.txt
-	./sort_numeric_hex.py tmp2.txt > tmp.txt
-	rm tmp2.txt tmp2.txt.bak
-	sed -E -i.bak -n 's/^([0-9A-F]+)..([0-9A-F]+) *; .*/'$$'\t''{0x\1, 0x\2},/p' tmp.txt
-	cat emojidata1.tmpl tmp.txt emojidata2.tmpl >> emojidata.c
-	rm tmp.txt tmp.txt.bak
-
-filter_dup$(EXEEXT): filter_dup.c
-	gcc -O2 -o filter_dup$(EXEEXT) $<
-
-.PHONY: all debug release clean distclean doc \
-	linebreakdata wordbreakdata graphemebreakdata
 
 clean:
 	$(RM) $(DEBUG)/*.o $(DEBUG)/*.dep $(DEBUG_TARGET)
 	$(RM) $(RELEASE)/*.o $(RELEASE)/*.dep $(RELEASE_TARGET)
 
 distclean: clean
-	$(RM) $(DEBUG)/* $(RELEASE)/* filter_dup$(EXEEXT) tags LineBreak.txt WordBreakProperty.txt GraphemeBreakProperty.txt emoji-data.txt
+	$(RM) $(DEBUG)/* $(RELEASE)/* tags 
 	-rmdir $(DEBUG) 2> $(DEVNUL)
 	-rmdir $(RELEASE) 2> $(DEVNUL)
 
