@@ -1,3 +1,9 @@
+New in libunibreak 4.3
+
+- Update the data to conform to Unicode 13
+- Change the handling of ellipses as per UAX #14-45
+- Fix the handling of leading spaces
+
 New in libunibreak 4.2
 
 - Update the data to conform to Unicode 12
