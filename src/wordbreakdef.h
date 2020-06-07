@@ -48,6 +48,9 @@
  * @author  Tom Hacohen
  */
 
+#ifndef WORDBREAKDEF_H
+#define WORDBREAKDEF_H
+
 #include "unibreakdef.h"
 
 /**
@@ -88,3 +91,5 @@ struct WordBreakProperties
     utf32_t end;                /**< End codepoint, inclusive */
     enum WordBreakClass prop;   /**< The word breaking property */
 };
+
+#endif /* WORDBREAKDEF_H */

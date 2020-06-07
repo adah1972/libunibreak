@@ -45,6 +45,9 @@
  * @author  Andreas Röver
  */
 
+#ifndef GRAPHEMEBREAKDEF_H
+#define GRAPHEMEBREAKDEF_H
+
 #include "unibreakdef.h"
 
 /**
@@ -82,3 +85,5 @@ struct GraphemeBreakProperties
     utf32_t end;                  /**< End codepoint, inclusive */
     enum GraphemeBreakClass prop; /**< The grapheme breaking property */
 };
+
+#endif /* GRAPHEMEBREAKDEF_H */

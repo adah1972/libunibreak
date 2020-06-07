@@ -49,6 +49,9 @@
  * @author  Petr Filipsky
  */
 
+#ifndef LINEBREAKDEF_H
+#define LINEBREAKDEF_H
+
 #include "unibreakdef.h"
 
 /**
@@ -169,3 +172,5 @@ void set_linebreaks(
         const char *lang,
         char *brks,
         get_next_char_t get_next_char);
+
+#endif /* LINEBREAKDEF_H */
