@@ -180,7 +180,6 @@ int main(int argc, char *argv[])
 
         testsTotal++;
 
-        int linePrinted = 0;
         for (i = 0; i <= len; i++)
         {
             if ((testType == TEST_TYPE_LINE) &&
@@ -193,14 +192,9 @@ int main(int argc, char *argv[])
 
             if (breaksActual[i] != breaksDesired[i])
             {
-                if (!linePrinted)
-                {
-                    testsFailed++;
-                    printf("Issues in line %d:\n", linenumber);
-                    printf("\t%s", line);
-                }
-                printf("\tPosition %d: expected %d got %d\n", i,
-                       breaksDesired[i], breaksActual[i]);
+                testsFailed++;
+                printf("Issues in line %d:\n\t%s\tPosition %d: expected %d got %d\n",
+                       linenumber, line, i, breaksDesired[i], breaksActual[i]);
             }
         }
     }
