@@ -183,10 +183,11 @@ int main(int argc, char *argv[])
         for (i = 0; i <= len; i++)
         {
             if ((testType == TEST_TYPE_LINE) &&
-                (breaksActual[i] == LINEBREAK_ALLOWBREAK))
+                (breaksActual[i] == LINEBREAK_ALLOWBREAK ||
+                 breaksActual[i] == LINEBREAK_INDETERMINATE))
             {
                 /* The Unicode test data doesn't differentiate between
-                 * the two, so neither should we. */
+                 * these states, so neither should we. */
                 breaksActual[i] = LINEBREAK_MUSTBREAK;
             }
 
