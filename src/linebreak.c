@@ -33,7 +33,7 @@
  *
  * This library has been updated according to Revision 45, for
  * Unicode 13.0.0:
- *      <URL:http://www.unicode.org/reports/tr14/tr14-43.html>
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-45.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -730,14 +730,7 @@ int lb_process_next_char(
     }
 
     /* Special processing due to rule LB8a */
-    if (lbpCtx->lbcNew == LBP_ZWJ)
-    {
-        lbpCtx->fLb8aZwj = true;
-    }
-    else
-    {
-        lbpCtx->fLb8aZwj = false;
-    }
+    lbpCtx->fLb8aZwj = lbpCtx->lbcNew == LBP_ZWJ;
 
     /* Special processing due to rule LB10 */
     if (lbpCtx->fLb10LeadSpace)
@@ -789,6 +782,7 @@ void set_linebreaks(
         get_next_char_t get_next_char)
 {
     utf32_t ch;
+    int lastBreak;
     struct LineBreakContext lbCtx;
     size_t posCur = 0;
     size_t posLast = 0;
@@ -818,8 +812,16 @@ void set_linebreaks(
     }
 
     assert(posLast == posCur - 1 && posCur <= len);
-    /* Break after the last character */
-    brks[posLast] = LINEBREAK_MUSTBREAK;
+    /* After the last character */
+    lastBreak = get_lb_result_simple(&lbCtx);
+    if (lastBreak == LINEBREAK_MUSTBREAK)
+    {
+        brks[posLast] = LINEBREAK_MUSTBREAK;
+    }
+    else
+    {
+        brks[posLast] = LINEBREAK_INDETERMINATE;
+    }
     /* When the input contains incomplete sequences */
     while (posCur < len)
     {
