@@ -114,6 +114,12 @@ enum LineBreakClass
     LBP_XX          /**< Unknown */
 };
 
+enum BreakOutputType
+{
+    LBOT_PER_CODE_UNIT,
+    LBOT_PER_CODE_POINT
+};
+
 /**
  * Struct for entries of line break properties.  The array of the
  * entries \e must be sorted.
@@ -166,10 +172,11 @@ void lb_init_break_context(
 int lb_process_next_char(
         struct LineBreakContext *lbpCtx,
         utf32_t ch);
-void set_linebreaks(
+size_t set_linebreaks(
         const void *s,
         size_t len,
         const char *lang,
+        enum BreakOutputType outputType,
         char *brks,
         get_next_char_t get_next_char);
 
