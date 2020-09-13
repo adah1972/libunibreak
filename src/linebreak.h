@@ -69,6 +69,10 @@ void set_linebreaks_utf16(
         const utf16_t *s, size_t len, const char *lang, char *brks);
 void set_linebreaks_utf32(
         const utf32_t *s, size_t len, const char *lang, char *brks);
+size_t set_linebreaks_utf8_per_code_point(
+        const utf8_t *s, size_t len, const char *lang, char *brks);
+size_t set_linebreaks_utf16_per_code_point(
+        const utf16_t *s, size_t len, const char *lang, char *brks);
 int is_line_breakable(utf32_t char1, utf32_t char2, const char *lang);
 
 #ifdef __cplusplus

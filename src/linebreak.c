@@ -768,16 +768,21 @@ int lb_process_next_char(
  * @param[in]  s             input string
  * @param[in]  len           length of the input
  * @param[in]  lang          language of the input
+ * @param[in]  outputType    output per code-unit or per code-point
  * @param[out] brks          pointer to the output breaking data,
  *                           containing #LINEBREAK_MUSTBREAK,
  *                           #LINEBREAK_ALLOWBREAK, #LINEBREAK_NOBREAK,
  *                           or #LINEBREAK_INSIDEACHAR
  * @param[in] get_next_char  function to get the next UTF-32 character
+ * @return       The number of entries in brks filled. This is equal to
+ *               the number of code-points or code-units in the source
+ *               string, depending on the outputType parameter.
  */
-void set_linebreaks(
+size_t set_linebreaks(
         const void *s,
         size_t len,
         const char *lang,
+        enum BreakOutputType outputType,
         char *brks,
         get_next_char_t get_next_char)
 {
@@ -791,18 +796,25 @@ void set_linebreaks(
     ch = get_next_char(s, len, &posCur);
     if (ch == EOS)
     {
-        return;
+        return 0;
     }
     lb_init_break_context(&lbCtx, ch, lang);
 
     /* Process a line till an explicit break or end of string */
     for (;;)
     {
-        for (++posLast; posLast < posCur - 1; ++posLast)
+        if (outputType == LBOT_PER_CODE_UNIT)
         {
-            brks[posLast] = LINEBREAK_INSIDEACHAR;
+            for (++posLast; posLast < posCur - 1; ++posLast)
+            {
+                brks[posLast] = LINEBREAK_INSIDEACHAR;
+            }
+            assert(posLast == posCur - 1);
         }
-        assert(posLast == posCur - 1);
+        else
+        {
+            posLast++;
+        }
         ch = get_next_char(s, len, &posCur);
         if (ch == EOS)
         {
@@ -811,7 +823,6 @@ void set_linebreaks(
         brks[posLast] = lb_process_next_char(&lbCtx, ch);
     }
 
-    assert(posLast == posCur - 1 && posCur <= len);
     /* After the last character */
     lastBreak = get_lb_result_simple(&lbCtx);
     if (lastBreak == LINEBREAK_MUSTBREAK)
@@ -822,10 +833,21 @@ void set_linebreaks(
     {
         brks[posLast] = LINEBREAK_INDETERMINATE;
     }
-    /* When the input contains incomplete sequences */
-    while (posCur < len)
+
+    if (outputType == LBOT_PER_CODE_UNIT)
     {
-        brks[posCur++] = LINEBREAK_INSIDEACHAR;
+        assert(posLast == posCur - 1 && posCur <= len);
+        /* When the input contains incomplete sequences */
+        while (posCur < len)
+        {
+            brks[posCur++] = LINEBREAK_INSIDEACHAR;
+        }
+
+        return posCur;
+    }
+    else
+    {
+        return posLast + 1;
     }
 }
 
@@ -846,7 +868,30 @@ void set_linebreaks_utf8(
         const char *lang,
         char *brks)
 {
-    set_linebreaks(s, len, lang, brks,
+    set_linebreaks(s, len, lang, LBOT_PER_CODE_UNIT, brks,
+                   (get_next_char_t)ub_get_next_char_utf8);
+}
+
+/**
+ * Sets the line breaking information for a UTF-8 input string.
+ *
+ * @param[in]  s     input UTF-8 string
+ * @param[in]  len   length of the input
+ * @param[in]  lang  language of the input
+ * @param[out] brks  pointer to the output breaking data, containing
+ *                   #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *                   #LINEBREAK_NOBREAK
+ * @return       The number of entries in brks filled. This is equal to
+ *               the number of code-points in the source string.
+ * @see #set_linebreaks for a note about \a lang.
+ */
+size_t set_linebreaks_utf8_per_code_point(
+        const utf8_t *s,
+        size_t len,
+        const char *lang,
+        char *brks)
+{
+    return set_linebreaks(s, len, lang, LBOT_PER_CODE_POINT, brks,
                    (get_next_char_t)ub_get_next_char_utf8);
 }
 
@@ -867,7 +912,30 @@ void set_linebreaks_utf16(
         const char *lang,
         char *brks)
 {
-    set_linebreaks(s, len, lang, brks,
+    set_linebreaks(s, len, lang, LBOT_PER_CODE_UNIT, brks,
+                   (get_next_char_t)ub_get_next_char_utf16);
+}
+
+/**
+ * Sets the line breaking information for a UTF-16 input string.
+ *
+ * @param[in]  s     input UTF-16 string
+ * @param[in]  len   length of the input
+ * @param[in]  lang  language of the input
+ * @param[out] brks  pointer to the output breaking data, containing
+ *                   #LINEBREAK_MUSTBREAK, #LINEBREAK_ALLOWBREAK,
+ *                   #LINEBREAK_NOBREAK
+ * @return       The number of entries in brks filled. This is equal to
+ *               the number of code-points in the source string.
+ * @see #set_linebreaks for a note about \a lang.
+ */
+size_t set_linebreaks_utf16_per_code_point(
+        const utf16_t *s,
+        size_t len,
+        const char *lang,
+        char *brks)
+{
+    return set_linebreaks(s, len, lang, LBOT_PER_CODE_POINT, brks,
                    (get_next_char_t)ub_get_next_char_utf16);
 }
 
@@ -888,7 +956,7 @@ void set_linebreaks_utf32(
         const char *lang,
         char *brks)
 {
-    set_linebreaks(s, len, lang, brks,
+    set_linebreaks(s, len, lang, LBOT_PER_CODE_UNIT, brks,
                    (get_next_char_t)ub_get_next_char_utf32);
 }
 
