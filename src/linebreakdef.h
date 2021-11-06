@@ -169,7 +169,7 @@ void lb_init_break_context(
         struct LineBreakContext *lbpCtx,
         utf32_t ch,
         const char *lang);
-int lb_process_next_char(
+char lb_process_next_char(
         struct LineBreakContext *lbpCtx,
         utf32_t ch);
 size_t set_linebreaks(

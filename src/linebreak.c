@@ -317,9 +317,9 @@ static struct LineBreakPropertiesIndex lb_prop_index[LINEBREAK_INDEX_SIZE] =
  * @return           non-zero if true; zero otherwise
  */
 static __inline int ends_with(const char *str, const char *suffix,
-                              unsigned suffixLen)
+                              size_t suffixLen)
 {
-    unsigned len;
+    size_t len;
     if (str == NULL)
     {
         return 0;
@@ -553,7 +553,7 @@ static void treat_first_char(
  *                        if identified; or #LINEBREAK_UNDEFINED if
  *                        table lookup is needed
  */
-static int get_lb_result_simple(
+static char get_lb_result_simple(
         struct LineBreakContext *lbpCtx)
 {
     if (lbpCtx->lbcCur == LBP_BK
@@ -593,10 +593,10 @@ static int get_lb_result_simple(
  * @return                break result, one of #LINEBREAK_MUSTBREAK,
  *                        #LINEBREAK_ALLOWBREAK, and #LINEBREAK_NOBREAK
  */
-static int get_lb_result_lookup(
+static char get_lb_result_lookup(
         struct LineBreakContext *lbpCtx)
 {
-    int brk = LINEBREAK_UNDEFINED;
+    char brk = LINEBREAK_UNDEFINED;
 
     assert(lbpCtx->lbcCur <= LBP_CB);
     assert(lbpCtx->lbcNew <= LBP_CB);
@@ -706,11 +706,11 @@ void lb_init_break_context(
  *                        #LINEBREAK_ALLOWBREAK, and #LINEBREAK_NOBREAK
  * @post                  the line breaking context is updated
  */
-int lb_process_next_char(
+char lb_process_next_char(
         struct LineBreakContext *lbpCtx,
         utf32_t ch )
 {
-    int brk;
+    char brk;
 
     lbpCtx->lbcLast = lbpCtx->lbcNew;
     lbpCtx->lbcNew = get_char_lb_class_lang(ch, lbpCtx->lbpLang);
