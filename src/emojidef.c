@@ -41,17 +41,17 @@
  */
 bool ub_is_extended_pictographic(utf32_t ch)
 {
-    int min = 0;
-    int max = ARRAY_LEN(ep_prop) - 1;
-    int mid;
+    size_t min = 0;
+    size_t max = ARRAY_LEN(ep_prop);
+    size_t mid;
 
     do
     {
-        mid = (min + max) / 2;
+        mid = min + (max - min) / 2;
 
         if (ch < ep_prop[mid].start)
         {
-            max = mid - 1;
+            max = mid;
         }
         else if (ch > ep_prop[mid].end)
         {
@@ -61,7 +61,7 @@ bool ub_is_extended_pictographic(utf32_t ch)
         {
             return true;
         }
-    } while (min <= max);
+    } while (min < max);
 
     return false;
 }

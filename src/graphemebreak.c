@@ -67,17 +67,17 @@ void init_graphemebreak(void)
  */
 static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
 {
-    int min = 0;
-    int max = ARRAY_LEN(gb_prop_default) - 1;
-    int mid;
+    size_t min = 0;
+    size_t max = ARRAY_LEN(gb_prop_default);
+    size_t mid;
 
     do
     {
-        mid = (min + max) / 2;
+        mid = min + (max - min) / 2;
 
         if (ch < gb_prop_default[mid].start)
         {
-            max = mid - 1;
+            max = mid;
         }
         else if (ch > gb_prop_default[mid].end)
         {
@@ -87,7 +87,7 @@ static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
         {
             return gb_prop_default[mid].prop;
         }
-    } while (min <= max);
+    } while (min < max);
 
     return GBP_Other;
 }

@@ -77,17 +77,17 @@ static enum WordBreakClass get_char_wb_class(
         const struct WordBreakProperties *wbp,
         size_t len)
 {
-    int min = 0;
-    int max = len - 1;
-    int mid;
+    size_t min = 0;
+    size_t max = len;
+    size_t mid;
 
     do
     {
-        mid = (min + max) / 2;
+        mid = min + (max - min) / 2;
 
         if (ch < wbp[mid].start)
         {
-            max = mid - 1;
+            max = mid;
         }
         else if (ch > wbp[mid].end)
         {
@@ -98,7 +98,7 @@ static enum WordBreakClass get_char_wb_class(
             return wbp[mid].prop;
         }
     }
-    while (min <= max);
+    while (min < max);
 
     return WBP_Any;
 }
