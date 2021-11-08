@@ -65,5 +65,6 @@ static const unsigned int testSkipsLine[] = {
      7604,  /* Unable to tell LB30 East Asian symbols */
      7610,  /* Unable to tell LB30 East Asian symbols */
      7611,  /* Unable to tell LB30 East Asian symbols */
+     7681,  /* Unknown (XX) is treated as AL in this implementation */
      0
 };
