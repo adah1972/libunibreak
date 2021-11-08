@@ -78,7 +78,8 @@ static enum WordBreakClass get_char_wb_class(
         size_t len)
 {
     int min = 0;
-    int max = len - 1;
+    // known to be smaller than MAX_INT
+    int max = (int)len - 1;
     int mid;
 
     do

@@ -319,7 +319,7 @@ static struct LineBreakPropertiesIndex lb_prop_index[LINEBREAK_INDEX_SIZE] =
 static __inline int ends_with(const char *str, const char *suffix,
                               unsigned suffixLen)
 {
-    unsigned len;
+    size_t len;
     if (str == NULL)
     {
         return 0;
@@ -820,7 +820,7 @@ size_t set_linebreaks(
         {
             break;
         }
-        brks[posLast] = lb_process_next_char(&lbCtx, ch);
+        brks[posLast] = (char)lb_process_next_char(&lbCtx, ch);
     }
 
     /* After the last character */
