@@ -1,3 +1,10 @@
+New in libunibreak 5.0
+
+- Update the data to conform to Unicode 14
+- Add per_code_point variants of utf8 and utf16 functions
+- Do not always break after the last character
+- Clean up code and test
+
 New in libunibreak 4.3
 
 - Update the data to conform to Unicode 13
