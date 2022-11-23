@@ -161,7 +161,9 @@ struct LineBreakContext
 };
 
 /* Declarations */
-extern const struct LineBreakProperties lb_prop_default[];
+extern const struct LineBreakProperties lb_prop_supplementary[];
+extern const unsigned int LB_PROP_SUPPLEMENTARY_LEN;
+extern const char lb_prop_bmp[];
 extern const struct LineBreakPropertiesLang lb_prop_lang_map[];
 
 /* Function Prototype */
