@@ -90,6 +90,15 @@ Check the generated document *doc/html/linebreak\_8h.html*,
 the downloaded file for the public interfaces exposed to applications.
 
 
+Examples
+--------
+
+See the *tools* directory for basic examples (as test code).  A more
+*real* utility is [breaktext][6].
+
+[6]: https://github.com/adah1972/breaktext
+
+
 <!--
 vim:autoindent:expandtab:formatoptions=tcqlmn:textwidth=72:
 -->
