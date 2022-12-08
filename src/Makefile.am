@@ -34,6 +34,7 @@ EXTRA_DIST = \
 	emojidata.c \
 	Makefile.gcc \
 	Makefile.msvc \
+	generate_linebreakdata.py \
 	sort_numeric_hex.py \
 	wordbreakdef.h \
 	graphemebreakdef.h \
