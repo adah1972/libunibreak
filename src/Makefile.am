@@ -22,10 +22,7 @@ libunibreak_la_SOURCES = \
 EXTRA_DIST = \
 	extract_data.sed \
 	expand_single.sed \
-	filter_dup.py \
 	linebreakdata1.tmpl \
-	linebreakdata2.tmpl \
-	linebreakdata3.tmpl \
 	wordbreakdata1.tmpl \
 	wordbreakdata2.tmpl \
 	wordbreakdata.c \
@@ -68,10 +65,9 @@ emoji-data.txt:
 linebreakdata: LineBreak.txt
 	sed -E -n -f ${srcdir}/extract_data.sed LineBreak.txt | \
 	sed -E -f ${srcdir}/expand_single.sed | \
-	${srcdir}/filter_dup.py | \
-	sed -E 's/^([0-9A-F]+)\.\.([0-9A-F]+); *(.*)/'$$'\t''{ 0x\1, 0x\2, LBP_\3 },/' > tmp.c
+	${srcdir}/generate_linebreakdata.py > tmp.c
 	head -2 LineBreak.txt > tmp.txt
-	cat ${srcdir}/linebreakdata1.tmpl tmp.txt ${srcdir}/linebreakdata2.tmpl tmp.c ${srcdir}/linebreakdata3.tmpl > ${srcdir}/linebreakdata.c
+	cat ${srcdir}/linebreakdata1.tmpl tmp.txt tmp.c > ${srcdir}/linebreakdata.c
 	rm tmp.txt tmp.c
 
 wordbreakdata: WordBreakProperty.txt
