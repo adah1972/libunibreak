@@ -16,3 +16,5 @@ Malcolm Bechard.  Added per_code_point variants of set_linebreaks_utf8
 and set_linebreaks_utf16.
 
 Bart van der Werf.  Updated data to Unicode 14.0 and fix some warnings.
+
+bbshelper.  Sped up line-break property lookup.
