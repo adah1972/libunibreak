@@ -1,3 +1,8 @@
+New in libunibreak 5.1
+
+- Speed up line-break property lookup
+- Update the data to conform to Unicode 15
+
 New in libunibreak 5.0
 
 - Update the data to conform to Unicode 14
