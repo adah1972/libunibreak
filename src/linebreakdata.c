@@ -708,7 +708,7 @@ const struct LineBreakProperties lb_prop_supplementary[] = {
 	{ 0xFFFFFFFF, 0xFFFFFFFF, LBP_Undefined }
 };
 
-const unsigned int LB_PROP_SUPPLEMENTARY_LEN =
+const unsigned int lb_prop_supplementary_len =
     sizeof(lb_prop_supplementary) / sizeof(lb_prop_supplementary[0]);
 
 /** Line breaking properties for BMP */

@@ -388,7 +388,7 @@ static enum LineBreakClass get_char_lb_class_default(
     }
 
     unsigned int start = 0;
-    unsigned int end = LB_PROP_SUPPLEMENTARY_LEN;
+    unsigned int end = lb_prop_supplementary_len;
     while (start < end) {
         unsigned int mid = (start + end) / 2; /* won't overflow */
         const struct LineBreakProperties *ptr = lb_prop_supplementary + mid;
