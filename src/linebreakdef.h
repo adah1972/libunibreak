@@ -174,6 +174,9 @@ void lb_init_break_context(
 int lb_process_next_char(
         struct LineBreakContext *lbpCtx,
         utf32_t ch);
+enum LineBreakClass lb_get_char_class(
+        const struct LineBreakContext *lbpCtx,
+        utf32_t ch);
 size_t set_linebreaks(
         const void *s,
         size_t len,
