@@ -715,6 +715,17 @@ int lb_process_next_char(
 
     return brk;
 }
+
+/**
+ * Gets the line breaking class of a character for a line breaking
+ * context.  This function will check the language-specific data first,
+ * and then the default data if there is no language-specific property
+ * available for the character.
+ *
+ * @param lbpCtx  pointer to the line breaking context
+ * @param ch      character to check
+ * @return        the line breaking class if found; \c LBP_XX otherwise
+ */
 enum LineBreakClass lb_get_char_class(
         const struct LineBreakContext *lbpCtx,
         utf32_t ch)
