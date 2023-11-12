@@ -1,6 +1,6 @@
 /* The content of this file is generated from:
-# WordBreakProperty-15.0.0.txt
-# Date: 2022-04-27, 02:41:26 GMT
+# WordBreakProperty-15.1.0.txt
+# Date: 2023-03-31, 03:19:05 GMT
 */
 
 #include "wordbreakdef.h"
@@ -81,7 +81,7 @@ static const struct WordBreakProperties wb_prop_default[] = {
 	{0x05EF, 0x05F2, WBP_Hebrew_Letter},
 	{0x05F3, 0x05F3, WBP_ALetter},
 	{0x05F4, 0x05F4, WBP_MidLetter},
-	{0x0600, 0x0605, WBP_Format},
+	{0x0600, 0x0605, WBP_Numeric},
 	{0x060C, 0x060D, WBP_MidNum},
 	{0x0610, 0x061A, WBP_Extend},
 	{0x061C, 0x061C, WBP_Format},
@@ -97,7 +97,7 @@ static const struct WordBreakProperties wb_prop_default[] = {
 	{0x0671, 0x06D3, WBP_ALetter},
 	{0x06D5, 0x06D5, WBP_ALetter},
 	{0x06D6, 0x06DC, WBP_Extend},
-	{0x06DD, 0x06DD, WBP_Format},
+	{0x06DD, 0x06DD, WBP_Numeric},
 	{0x06DF, 0x06E4, WBP_Extend},
 	{0x06E5, 0x06E6, WBP_ALetter},
 	{0x06E7, 0x06E8, WBP_Extend},
@@ -106,7 +106,7 @@ static const struct WordBreakProperties wb_prop_default[] = {
 	{0x06F0, 0x06F9, WBP_Numeric},
 	{0x06FA, 0x06FC, WBP_ALetter},
 	{0x06FF, 0x06FF, WBP_ALetter},
-	{0x070F, 0x070F, WBP_Format},
+	{0x070F, 0x070F, WBP_ALetter},
 	{0x0710, 0x0710, WBP_ALetter},
 	{0x0711, 0x0711, WBP_Extend},
 	{0x0712, 0x072F, WBP_ALetter},
@@ -134,12 +134,12 @@ static const struct WordBreakProperties wb_prop_default[] = {
 	{0x0860, 0x086A, WBP_ALetter},
 	{0x0870, 0x0887, WBP_ALetter},
 	{0x0889, 0x088E, WBP_ALetter},
-	{0x0890, 0x0891, WBP_Format},
+	{0x0890, 0x0891, WBP_Numeric},
 	{0x0898, 0x089F, WBP_Extend},
 	{0x08A0, 0x08C8, WBP_ALetter},
 	{0x08C9, 0x08C9, WBP_ALetter},
 	{0x08CA, 0x08E1, WBP_Extend},
-	{0x08E2, 0x08E2, WBP_Format},
+	{0x08E2, 0x08E2, WBP_Numeric},
 	{0x08E3, 0x0902, WBP_Extend},
 	{0x0903, 0x0903, WBP_Extend},
 	{0x0904, 0x0939, WBP_ALetter},
@@ -960,9 +960,9 @@ static const struct WordBreakProperties wb_prop_default[] = {
 	{0x110B3, 0x110B6, WBP_Extend},
 	{0x110B7, 0x110B8, WBP_Extend},
 	{0x110B9, 0x110BA, WBP_Extend},
-	{0x110BD, 0x110BD, WBP_Format},
+	{0x110BD, 0x110BD, WBP_Numeric},
 	{0x110C2, 0x110C2, WBP_Extend},
-	{0x110CD, 0x110CD, WBP_Format},
+	{0x110CD, 0x110CD, WBP_Numeric},
 	{0x110D0, 0x110E8, WBP_ALetter},
 	{0x110F0, 0x110F9, WBP_Numeric},
 	{0x11100, 0x11102, WBP_Extend},
