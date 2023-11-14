@@ -27,3 +27,6 @@ graphemebreakdata:
 
 emojidata:
 	cd src && ${MAKE} emojidata
+
+update-test:
+	cd src && ${MAKE} update-test

@@ -105,6 +105,13 @@ emojidata: emoji-data.txt
 	cat ${srcdir}/emojidata1.tmpl tmp.txt ${srcdir}/emojidata2.tmpl >> ${srcdir}/emojidata.c
 	rm tmp.txt
 
+update-test:
+	rm -f LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/LineBreakTest.txt
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.txt
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.txt
+	mv -f LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt ${srcdir}
+
 
 # Tests
 
