@@ -115,16 +115,10 @@ tests_CPPFLAGS = -I$(srcdir)
 tests_LDADD = libunibreak.la
 tests_DEPENDENCIES = libunibreak.la
 
-check: LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt $(check_PROGRAMS)
+check: $(check_PROGRAMS)
+	[ -f LineBreakTest.txt ]     || $(LN_S) ${srcdir}/LineBreakTest.txt .
+	[ -f WordBreakTest.txt ]     || $(LN_S) ${srcdir}/WordBreakTest.txt .
+	[ -f GraphemeBreakTest.txt ] || $(LN_S) ${srcdir}/GraphemeBreakTest.txt .
 	./tests line
 	./tests word
 	./tests grapheme
-
-LineBreakTest.txt:
-	wget http://www.unicode.org/Public/UNIDATA/auxiliary/LineBreakTest.txt
-
-WordBreakTest.txt:
-	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.txt
-
-GraphemeBreakTest.txt:
-	wget http://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.txt
