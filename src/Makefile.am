@@ -113,7 +113,7 @@ update-test:
 	wget http://www.unicode.org/Public/UNIDATA/auxiliary/LineBreakTest.txt
 	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.txt
 	wget http://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.txt
-	mv -f LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt ${srcdir}
+	[ -f LineBreakTest.txt ] || mv -f LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt ${srcdir}
 
 
 # Tests
