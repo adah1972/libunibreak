@@ -39,7 +39,10 @@ EXTRA_DIST = \
 	wordbreakdef.h \
 	graphemebreakdef.h \
 	emojidef.h \
-	test_skips.h
+	test_skips.h \
+	LineBreakTest.txt \
+	WordBreakTest.txt \
+	GraphemeBreakTest.txt
 
 install-exec-hook:
 	- [ -f $(DESTDIR)/${libdir}/libunibreak.a ] && \
