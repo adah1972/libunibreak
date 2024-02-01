@@ -29,15 +29,18 @@ EXTRA_DIST = \
 	graphemebreakdata1.tmpl \
 	graphemebreakdata2.tmpl \
 	graphemebreakdata.c \
+	indicconjunctbreakdata.c \
 	emojidata1.tmpl \
 	emojidata2.tmpl \
 	emojidata.c \
 	Makefile.gcc \
 	Makefile.msvc \
 	generate_linebreakdata.py \
+	generate_indic_conjunct_break.py \
 	sort_numeric_hex.py \
 	wordbreakdef.h \
 	graphemebreakdef.h \
+	indicconjunctbreakdef.h \
 	emojidef.h \
 	test_skips.h \
 	LineBreakTest.txt \
@@ -61,6 +64,9 @@ WordBreakProperty.txt:
 
 GraphemeBreakProperty.txt:
 	wget http://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakProperty.txt
+
+DerivedCoreProperties.txt:
+	wget https://www.unicode.org/Public/UNIDATA/DerivedCoreProperties.txt
 
 emoji-data.txt:
 	wget https://www.unicode.org/Public/UNIDATA/emoji/emoji-data.txt
@@ -95,6 +101,9 @@ graphemebreakdata: GraphemeBreakProperty.txt
 	echo "*/" >> ${srcdir}/graphemebreakdata.c
 	cat ${srcdir}/graphemebreakdata1.tmpl tmp.txt ${srcdir}/graphemebreakdata2.tmpl >> ${srcdir}/graphemebreakdata.c
 	rm tmp.txt
+
+indicconjunctbreakdata: DerivedCoreProperties.txt
+	${srcdir}/generate_indic_conjunct_break.py > ${srcdir}/indicconjunctbreakdata.c
 
 emojidata: emoji-data.txt
 	echo "/* The content of this file is generated from:" > ${srcdir}/emojidata.c

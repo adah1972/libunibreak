@@ -25,6 +25,9 @@ wordbreakdata:
 graphemebreakdata:
 	cd src && ${MAKE} graphemebreakdata
 
+indicconjunctbreakdata:
+	cd src && ${MAKE} indicconjunctbreakdata
+
 emojidata:
 	cd src && ${MAKE} emojidata
 
