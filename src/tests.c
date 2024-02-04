@@ -33,7 +33,7 @@
 
 #include "test_skips.h"
 
-#define TEST_LINE_LEN 1000
+#define TEST_LINE_LEN 10000
 
 typedef enum
 {
@@ -106,6 +106,11 @@ int main(int argc, char *argv[])
         int i, len;
 
         linenumber++;
+        if (strlen(line) == TEST_LINE_LEN - 1)
+        {
+            fprintf(stderr, "Input line %u is too long!\n", linenumber);
+            break;
+        }
 
         if (line[0] == '#')
             continue;
