@@ -5,7 +5,7 @@
  * generic text renderer.
  *
  * Copyright (C) 2013-2019 Tom Hacohen <tom at stosb dot com>
- * Copyright (C) 2018 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2018-2024 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -77,29 +77,12 @@ static enum WordBreakClass get_char_wb_class(
         const struct WordBreakProperties *wbp,
         size_t len)
 {
-    int min = 0;
-    // known to be smaller than MAX_INT
-    int max = (int)len - 1;
-    int mid;
-
-    do
+    const struct WordBreakProperties *result_ptr =
+        ub_bsearch(ch, wbp, len - 1, sizeof(struct WordBreakProperties));
+    if (result_ptr)
     {
-        mid = (min + max) / 2;
-
-        if (ch < wbp[mid].start)
-        {
-            max = mid - 1;
-        }
-        else if (ch > wbp[mid].end)
-        {
-            min = mid + 1;
-        }
-        else
-        {
-            return wbp[mid].prop;
-        }
+        return result_ptr->prop;
     }
-    while (min <= max);
 
     return WBP_Any;
 }

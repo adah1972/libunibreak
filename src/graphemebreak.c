@@ -78,27 +78,13 @@ void init_graphemebreak(void)
  */
 static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
 {
-    int min = 0;
-    int max = ARRAY_LEN(gb_prop_default) - 1;
-    int mid;
-
-    do
+    const struct GraphemeBreakProperties *result_ptr =
+        ub_bsearch(ch, gb_prop_default, ARRAY_LEN(gb_prop_default) - 1,
+                   sizeof(struct GraphemeBreakProperties));
+    if (result_ptr)
     {
-        mid = (min + max) / 2;
-
-        if (ch < gb_prop_default[mid].start)
-        {
-            max = mid - 1;
-        }
-        else if (ch > gb_prop_default[mid].end)
-        {
-            min = mid + 1;
-        }
-        else
-        {
-            return gb_prop_default[mid].prop;
-        }
-    } while (min <= max);
+        return result_ptr->prop;
+    }
 
     return GBP_Other;
 }
@@ -111,28 +97,13 @@ static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
  */
 static enum IndicConjunctBreakClass get_char_incb_class(utf32_t ch)
 {
-    int min = 0;
-    int max = ARRAY_LEN(incb_prop) - 1;
-    int mid;
-
-    do
+    const struct IndicConjunctBreakProperties *result_ptr =
+        ub_bsearch(ch, incb_prop, ARRAY_LEN(incb_prop) - 1,
+                   sizeof(struct IndicConjunctBreakProperties));
+    if (result_ptr)
     {
-        mid = (min + max) / 2;
-
-        if (ch < incb_prop[mid].start)
-        {
-            max = mid - 1;
-        }
-        else if (ch > incb_prop[mid].end)
-        {
-            min = mid + 1;
-        }
-        else
-        {
-            return incb_prop[mid].prop;
-        }
-    } while (min <= max);
-
+        return result_ptr->prop;
+    }
     return InCB_None;
 }
 

@@ -387,19 +387,14 @@ static enum LineBreakClass get_char_lb_class_default(
         return lb_prop_bmp[ch];
     }
 
-    unsigned int start = 0;
-    unsigned int end = lb_prop_supplementary_len;
-    while (start < end) {
-        unsigned int mid = (start + end) / 2; /* won't overflow */
-        const struct LineBreakProperties *ptr = lb_prop_supplementary + mid;
-        if (ch < ptr->start) {
-            end = mid;
-        } else if (ch > ptr->end) {
-            start = mid + 1;
-        } else {
-            return ptr->prop;
-        }
+    const struct LineBreakProperties *result_ptr =
+        ub_bsearch(ch, lb_prop_supplementary, lb_prop_supplementary_len - 1,
+                   sizeof(struct LineBreakProperties));
+    if (result_ptr)
+    {
+        return result_ptr->prop;
     }
+
     return LBP_XX;
 }
 

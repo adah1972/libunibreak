@@ -69,6 +69,38 @@ utf32_t ub_get_next_char_utf8(const utf8_t *s, size_t len, size_t *ip);
 utf32_t ub_get_next_char_utf16(const utf16_t *s, size_t len, size_t *ip);
 utf32_t ub_get_next_char_utf32(const utf32_t *s, size_t len, size_t *ip);
 
+inline const void *ub_bsearch(utf32_t ch, const void *ptr, size_t count,
+                              size_t size)
+{
+    int min = 0;
+    int max = count;
+    int mid;
+
+    do
+    {
+        mid = (min + max) / 2;
+        const unsigned char *mid_ptr =
+            (const unsigned char *)ptr + mid * size;
+        utf32_t mid_start = *(const utf32_t *)mid_ptr;
+        utf32_t mid_end = *((const utf32_t *)mid_ptr + 1);
+
+        if (ch < mid_start)
+        {
+            max = mid - 1;
+        }
+        else if (ch > mid_end)
+        {
+            min = mid + 1;
+        }
+        else
+        {
+            return mid_ptr;
+        }
+    } while (min <= max);
+
+    return NULL;
+}
+
 #ifdef __cplusplus
 }
 #endif
