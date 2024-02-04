@@ -72,13 +72,11 @@ void init_wordbreak(void)
  * @param len  size of the wbp array in number of items
  * @return     the word breaking class if found; \c WBP_Any otherwise
  */
-static enum WordBreakClass get_char_wb_class(
-        utf32_t ch,
-        const struct WordBreakProperties *wbp,
-        size_t len)
+static enum WordBreakClass get_char_wb_class(utf32_t ch)
 {
     const struct WordBreakProperties *result_ptr =
-        ub_bsearch(ch, wbp, len - 1, sizeof(struct WordBreakProperties));
+        ub_bsearch(ch, wb_prop_default, ARRAY_LEN(wb_prop_default) - 1,
+                   sizeof(struct WordBreakProperties));
     if (result_ptr)
     {
         return result_ptr->prop;
@@ -181,8 +179,7 @@ static void set_wordbreaks(
     while (ch != EOS)
     {
         enum WordBreakClass wbcCur;
-        wbcCur = get_char_wb_class(ch, wb_prop_default,
-                                   ARRAY_LEN(wb_prop_default));
+        wbcCur = get_char_wb_class(ch);
 
         switch (wbcCur)
         {
