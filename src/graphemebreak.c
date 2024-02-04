@@ -98,7 +98,7 @@ static enum GraphemeBreakClass get_char_gb_class(utf32_t ch)
 static enum IndicConjunctBreakClass get_char_incb_class(utf32_t ch)
 {
     const struct IndicConjunctBreakProperties *result_ptr =
-        ub_bsearch(ch, incb_prop, ARRAY_LEN(incb_prop) - 1,
+        ub_bsearch(ch, incb_prop, ARRAY_LEN(incb_prop),
                    sizeof(struct IndicConjunctBreakProperties));
     if (result_ptr)
     {

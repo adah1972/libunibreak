@@ -66,7 +66,6 @@ def output_indic_conjunct_break_data():
     print('static const struct IndicConjunctBreakProperties incb_prop[] = {')
     for start, (end, prop) in indic_conjunct_break_properties.items():
         print(f"    {{0x{start:04X}, 0x{end:04X}, InCB_{prop}}},")
-    print('    {0xFFFFFFFF, 0xFFFFFFFF, InCB_None}')
     print('};')
 
 

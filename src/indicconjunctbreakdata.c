@@ -208,5 +208,4 @@ static const struct IndicConjunctBreakProperties incb_prop[] = {
     {0x1E4EC, 0x1E4EF, InCB_Extend},
     {0x1E8D0, 0x1E8D6, InCB_Extend},
     {0x1E944, 0x1E94A, InCB_Extend},
-    {0xFFFFFFFF, 0xFFFFFFFF, InCB_None}
 };
