@@ -5,6 +5,7 @@
  *
  * Copyright (C) 2016 Tom Hacohen <tom at stosb dot com>
  * Copyright (C) 2016 Andreas Röver <roever at users dot sf dot net>
+ * Copyright (C) 2024 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -27,6 +28,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include "linebreak.h"
 #include "wordbreak.h"
 #include "graphemebreak.h"
@@ -52,6 +54,8 @@ int main(int argc, char *argv[])
     unsigned int testsFailed = 0;
     unsigned int testsTotal = 0;
     Test_Type testType;
+    clock_t t1;
+    clock_t t2;
 
     char noBreak, mustBreak, insideChar;
     const unsigned int *testSkips; /* Zero terminated array of line numbers to skip in the test. */
@@ -97,6 +101,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    t1 = clock();
     while (fgets(line, sizeof(line), fp))
     {
         char *linepos = line;
@@ -204,6 +209,7 @@ int main(int argc, char *argv[])
             }
         }
     }
+    t2 = clock();
 
     fclose(fp);
 
@@ -214,7 +220,7 @@ int main(int argc, char *argv[])
            testsTotal, testsPassed * 100 / testsTotal);
     if (testsSkipped > 0)
        printf(", and skipped %d", testsSkipped);
-    printf("\n\n");
+    printf("\nTesting takes %g ms\n\n", (t2 - t1) * 1000.0 / CLOCKS_PER_SEC);
 
     return (testsFailed > 0);
 }
