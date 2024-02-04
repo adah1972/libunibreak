@@ -31,6 +31,7 @@
 
 #include "emojidef.h"
 #include "emojidata.c"
+#include "unibreakdef.h"
 
 /**
  * Finds out if a codepoint is extended pictographic.
@@ -41,27 +42,6 @@
  */
 bool ub_is_extended_pictographic(utf32_t ch)
 {
-    int min = 0;
-    int max = ARRAY_LEN(ep_prop) - 1;
-    int mid;
-
-    do
-    {
-        mid = (min + max) / 2;
-
-        if (ch < ep_prop[mid].start)
-        {
-            max = mid - 1;
-        }
-        else if (ch > ep_prop[mid].end)
-        {
-            min = mid + 1;
-        }
-        else
-        {
-            return true;
-        }
-    } while (min <= max);
-
-    return false;
+    return ub_bsearch(ch, ep_prop, ARRAY_LEN(ep_prop),
+                      sizeof(struct ExtendedPictograpic)) != NULL;
 }
