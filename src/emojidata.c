@@ -3,6 +3,8 @@
 # Date: 2022-08-02, 00:26:10 GMT
 */
 
+#include "emojidef.h"
+
 static const struct ExtendedPictograpic ep_prop[] = {
 	{0x00A9, 0x00A9},
 	{0x00AE, 0x00AE},
