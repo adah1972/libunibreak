@@ -31,9 +31,9 @@
  * Unicode 5.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 45, for
- * Unicode 13.0.0:
- *      <URL:http://www.unicode.org/reports/tr14/tr14-45.html>
+ * This library has been updated according to Revision 49, for
+ * Unicode 15.0.0:
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-49.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
