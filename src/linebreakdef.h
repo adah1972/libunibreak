@@ -53,7 +53,6 @@
 #define LINEBREAKDEF_H
 
 #include "unibreakdef.h"
-#include "eastasianwidthdef.h"
 
 /**
  * Line break classes.  This is a mapping of Table 1 of Unicode
@@ -155,8 +154,8 @@ struct LineBreakContext
     enum LineBreakClass lbcCur;     /**< Breaking class of current codepoint */
     enum LineBreakClass lbcNew;     /**< Breaking class of next codepoint */
     enum LineBreakClass lbcLast;    /**< Breaking class of last codepoint */
-    enum EastAsianWidthClass eaNew; /**< East Asian Width of next codepoint */
-    enum EastAsianWidthClass eaLast;/**< East Asian Width of last codepoint */
+    unsigned char eaNew;            /**< East Asian Width of next codepoint */
+    unsigned char eaLast;           /**< East Asian Width of last codepoint */
     bool fLb8aZwj;                  /**< Flag for ZWJ (LB8a) */
     bool fLb21aHebrew;              /**< Flag for Hebrew letters (LB21a) */
     int cLb30aRI;                   /**< Count of RI characters (LB30a) */
