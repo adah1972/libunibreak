@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2020 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2024 Wu Yongwei <wuyongwei at gmail dot com>
  * Copyright (C) 2013 Petr Filipsky <philodej at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
@@ -52,6 +52,7 @@
 #include <assert.h>
 #include <stddef.h>
 #include <string.h>
+#include "eastasianwidthdef.h"
 #include "linebreak.h"
 #include "linebreakdef.h"
 
@@ -156,19 +157,19 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* NU */
-        IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
+        DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* AL */
-        IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
+        DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* HL */
-        IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
+        DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
@@ -216,7 +217,7 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
         DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK },
     {   /* CM */
-        IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
+        DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
@@ -276,7 +277,7 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
     {   /* ZWJ */
-        IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
+        DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
@@ -490,6 +491,7 @@ static enum LineBreakClass resolve_lb_class(
 static void treat_first_char(
         struct LineBreakContext *lbpCtx)
 {
+    lbpCtx->lbcNew = lbpCtx->lbcCur;
     switch (lbpCtx->lbcCur)
     {
     case LBP_LF:
@@ -614,8 +616,25 @@ static int get_lb_result_lookup(
         lbpCtx->fLb21aHebrew = (lbpCtx->lbcCur == LBP_HL);
     }
 
-    /* Special processing due to rule LB30a */
-    if (lbpCtx->lbcCur == LBP_RI)
+    /* Rule LB30 */
+    if (/* (AL | HL | NU) × [OP-[\p{ea=F}\p{ea=W}\p{ea=H}]] */
+        ((lbpCtx->lbcLast == LBP_AL || lbpCtx->lbcLast == LBP_HL ||
+          lbpCtx->lbcLast == LBP_NU) &&
+         (lbpCtx->lbcNew == LBP_OP &&
+          !(lbpCtx->eaNew == EAW_F || lbpCtx->eaNew == EAW_W ||
+            lbpCtx->eaNew == EAW_H))) ||
+        /* [CP-[\p{ea=F}\p{ea=W}\p{ea=H}]] × (AL | HL | NU) */
+        ((lbpCtx->lbcLast == LBP_CP &&
+          !(lbpCtx->eaLast == EAW_F || lbpCtx->eaLast == EAW_W ||
+            lbpCtx->eaLast == EAW_H)) &&
+         (lbpCtx->lbcNew == LBP_AL || lbpCtx->lbcNew == LBP_HL ||
+          lbpCtx->lbcNew == LBP_NU)))
+    {
+        brk = LINEBREAK_NOBREAK;
+    }
+
+    /* Rule LB30a */
+    else if (lbpCtx->lbcCur == LBP_RI)
     {
         lbpCtx->cLb30aRI++;
         if (lbpCtx->cLb30aRI == 2 && lbpCtx->lbcNew == LBP_RI)
@@ -648,11 +667,13 @@ void lb_init_break_context(
 {
     lbpCtx->lang = lang;
     lbpCtx->lbpLang = get_lb_prop_lang(lang);
-    lbpCtx->lbcLast = LBP_Undefined;
-    lbpCtx->lbcNew = LBP_Undefined;
     lbpCtx->lbcCur = resolve_lb_class(
                         get_char_lb_class_lang(ch, lbpCtx->lbpLang),
                         lbpCtx->lang);
+    lbpCtx->lbcNew = LBP_Undefined;
+    lbpCtx->lbcLast = LBP_Undefined;
+    lbpCtx->eaNew = EAW_N;
+    lbpCtx->eaLast = EAW_N;
     lbpCtx->fLb8aZwj =
         (get_char_lb_class_lang(ch, lbpCtx->lbpLang) == LBP_ZWJ);
     lbpCtx->fLb10LeadSpace =
@@ -678,8 +699,24 @@ int lb_process_next_char(
 {
     int brk;
 
-    lbpCtx->lbcLast = lbpCtx->lbcNew;
+    /* Rule LB9 */
+    if (lbpCtx->lbcLast == LBP_BK || lbpCtx->lbcLast == LBP_CR ||
+        lbpCtx->lbcLast == LBP_LF || lbpCtx->lbcLast == LBP_NL ||
+        lbpCtx->lbcLast == LBP_SP || lbpCtx->lbcLast == LBP_ZW ||
+        lbpCtx->lbcLast == LBP_Undefined ||
+        !(lbpCtx->lbcNew == LBP_CM || lbpCtx->lbcNew == LBP_ZWJ))
+    {
+        lbpCtx->lbcLast = lbpCtx->lbcNew;
+    }
+    /* Rulle LB10 */
+    if (lbpCtx->lbcLast == LBP_CM || lbpCtx->lbcLast == LBP_ZWJ)
+    {
+        lbpCtx->lbcLast = LBP_AL;
+    }
+
     lbpCtx->lbcNew = get_char_lb_class_lang(ch, lbpCtx->lbpLang);
+    lbpCtx->eaLast = lbpCtx->eaNew;
+    lbpCtx->eaNew = ub_get_char_eaw_class(ch);
     brk = get_lb_result_simple(lbpCtx);
     switch (brk)
     {
