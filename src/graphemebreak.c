@@ -51,8 +51,8 @@
 #include "graphemebreakdata.c"
 #include "indicconjunctbreakdata.c"
 #include "indicconjunctbreakdef.h"
-#include "unibreakdef.h"
 #include "emojidef.h"
+#include "unibreakdef.h"
 
 enum Rule9cStage
 {

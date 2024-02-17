@@ -1,6 +1,6 @@
 /* The content of this file is generated from:
-# GraphemeBreakProperty-15.0.0.txt
-# Date: 2022-04-27, 17:07:38 GMT
+# GraphemeBreakProperty-15.1.0.txt
+# Date: 2023-01-05, 20:34:41 GMT
 */
 
 #include "graphemebreakdef.h"
