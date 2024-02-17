@@ -676,8 +676,6 @@ void lb_init_break_context(
     lbpCtx->eaLast = EAW_N;
     lbpCtx->fLb8aZwj =
         (get_char_lb_class_lang(ch, lbpCtx->lbpLang) == LBP_ZWJ);
-    lbpCtx->fLb10LeadSpace =
-        (get_char_lb_class_lang(ch, lbpCtx->lbpLang) == LBP_SP);
     lbpCtx->fLb21aHebrew = false;
     lbpCtx->cLb30aRI = 0;
     treat_first_char(lbpCtx);
@@ -734,16 +732,6 @@ int lb_process_next_char(
 
     /* Special processing due to rule LB8a */
     lbpCtx->fLb8aZwj = lbpCtx->lbcNew == LBP_ZWJ;
-
-    /* Special processing due to rule LB10 */
-    if (lbpCtx->fLb10LeadSpace)
-    {
-        if (lbpCtx->lbcNew == LBP_CM || lbpCtx->lbcNew == LBP_ZWJ)
-        {
-            brk = LINEBREAK_ALLOWBREAK;
-        }
-        lbpCtx->fLb10LeadSpace = false;
-    }
 
     return brk;
 }

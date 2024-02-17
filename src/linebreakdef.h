@@ -158,7 +158,6 @@ struct LineBreakContext
     enum EastAsianWidthClass eaNew; /**< East Asian Width of next codepoint */
     enum EastAsianWidthClass eaLast;/**< East Asian Width of last codepoint */
     bool fLb8aZwj;                  /**< Flag for ZWJ (LB8a) */
-    bool fLb10LeadSpace;            /**< Flag for leading space (LB10) */
     bool fLb21aHebrew;              /**< Flag for Hebrew letters (LB21a) */
     int cLb30aRI;                   /**< Count of RI characters (LB30a) */
 };
