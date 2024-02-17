@@ -15,6 +15,7 @@ libunibreak_la_SOURCES = \
 	linebreak.c \
 	linebreakdata.c \
 	linebreakdef.c \
+	eastasianwidthdef.c \
 	emojidef.c \
 	graphemebreak.c \
 	wordbreak.c
@@ -30,18 +31,21 @@ EXTRA_DIST = \
 	graphemebreakdata2.tmpl \
 	graphemebreakdata.c \
 	indicconjunctbreakdata.c \
+	eastasianwidthdata.c \
 	emojidata1.tmpl \
 	emojidata2.tmpl \
 	emojidata.c \
 	Makefile.gcc \
 	Makefile.msvc \
 	generate_linebreakdata.py \
+	generate_east_asian_width.py \
 	generate_indic_conjunct_break.py \
 	sort_numeric_hex.py \
 	wordbreakdef.h \
 	graphemebreakdef.h \
-	indicconjunctbreakdef.h \
+	eastasianwidthdef.h \
 	emojidef.h \
+	indicconjunctbreakdef.h \
 	test_skips.h \
 	LineBreakTest.txt \
 	WordBreakTest.txt \
@@ -67,6 +71,9 @@ GraphemeBreakProperty.txt:
 
 DerivedCoreProperties.txt:
 	wget https://www.unicode.org/Public/UNIDATA/DerivedCoreProperties.txt
+
+EastAsianWidth.txt:
+	wget https://www.unicode.org/Public/UNIDATA/EastAsianWidth.txt
 
 emoji-data.txt:
 	wget https://www.unicode.org/Public/UNIDATA/emoji/emoji-data.txt
@@ -101,6 +108,9 @@ graphemebreakdata: GraphemeBreakProperty.txt
 	echo "*/" >> ${srcdir}/graphemebreakdata.c
 	cat ${srcdir}/graphemebreakdata1.tmpl tmp.txt ${srcdir}/graphemebreakdata2.tmpl >> ${srcdir}/graphemebreakdata.c
 	rm tmp.txt
+
+eastasianwidthdata: EastAsianWidth.txt
+	${srcdir}/generate_east_asian_width.py > ${srcdir}/eastasianwidthdata.c
 
 indicconjunctbreakdata: DerivedCoreProperties.txt
 	${srcdir}/generate_indic_conjunct_break.py > ${srcdir}/indicconjunctbreakdata.c
