@@ -168,3 +168,6 @@ utf32_t ub_get_next_char_utf32(
     }
     return s[(*ip)++];
 }
+
+extern inline const void *ub_bsearch(utf32_t ch, const void *ptr,
+                                     size_t count, size_t size);
