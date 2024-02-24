@@ -25,6 +25,12 @@
 #include "eastasianwidthdata.c"
 #include "unibreakdef.h"
 
+/**
+ * Gets the East Asian Width class of a character.
+ *
+ * @param ch  character to check
+ * @return    the East Asian Width class if found; \c EAW_N otherwise
+ */
 enum EastAsianWidthClass ub_get_char_eaw_class(utf32_t ch)
 {
     const struct EastAsianWidthProperties *result_ptr =
