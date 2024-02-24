@@ -4,7 +4,7 @@
  * Break processing in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2015-2016 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2015-2024 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -169,5 +169,5 @@ utf32_t ub_get_next_char_utf32(
     return s[(*ip)++];
 }
 
-extern inline const void *ub_bsearch(utf32_t ch, const void *ptr,
-                                     size_t count, size_t size);
+extern __inline const void *ub_bsearch(utf32_t ch, const void *ptr,
+                                       size_t count, size_t size);
