@@ -1,3 +1,11 @@
+New in libunibreak 6.0
+
+- Add East Asian Width support and improve line breaking algorithm
+- Add Indic Conjunct Break support and improve grapheme breaking algorithm
+- Update the data (except line breaking) to conform to Unicode 15.1
+- Include test data files in the project
+- Make minor code adjustment and refactoring
+
 New in libunibreak 5.1
 
 - Speed up line-break property lookup
