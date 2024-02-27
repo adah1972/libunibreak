@@ -1,6 +1,6 @@
 /* The content of this file is generated from:
 # emoji-data.txt
-# Date: 2022-08-02, 00:26:10 GMT
+# Date: 2023-02-01, 02:22:54 GMT
 */
 
 #include "emojidef.h"
