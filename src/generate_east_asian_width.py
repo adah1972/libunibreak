@@ -36,14 +36,22 @@ def load_east_asian_width_data(file_path):
     with open(file_path, 'r', encoding='utf-8') as input_file:
         leading_comment = input_file.readline()
         leading_comment += input_file.readline()
+        last_start = -1
+        last_end = -1
+        last_prop = ''
         for line in input_file:
             parsed_data = parse_east_asian_width_line(line)
             if parsed_data:
                 start, end, prop = parsed_data
-                east_asian_width_properties[start] = (end, prop)
+                if last_end + 1 == start and last_prop == prop:
+                    east_asian_width_properties[last_start] = (end, prop)
+                    last_end = end
+                else:
+                    east_asian_width_properties[start] = (end, prop)
+                    last_start, last_end, last_prop = start, end, prop
 
 
-def output_east_asian_width_data():
+def output_east_asian_width_data(skip=''):
     print('/* The content of this file is generated from:')
     print(leading_comment, end='')
     print('*/')
@@ -52,6 +60,8 @@ def output_east_asian_width_data():
     print('')
     print('static const struct EastAsianWidthProperties eaw_prop[] = {')
     for start, (end, prop) in east_asian_width_properties.items():
+        if prop == skip:
+            continue
         print(f"    {{0x{start:04X}, 0x{end:04X}, EAW_{prop}}},")
     print('};')
 
@@ -60,7 +70,7 @@ def main():
     input_file_path = sys.argv[1] if sys.argv[1:] else \
         'EastAsianWidth.txt'
     load_east_asian_width_data(input_file_path)
-    output_east_asian_width_data()
+    output_east_asian_width_data(skip='N')
 
 
 if __name__ == '__main__':
