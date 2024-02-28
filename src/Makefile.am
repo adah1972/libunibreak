@@ -57,7 +57,7 @@ install-exec-hook:
 	${LN_S} libunibreak.a $(DESTDIR)/${libdir}/liblinebreak.a
 
 distclean-local:
-	rm -f LineBreak.txt WordBreakData.txt GraphemeBreakData.txt emoji-data.txt LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt
+	rm -f LineBreak.txt WordBreakData.txt GraphemeBreakData.txt DerivedCoreProperties.txt EastAsianWidth.txt emoji-data.txt
 
 
 LineBreak.txt:
