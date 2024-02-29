@@ -50,6 +50,13 @@ def load_east_asian_width_data(file_path):
                     east_asian_width_properties[start] = (end, prop)
                     last_start, last_end, last_prop = start, end, prop
 
+    # Sort by the start points
+    east_asian_width_properties = {
+        k: v for k, v in
+        sorted(east_asian_width_properties.items(),
+               key=lambda item: item[0])
+    }
+
 
 def output_east_asian_width_data(skip=''):
     print('/* The content of this file is generated from:')
