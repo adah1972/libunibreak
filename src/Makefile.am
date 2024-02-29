@@ -27,8 +27,6 @@ EXTRA_DIST = \
 	wordbreakdata1.tmpl \
 	wordbreakdata2.tmpl \
 	wordbreakdata.c \
-	graphemebreakdata1.tmpl \
-	graphemebreakdata2.tmpl \
 	graphemebreakdata.c \
 	indicconjunctbreakdata.c \
 	eastasianwidthdata.c \
@@ -98,15 +96,7 @@ wordbreakdata: WordBreakProperty.txt
 	rm tmp.txt
 
 graphemebreakdata: GraphemeBreakProperty.txt
-	sed -E -n -f ${srcdir}/extract_data.sed GraphemeBreakProperty.txt | \
-	sed -E -f ${srcdir}/expand_single.sed | \
-	${srcdir}/sort_numeric_hex.py | \
-	sed -E 's/^([0-9A-F]+)\.\.([0-9A-F]+); *(.*)/'$$'\t''{0x\1, 0x\2, GBP_\3},/' > tmp.txt
-	echo "/* The content of this file is generated from:" > ${srcdir}/graphemebreakdata.c
-	head -2 GraphemeBreakProperty.txt >> ${srcdir}/graphemebreakdata.c
-	echo "*/" >> ${srcdir}/graphemebreakdata.c
-	cat ${srcdir}/graphemebreakdata1.tmpl tmp.txt ${srcdir}/graphemebreakdata2.tmpl >> ${srcdir}/graphemebreakdata.c
-	rm tmp.txt
+	${srcdir}/generate_grapheme_break.py > ${srcdir}/graphemebreakdata.c
 
 eastasianwidthdata: EastAsianWidth.txt
 	${srcdir}/generate_east_asian_width.py > ${srcdir}/eastasianwidthdata.c
