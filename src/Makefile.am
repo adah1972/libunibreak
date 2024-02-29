@@ -32,13 +32,12 @@ EXTRA_DIST = \
 	graphemebreakdata.c \
 	indicconjunctbreakdata.c \
 	eastasianwidthdata.c \
-	emojidata1.tmpl \
-	emojidata2.tmpl \
 	emojidata.c \
 	Makefile.gcc \
 	Makefile.msvc \
 	generate_linebreakdata.py \
 	generate_east_asian_width.py \
+	generate_extended_pictographic.py \
 	generate_indic_conjunct_break.py \
 	sort_numeric_hex.py \
 	wordbreakdef.h \
@@ -116,16 +115,7 @@ indicconjunctbreakdata: DerivedCoreProperties.txt
 	${srcdir}/generate_indic_conjunct_break.py > ${srcdir}/indicconjunctbreakdata.c
 
 emojidata: emoji-data.txt
-	echo "/* The content of this file is generated from:" > ${srcdir}/emojidata.c
-	head -2 emoji-data.txt >> ${srcdir}/emojidata.c
-	echo "*/" >> ${srcdir}/emojidata.c
-	sed -E -n -f ${srcdir}/extract_data.sed emoji-data.txt | \
-	sed -E -f ${srcdir}/expand_single.sed | \
-	grep "; Extended_Pictographic" | \
-	${srcdir}/sort_numeric_hex.py | \
-	sed -E 's/^([0-9A-F]+)\.\.([0-9A-F]+);.*/'$$'\t''{0x\1, 0x\2},/' > tmp.txt
-	cat ${srcdir}/emojidata1.tmpl tmp.txt ${srcdir}/emojidata2.tmpl >> ${srcdir}/emojidata.c
-	rm tmp.txt
+	${srcdir}/generate_extended_pictographic.py > ${srcdir}/emojidata.c
 
 update-test:
 	rm -f WordBreakTest.txt GraphemeBreakTest.txt
