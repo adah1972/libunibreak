@@ -14,9 +14,9 @@ def parse_east_asian_width_line(line):
     if line.startswith('#') or not line.strip():
         return None
 
-    # Parse the valid line to extract the range and the InCB property
+    # Parse the valid line to extract the range and the EAW property
     range_part, prop = line.split(';')
-    prop = prop.split('#')[0].strip()  # Clean up the InCB property string
+    prop = prop.split('#')[0].strip()  # Clean up the EAW property string
 
     # Handle single code points and ranges
     if '..' in range_part:
