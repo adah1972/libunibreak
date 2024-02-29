@@ -37,6 +37,7 @@ EXTRA_DIST = \
 	generate_east_asian_width.py \
 	generate_extended_pictographic.py \
 	generate_indic_conjunct_break.py \
+	unicode_data_property.py \
 	wordbreakdef.h \
 	graphemebreakdef.h \
 	eastasianwidthdef.h \
