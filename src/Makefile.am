@@ -24,8 +24,6 @@ EXTRA_DIST = \
 	extract_data.sed \
 	expand_single.sed \
 	linebreakdata1.tmpl \
-	wordbreakdata1.tmpl \
-	wordbreakdata2.tmpl \
 	wordbreakdata.c \
 	graphemebreakdata.c \
 	indicconjunctbreakdata.c \
@@ -34,10 +32,11 @@ EXTRA_DIST = \
 	Makefile.gcc \
 	Makefile.msvc \
 	generate_linebreakdata.py \
+	generate_word_break.py \
+	generate_grapheme_break.py \
 	generate_east_asian_width.py \
 	generate_extended_pictographic.py \
 	generate_indic_conjunct_break.py \
-	sort_numeric_hex.py \
 	wordbreakdef.h \
 	graphemebreakdef.h \
 	eastasianwidthdef.h \
@@ -85,15 +84,7 @@ linebreakdata: LineBreak.txt
 	rm tmp.txt tmp.c
 
 wordbreakdata: WordBreakProperty.txt
-	sed -E -n -f ${srcdir}/extract_data.sed WordBreakProperty.txt | \
-	sed -E -f ${srcdir}/expand_single.sed | \
-	${srcdir}/sort_numeric_hex.py | \
-	sed -E 's/^([0-9A-F]+)\.\.([0-9A-F]+); *(.*)/'$$'\t''{0x\1, 0x\2, WBP_\3},/' > tmp.txt
-	echo "/* The content of this file is generated from:" > ${srcdir}/wordbreakdata.c
-	head -2 WordBreakProperty.txt >> ${srcdir}/wordbreakdata.c
-	echo "*/" >> ${srcdir}/wordbreakdata.c
-	cat ${srcdir}/wordbreakdata1.tmpl tmp.txt ${srcdir}/wordbreakdata2.tmpl >> ${srcdir}/wordbreakdata.c
-	rm tmp.txt
+	${srcdir}/generate_word_break.py > ${srcdir}/wordbreakdata.c
 
 graphemebreakdata: GraphemeBreakProperty.txt
 	${srcdir}/generate_grapheme_break.py > ${srcdir}/graphemebreakdata.c
