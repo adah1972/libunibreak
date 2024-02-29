@@ -3,6 +3,7 @@ include_HEADERS = \
 	unibreakdef.h \
 	linebreak.h \
 	linebreakdef.h \
+	eastasianwidthdef.h \
 	graphemebreak.h \
 	wordbreak.h
 lib_LTLIBRARIES = libunibreak.la
@@ -40,7 +41,6 @@ EXTRA_DIST = \
 	unicode_data_property.py \
 	wordbreakdef.h \
 	graphemebreakdef.h \
-	eastasianwidthdef.h \
 	emojidef.h \
 	indicconjunctbreakdef.h \
 	test_skips.h \
