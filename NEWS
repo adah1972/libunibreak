@@ -1,3 +1,9 @@
+New in libunibreak 6.1
+
+- Optimize the size of Unicode data
+- Refactor the Unicode data generation scripts
+- Make minor adjustments and fixes
+
 New in libunibreak 6.0
 
 - Add East Asian Width support and improve line breaking algorithm

@@ -39,7 +39,7 @@
 extern "C" {
 #endif
 
-#define UNIBREAK_VERSION   0x0600   /**< Version of the libunibreak */
+#define UNIBREAK_VERSION   0x0601   /**< Version of the libunibreak */
 extern const int unibreak_version;
 
 #ifndef UNIBREAK_UTF_TYPES_DEFINED
