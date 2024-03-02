@@ -85,8 +85,8 @@ the downloaded file for the public interfaces exposed to applications.
 Examples
 --------
 
-See the *tools* directory for basic examples (as test code).  A more
-*real* utility is [breaktext][6].
+See the *tools* directory for basic examples.  A more *real* utility is
+[breaktext][6].
 
 [6]: https://github.com/adah1972/breaktext
 
