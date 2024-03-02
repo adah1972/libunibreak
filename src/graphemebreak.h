@@ -28,9 +28,9 @@
  * Unicode 9.0.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-29.html>
  *
- * This library has been updated according to Revision 37, for
- * Unicode 13.0.0:
- *      <URL:http://www.unicode.org/reports/tr29/tr29-37.html>
+ * This library has been updated according to Revision 43, for
+ * Unicode 15.1.0:
+ *      <URL:https://www.unicode.org/reports/tr29/tr29-43.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
