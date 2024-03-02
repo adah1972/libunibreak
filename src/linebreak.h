@@ -56,11 +56,11 @@
 extern "C" {
 #endif
 
-#define LINEBREAK_MUSTBREAK     0   /**< Break is mandatory */
-#define LINEBREAK_ALLOWBREAK    1   /**< Break is allowed */
-#define LINEBREAK_NOBREAK       2   /**< No break is possible */
-#define LINEBREAK_INSIDEACHAR   3   /**< A UTF-8/16 sequence is unfinished */
-#define LINEBREAK_INDETERMINATE 4   /**< End of input on a non-EOL char */
+#define LINEBREAK_MUSTBREAK      0  /**< Break is mandatory */
+#define LINEBREAK_ALLOWBREAK     1  /**< Break is allowed */
+#define LINEBREAK_NOBREAK        2  /**< No break is possible */
+#define LINEBREAK_INSIDEACHAR    3  /**< A UTF-8/16 sequence is unfinished */
+#define LINEBREAK_INDETERMINATE  4  /**< End of input on a non-EOL char */
 
 void init_linebreak(void);
 void set_linebreaks_utf8(
