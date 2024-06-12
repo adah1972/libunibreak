@@ -27,30 +27,11 @@
 #include "unibreakdef.h"
 
 /**
- * East Asian Width (ea) class.  This is defined in Unicode Standard
- * Annex 11.
- */
-enum EastAsianWidthClass
-{
-    EAW_A,  /**< Ambiguous */
-    EAW_F,  /**< Fullwidth */
-    EAW_H,  /**< Halfwidth */
-    EAW_Na, /**< Narrow */
-    EAW_W,  /**< Wide */
-    EAW_N,  /**< Neutral */
-};
-
-/**
- * Struct for entries of East Asian Width properties.  The array of the
- * entries \e must be sorted.
- */
-struct EastAsianWidthProperties
-{
-    utf32_t start;                  /**< Start codepoint */
-    utf32_t end;                    /**< End codepoint, inclusive */
-    enum EastAsianWidthClass prop;  /**< The East Asian Width property */
-};
-
-enum EastAsianWidthClass ub_get_char_eaw_class(utf32_t ch);
+ * Returns whether an OP (Open Punctuation) is East Asian.
+ *
+ * @param ch  Unicode codepoint (must be an OP)
+ * @return    it is east asian or not
+*/
+bool op_is_east_asian(utf32_t ch);
 
 #endif /* EASTASIANWIDTHDEF_H */
