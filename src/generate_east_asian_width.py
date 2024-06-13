@@ -3,10 +3,38 @@
 import sys
 import unicode_data_property
 
+
 def lookup_east_asian_width(cp, east_asian_width_properties):
     for start, (end, prop) in east_asian_width_properties.items():
         if cp >= start and cp <= end:
             return prop
+
+
+def generate_function(line_break_properties, east_asian_width_properties):
+    print('bool op_is_east_asian(utf32_t ch) {')
+    print('    return false', end='')
+    last_east_asian_op = None
+    for start, (end, prop) in line_break_properties.items():
+        if prop == 'OP' or prop == 'CP':
+            for ch in range(start, end + 1):
+                w = lookup_east_asian_width(ch, east_asian_width_properties)
+                if w in ('F', 'W', 'H'):
+                    # As of Unicode 15.1, there is no east asian CP. If this
+                    # doesn't hold in a future version, we need to adjust code.
+                    assert prop == 'OP'
+
+                    if not last_east_asian_op:
+                        print(f'\n        || (ch >= 0x{ch:04X}', end='')
+                        last_east_asian_op = ch
+                else:
+                    if last_east_asian_op:
+                        print(f' && ch <= 0x{ch:04X})', end='')
+                        last_east_asian_op = None
+    if last_east_asian_op:
+        print(')', end='')
+    print(';')
+    print('}')
+
 
 def main():
     input_file_path = sys.argv[1] if sys.argv[1:] else \
@@ -24,28 +52,8 @@ def main():
     print('')
     print('#include "eastasianwidthdef.h"')
     print('')
-    print('bool op_is_east_asian(utf32_t ch) {')
-    print('    return false', end='')
-    last_east_asian_op = None
-    for start, (end, prop) in line_break_properties.items():
-        if prop == 'OP' or prop == 'CP':
-            for ch in range(start, end + 1):
-                w = lookup_east_asian_width(ch, east_asian_width_properties)
-                if w in ('F', 'W', 'H'):
-                    # As of Unicode 15.1, there is no east asian CP. If this
-                    # doesn't hold in a future version, we need to adjust code.
-                    assert(prop == 'OP')
-                    if not last_east_asian_op:
-                        print(f'\n        || (ch >= 0x{ch:04X}', end='')
-                        last_east_asian_op = ch
-                else:
-                    if last_east_asian_op:
-                        print(f' && ch <= 0x{ch:04X})', end='')
-                        last_east_asian_op = None
-    if last_east_asian_op:
-        print(')', end='')
-    print(';')
-    print('}')
+    generate_function(line_break_properties, east_asian_width_properties)
+
 
 if __name__ == '__main__':
     main()

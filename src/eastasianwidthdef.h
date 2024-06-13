@@ -29,6 +29,9 @@
 /**
  * Returns whether an OP (Open Punctuation) is East Asian.
  *
+ * For the purpose of supporting LB30, being "east asian" here means the char
+ * has East_Asian_Width Property F/W/H.
+ *
  * @param ch  Unicode codepoint (must be an OP)
  * @return    it is east asian or not
 */
