@@ -698,11 +698,11 @@ int lb_process_next_char(
     int brk;
 
     /* Rule LB9 */
-    if (lbpCtx->lbcLast == LBP_BK || lbpCtx->lbcLast == LBP_CR ||
+    if (!(lbpCtx->lbcNew == LBP_CM || lbpCtx->lbcNew == LBP_ZWJ) ||
+        lbpCtx->lbcLast == LBP_BK || lbpCtx->lbcLast == LBP_CR ||
         lbpCtx->lbcLast == LBP_LF || lbpCtx->lbcLast == LBP_NL ||
         lbpCtx->lbcLast == LBP_SP || lbpCtx->lbcLast == LBP_ZW ||
-        lbpCtx->lbcLast == LBP_Undefined ||
-        !(lbpCtx->lbcNew == LBP_CM || lbpCtx->lbcNew == LBP_ZWJ))
+        lbpCtx->lbcLast == LBP_Undefined)
     {
         lbpCtx->lbcLast = lbpCtx->lbcNew;
     }
