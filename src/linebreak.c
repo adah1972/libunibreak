@@ -620,7 +620,7 @@ static int get_lb_result_lookup(
     if (/* (AL | HL | NU) × [OP-[\p{ea=F}\p{ea=W}\p{ea=H}]] */
         ((lbpCtx->lbcLast == LBP_AL || lbpCtx->lbcLast == LBP_HL ||
           lbpCtx->lbcLast == LBP_NU) &&
-         (lbpCtx->lbcNew == LBP_OP && !op_is_east_asian(ch))) ||
+         (lbpCtx->lbcNew == LBP_OP && !ub_is_op_east_asian(ch))) ||
         /* [CP-[\p{ea=F}\p{ea=W}\p{ea=H}]] × (AL | HL | NU)
            note as of Unicode 15.1, there is no east asian CP
         */

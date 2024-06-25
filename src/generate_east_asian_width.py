@@ -11,7 +11,7 @@ def lookup_east_asian_width(cp, east_asian_width_properties):
 
 
 def generate_function(line_break_properties, east_asian_width_properties):
-    print('bool op_is_east_asian(utf32_t ch) {')
+    print('bool ub_is_op_east_asian(utf32_t ch) {')
     print('    return false', end='')
     last_east_asian_op = None
     for start, (end, prop) in line_break_properties.items():
