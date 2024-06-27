@@ -4,13 +4,23 @@ import sys
 import unicode_data_property
 
 
+def output_east_asian_width_data(east_asian_width_properties, skip=''):
+    print('static const struct EastAsianWidthProperties eaw_prop[] = {')
+    for start, (end, prop) in east_asian_width_properties.items():
+        if prop == skip:
+            continue
+        print(f"    {{0x{start:04X}, 0x{end:04X}, EAW_{prop}}},")
+    print('};')
+
+
 def lookup_east_asian_width(cp, east_asian_width_properties):
     for start, (end, prop) in east_asian_width_properties.items():
         if cp >= start and cp <= end:
             return prop
 
 
-def generate_function(line_break_properties, east_asian_width_properties):
+def output_is_op_east_asian_function(line_break_properties,
+                                     east_asian_width_properties):
     print('bool ub_is_op_east_asian(utf32_t ch) {')
     print('    return false', end='')
     last_east_asian_op = None
@@ -49,10 +59,13 @@ def main():
     print(leading_comment, end='')
     print(leading_comment_2, end='')
     print('*/')
-    print('')
+    print()
     print('#include "eastasianwidthdef.h"')
-    print('')
-    generate_function(line_break_properties, east_asian_width_properties)
+    print()
+    output_east_asian_width_data(east_asian_width_properties, skip='N')
+    print()
+    output_is_op_east_asian_function(line_break_properties,
+                                     east_asian_width_properties)
 
 
 if __name__ == '__main__':
