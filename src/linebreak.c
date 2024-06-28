@@ -562,7 +562,7 @@ static int get_lb_result_simple(
  *                        #LINEBREAK_ALLOWBREAK, and #LINEBREAK_NOBREAK
  */
 static int get_lb_result_lookup(
-        struct LineBreakContext *lbpCtx)
+        struct LineBreakContext *lbpCtx, utf32_t ch)
 {
     int brk = LINEBREAK_UNDEFINED;
 
@@ -620,13 +620,11 @@ static int get_lb_result_lookup(
     if (/* (AL | HL | NU) × [OP-[\p{ea=F}\p{ea=W}\p{ea=H}]] */
         ((lbpCtx->lbcLast == LBP_AL || lbpCtx->lbcLast == LBP_HL ||
           lbpCtx->lbcLast == LBP_NU) &&
-         (lbpCtx->lbcNew == LBP_OP &&
-          !(lbpCtx->eaNew == EAW_F || lbpCtx->eaNew == EAW_W ||
-            lbpCtx->eaNew == EAW_H))) ||
-        /* [CP-[\p{ea=F}\p{ea=W}\p{ea=H}]] × (AL | HL | NU) */
-        ((lbpCtx->lbcLast == LBP_CP &&
-          !(lbpCtx->eaLast == EAW_F || lbpCtx->eaLast == EAW_W ||
-            lbpCtx->eaLast == EAW_H)) &&
+         (lbpCtx->lbcNew == LBP_OP && !ub_is_op_east_asian(ch))) ||
+        /* [CP-[\p{ea=F}\p{ea=W}\p{ea=H}]] × (AL | HL | NU)
+           note as of Unicode 15.1, there is no east asian CP
+        */
+        (lbpCtx->lbcLast == LBP_CP &&
          (lbpCtx->lbcNew == LBP_AL || lbpCtx->lbcNew == LBP_HL ||
           lbpCtx->lbcNew == LBP_NU)))
     {
@@ -672,8 +670,6 @@ void lb_init_break_context(
                         lbpCtx->lang);
     lbpCtx->lbcNew = LBP_Undefined;
     lbpCtx->lbcLast = LBP_Undefined;
-    lbpCtx->eaNew = EAW_N;
-    lbpCtx->eaLast = EAW_N;
     lbpCtx->fLb8aZwj =
         (get_char_lb_class_lang(ch, lbpCtx->lbpLang) == LBP_ZWJ);
     lbpCtx->fLb21aHebrew = false;
@@ -713,8 +709,6 @@ int lb_process_next_char(
     }
 
     lbpCtx->lbcNew = get_char_lb_class_lang(ch, lbpCtx->lbpLang);
-    lbpCtx->eaLast = lbpCtx->eaNew;
-    lbpCtx->eaNew = ub_get_char_eaw_class(ch);
     brk = get_lb_result_simple(lbpCtx);
     switch (brk)
     {
@@ -724,7 +718,7 @@ int lb_process_next_char(
         break;
     case LINEBREAK_UNDEFINED:
         lbpCtx->lbcNew = resolve_lb_class(lbpCtx->lbcNew, lbpCtx->lang);
-        brk = get_lb_result_lookup(lbpCtx);
+        brk = get_lb_result_lookup(lbpCtx, ch);
         break;
     default:
         break;

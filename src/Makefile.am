@@ -90,7 +90,7 @@ wordbreakdata: WordBreakProperty.txt
 graphemebreakdata: GraphemeBreakProperty.txt
 	${srcdir}/generate_grapheme_break.py > ${srcdir}/graphemebreakdata.c
 
-eastasianwidthdata: EastAsianWidth.txt
+eastasianwidthdata: EastAsianWidth.txt LineBreak.txt
 	${srcdir}/generate_east_asian_width.py > ${srcdir}/eastasianwidthdata.c
 
 indicconjunctbreakdata: DerivedCoreProperties.txt
