@@ -17,9 +17,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <iconv.h>
 #include <linebreak.h>
 #include <linebreakdef.h>
-#include <iconv.h>
 
 #define MAXCHARS    16384
 
@@ -35,7 +35,9 @@ void usage(const char *progname)
 void putchar_utf8(utf32_t ch)
 {
     if (ch < 0x80)
+    {
         putchar(ch);
+    }
     else if (ch < 0x800)
     {
         putchar(0xC0 | (ch >> 6));
@@ -103,16 +105,23 @@ void putchar_iconv(iconv_t ic, const char* buf, size_t count)
 size_t get_utf8_char_len(char lead)
 {
     unsigned char ch = (unsigned char)lead;
-    if (ch < 0xC2 || ch > 0xF4) {
+    if (ch < 0xC2 || ch > 0xF4)
+    {
         /* One-byte sequence, tail (should not occur), or invalid */
         return 1;
-    } else if (ch < 0xE0) {
+    }
+    else if (ch < 0xE0)
+    {
         /* Two-byte sequence */
         return 2;
-    } else if (ch < 0xF0) {
+    }
+    else if (ch < 0xF0)
+    {
         /* Three-byte sequence */
         return 3;
-    } else {
+    }
+    else
+    {
         /* Four-byte sequence */
         return 4;
     }
@@ -122,7 +131,8 @@ size_t get_utf8_char_len(char lead)
 void puts_iconv(const char *s, iconv_t ic)
 {
     unsigned char ch;
-    while ( (ch = (unsigned char)*s)) {
+    while ((ch = (unsigned char)*s))
+    {
         size_t char_len = get_utf8_char_len(ch);
         putchar_iconv(ic, s, char_len);
         s += char_len;
@@ -199,7 +209,9 @@ int main(int argc, char *argv[])
         j = i;
         ch = ub_get_next_char_utf8(buffer, count, &i);
         if (ch == EOS)
+        {
             break;
+        }
         if (ic != (iconv_t)-1)
         {
             putchar_iconv(ic, (char *)buffer + j, i - j);

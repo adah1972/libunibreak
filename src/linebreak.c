@@ -381,10 +381,10 @@ static enum LineBreakClass get_char_lb_class(
  * @param ch  character to check
  * @return    the line breaking class if found; \c LBP_XX otherwise
  */
-static enum LineBreakClass get_char_lb_class_default(
-        utf32_t ch)
+static enum LineBreakClass get_char_lb_class_default(utf32_t ch)
 {
-    if (ch < 65536) {
+    if (ch < 65536)
+    {
         return lb_prop_bmp[ch];
     }
 
@@ -449,10 +449,9 @@ static enum LineBreakClass resolve_lb_class(
     switch (lbc)
     {
     case LBP_AI:
-        if (lang != NULL &&
-                (strncmp(lang, "zh", 2) == 0 || /* Chinese */
-                 strncmp(lang, "ja", 2) == 0 || /* Japanese */
-                 strncmp(lang, "ko", 2) == 0))  /* Korean */
+        if (lang != NULL && (strncmp(lang, "zh", 2) == 0 || /* Chinese */
+                             strncmp(lang, "ja", 2) == 0 || /* Japanese */
+                             strncmp(lang, "ko", 2) == 0))  /* Korean */
         {
             return LBP_ID;
         }
@@ -524,8 +523,8 @@ static void treat_first_char(
 static int get_lb_result_simple(
         struct LineBreakContext *lbpCtx)
 {
-    if (lbpCtx->lbcCur == LBP_BK
-        || (lbpCtx->lbcCur == LBP_CR && lbpCtx->lbcNew != LBP_LF))
+    if (lbpCtx->lbcCur == LBP_BK ||
+        (lbpCtx->lbcCur == LBP_CR && lbpCtx->lbcNew != LBP_LF))
     {
         return LINEBREAK_MUSTBREAK;     /* Rules LB4 and LB5 */
     }
@@ -894,7 +893,7 @@ size_t set_linebreaks_utf8_per_code_point(
         char *brks)
 {
     return set_linebreaks(s, len, lang, LBOT_PER_CODE_POINT, brks,
-                   (get_next_char_t)ub_get_next_char_utf8);
+                          (get_next_char_t)ub_get_next_char_utf8);
 }
 
 /**
@@ -938,7 +937,7 @@ size_t set_linebreaks_utf16_per_code_point(
         char *brks)
 {
     return set_linebreaks(s, len, lang, LBOT_PER_CODE_POINT, brks,
-                   (get_next_char_t)ub_get_next_char_utf16);
+                          (get_next_char_t)ub_get_next_char_utf16);
 }
 
 /**

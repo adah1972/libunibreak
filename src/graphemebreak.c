@@ -119,7 +119,8 @@ update_rule9c_stage(enum Rule9cStage stage,
         /* R9C_LINKER */
         { R9C_LINKER, R9C_STARTED, R9C_LINKER }
     };
-    if (incb == InCB_None) {
+    if (incb == InCB_None)
+    {
         return R9C_INACTIVE;
     }
     return states[stage][incb];
@@ -154,7 +155,6 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
 
     while (true)
     {
-
         // this state-machine recognizes the following pattern:
         // extended_pictograph Extended* ZWJ
         // when that pattern has been detected rule11Detector will be

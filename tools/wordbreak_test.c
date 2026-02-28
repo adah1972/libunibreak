@@ -9,8 +9,7 @@
 #include <string.h>
 #include <wordbreak.h>
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
    const char *lang = "";
    const char *text;
@@ -30,8 +29,10 @@ main(int argc, char *argv[])
    printf("%s\n", text);
 
    set_wordbreaks_utf8((const utf8_t *) text, len, lang, breaks);
-   for (i = 0 ; i < len ; i++)
-      printf("%d", (int) breaks[i]);
+   for (i = 0; i < len; i++)
+   {
+       printf("%d", (int)breaks[i]);
+   }
    printf("\n");
 
    return 0;

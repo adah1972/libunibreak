@@ -68,8 +68,6 @@ void init_wordbreak(void)
  * Gets the word breaking class of a character.
  *
  * @param ch   character to check
- * @param wbp  pointer to the wbp breaking properties array
- * @param len  size of the wbp array in number of items
  * @return     the word breaking class if found; \c WBP_Any otherwise
  */
 static enum WordBreakClass get_char_wb_class(utf32_t ch)
@@ -88,9 +86,9 @@ static enum WordBreakClass get_char_wb_class(utf32_t ch)
 /**
  * Sets the word break types to a specific value in a range.
  *
- * It sets the inside chars to #WORDBREAK_INSIDEACHAR and the rest to brkType.
- * Assumes \a brks is initialized - all the cells with #WORDBREAK_NOBREAK are
- * cells that we really don't want to break after.
+ * It sets the inside chars to #WORDBREAK_INSIDEACHAR and the rest to
+ * brkType.  Assumes \a brks is initialized - all the cells with
+ * #WORDBREAK_NOBREAK are cells that we really don't want to break after.
  *
  * @param[in]  s             input string
  * @param[out] brks          breaks array to fill
@@ -132,8 +130,8 @@ static void set_brks_to(
 }
 
 /* Checks to see if the class is newline, CR, or LF (rules WB3a and b). */
-#define IS_WB3ab(cls) ((cls == WBP_Newline) || (cls == WBP_CR) || \
-                       (cls == WBP_LF))
+#define IS_WB3ab(cls)                                                      \
+    ((cls == WBP_Newline) || (cls == WBP_CR) || (cls == WBP_LF))
 
 /**
  * Sets the word breaking information for a generic input string.
@@ -169,7 +167,7 @@ static void set_wordbreaks(
     size_t posLast = 0;
 
     /* TODO: Language-specific specialization. */
-    (void) lang;
+    (void)lang;
 
     /* Init brks. */
     memset(brks, WORDBREAK_BREAK, len);
@@ -239,8 +237,8 @@ static void set_wordbreaks(
             break;
 
         case WBP_Katakana:
-            if ((wbcSeqStart == WBP_Katakana) || /* WB13 */
-                    (wbcSeqStart == WBP_ExtendNumLet)) /* WB13b */
+            if ((wbcSeqStart == WBP_Katakana) ||   /* WB13 */
+                (wbcSeqStart == WBP_ExtendNumLet)) /* WB13b */
             {
                 set_brks_to(s, brks, posLast, posCur, len,
                             WORDBREAK_NOBREAK, get_next_char);
@@ -258,23 +256,23 @@ static void set_wordbreaks(
         case WBP_Hebrew_Letter:
         case WBP_ALetter:
             if ((wbcSeqStart == WBP_Hebrew_Letter) &&
-                    (wbcLast == WBP_Double_Quote)) /* WB7b,c */
+                (wbcLast == WBP_Double_Quote)) /* WB7b,c */
             {
-               if (wbcCur == WBP_Hebrew_Letter)
-                 {
-                     set_brks_to(s, brks, posLast, posCur, len,
-                             WORDBREAK_NOBREAK, get_next_char);
-                 }
-               else
-                 {
-                     set_brks_to(s, brks, posLast, posCur, len,
-                             WORDBREAK_BREAK, get_next_char);
-                 }
+                if (wbcCur == WBP_Hebrew_Letter)
+                {
+                    set_brks_to(s, brks, posLast, posCur, len,
+                                WORDBREAK_NOBREAK, get_next_char);
+                }
+                else
+                {
+                    set_brks_to(s, brks, posLast, posCur, len,
+                                WORDBREAK_BREAK, get_next_char);
+                }
             }
             else if (((wbcSeqStart == WBP_ALetter) ||
-                        (wbcSeqStart == WBP_Hebrew_Letter)) || /* WB5,6,7 */
-                    (wbcLast == WBP_Numeric) || /* WB10 */
-                    (wbcSeqStart == WBP_ExtendNumLet)) /* WB13b */
+                      (wbcSeqStart == WBP_Hebrew_Letter)) || /* WB5,6,7 */
+                     (wbcLast == WBP_Numeric) ||             /* WB10 */
+                     (wbcSeqStart == WBP_ExtendNumLet))      /* WB13b */
             {
                 set_brks_to(s, brks, posLast, posCur, len,
                             WORDBREAK_NOBREAK, get_next_char);
@@ -301,8 +299,8 @@ static void set_wordbreaks(
 
         case WBP_MidNumLet:
             if (((wbcLast == WBP_ALetter) ||
-                        (wbcLast == WBP_Hebrew_Letter)) || /* WB6,7 */
-                    (wbcLast == WBP_Numeric)) /* WB11,12 */
+                 (wbcLast == WBP_Hebrew_Letter)) || /* WB6,7 */
+                (wbcLast == WBP_Numeric))           /* WB11,12 */
             {
                 /* Go on */
             }
@@ -317,7 +315,7 @@ static void set_wordbreaks(
 
         case WBP_MidLetter:
             if ((wbcLast == WBP_ALetter) ||
-                    (wbcLast == WBP_Hebrew_Letter)) /* WB6,7 */
+                (wbcLast == WBP_Hebrew_Letter)) /* WB6,7 */
             {
                 /* Go on */
             }
@@ -346,9 +344,9 @@ static void set_wordbreaks(
 
         case WBP_Numeric:
             if ((wbcSeqStart == WBP_Numeric) || /* WB8,11,12 */
-                    ((wbcLast == WBP_ALetter) ||
-                     (wbcLast == WBP_Hebrew_Letter)) || /* WB9 */
-                    (wbcSeqStart == WBP_ExtendNumLet)) /* WB13b */
+                ((wbcLast == WBP_ALetter) ||
+                 (wbcLast == WBP_Hebrew_Letter)) || /* WB9 */
+                (wbcSeqStart == WBP_ExtendNumLet))  /* WB13b */
             {
                 set_brks_to(s, brks, posLast, posCur, len,
                             WORDBREAK_NOBREAK, get_next_char);
@@ -391,7 +389,7 @@ static void set_wordbreaks(
                 ((riCounter % 2) == 1))
             {
                 set_brks_to(s, brks, posLast, posCur, len,
-                        WORDBREAK_NOBREAK, get_next_char);
+                            WORDBREAK_NOBREAK, get_next_char);
                 riCounter = 0; /* Reset the sequence */
             }
             /* No rule found, reset */
@@ -408,7 +406,7 @@ static void set_wordbreaks(
         case WBP_Double_Quote:
             if (wbcLast == WBP_Hebrew_Letter) /* WB7b,c */
             {
-               /* Go on */
+                /* Go on */
             }
             else
             {
