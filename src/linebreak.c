@@ -299,23 +299,23 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
  * @param suffixLen  length of \a suffix
  * @return           non-zero if true; zero otherwise
  */
-static __inline int ends_with(const char *str, const char *suffix,
-                              unsigned suffixLen)
+static __inline bool ends_with(const char *str, const char *suffix,
+                               unsigned suffixLen)
 {
     size_t len;
     if (str == NULL)
     {
-        return 0;
+        return false;
     }
     len = strlen(str);
     if (len >= suffixLen &&
         memcmp(str + len - suffixLen, suffix, suffixLen) == 0)
     {
-        return 1;
+        return true;
     }
     else
     {
-        return 0;
+        return false;
     }
 }
 

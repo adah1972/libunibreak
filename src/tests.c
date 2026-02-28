@@ -58,7 +58,8 @@ int main(int argc, char *argv[])
     clock_t t2;
 
     char noBreak, mustBreak, insideChar;
-    const unsigned int *testSkips; /* Zero terminated array of line numbers to skip in the test. */
+    const unsigned int *testSkips; /* Zero terminated array of line numbers
+                                      to skip in the test. */
 
     if (argc != 2)
     {
@@ -118,7 +119,9 @@ int main(int argc, char *argv[])
         }
 
         if (line[0] == '#')
+        {
             continue;
+        }
 
         if (linenumber == *testSkips)
         {
@@ -204,8 +207,10 @@ int main(int argc, char *argv[])
             if (breaksActual[i] != breaksDesired[i])
             {
                 testsFailed++;
-                printf("Issues in line %d:\n\t%s\tPosition %d: expected %d got %d\n",
-                       linenumber, line, i, breaksDesired[i], breaksActual[i]);
+                printf("Issues in line %d:\n\t%s\tPosition %d: expected %d "
+                       "got %d\n",
+                       linenumber, line, i, breaksDesired[i],
+                       breaksActual[i]);
             }
         }
     }
@@ -215,11 +220,15 @@ int main(int argc, char *argv[])
 
     unsigned int testsPassed = testsTotal - testsFailed;
     if (testsFailed > 0)
+    {
         putchar('\n');
+    }
     printf("%s: Passed %d out of %d (%d%%)", filename, testsPassed,
            testsTotal, testsPassed * 100 / testsTotal);
     if (testsSkipped > 0)
-       printf(", and skipped %d", testsSkipped);
+    {
+        printf(", and skipped %d", testsSkipped);
+    }
     printf("\nTesting takes %g ms\n\n", (t2 - t1) * 1000.0 / CLOCKS_PER_SEC);
 
     return (testsFailed > 0);
