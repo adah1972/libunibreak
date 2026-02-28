@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2024 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2026 Wu Yongwei <wuyongwei at gmail dot com>
  * Copyright (C) 2013 Petr Filipsky <philodej at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
@@ -319,6 +319,20 @@ static __inline int ends_with(const char *str, const char *suffix,
     }
 }
 
+#if UB_LANG_FLAGS
+static __inline bool is_lang_cjk(const char *lang)
+{
+    if (lang == NULL)
+    {
+        return false;
+    }
+
+    return (strncmp(lang, "zh", 2) == 0 ||
+            strncmp(lang, "ja", 2) == 0 ||
+            strncmp(lang, "ko", 2) == 0);
+}
+#endif
+
 #define ENDS_WITH(str, suffix) ends_with((str), (suffix), sizeof(suffix) - 1)
 
 /**
@@ -444,8 +458,42 @@ static enum LineBreakClass get_char_lb_class_lang(
  */
 static enum LineBreakClass resolve_lb_class(
         enum LineBreakClass lbc,
-        const char *lang)
+        const struct LineBreakContext *lbpCtx)
 {
+#if UB_LANG_FLAGS
+    switch (lbc)
+    {
+    case LBP_AI:
+        if (lbpCtx->fLangCjk)
+        {
+            return LBP_ID;
+        }
+        else
+        {
+            return LBP_AL;
+        }
+    case LBP_CJ:
+        /* `Strict' and `normal' line breaking.  See
+         * <URL:http://www.unicode.org/reports/tr14/#CJ>
+         * for details. */
+        if (lbpCtx->fLangStrict)
+        {
+            return LBP_NS;
+        }
+        else
+        {
+            return LBP_ID;
+        }
+    case LBP_SA:
+    case LBP_SG:
+    case LBP_XX:
+        return LBP_AL;
+    default:
+        return lbc;
+    }
+#else
+    const char *lang = lbpCtx->lang;
+
     switch (lbc)
     {
     case LBP_AI:
@@ -461,7 +509,7 @@ static enum LineBreakClass resolve_lb_class(
         }
     case LBP_CJ:
         /* `Strict' and `normal' line breaking.  See
-         * <url:http://www.unicode.org/reports/tr14/#CJ>
+         * <URL:http://www.unicode.org/reports/tr14/#CJ>
          * for details. */
         if (ENDS_WITH(lang, "-strict"))
         {
@@ -478,6 +526,7 @@ static enum LineBreakClass resolve_lb_class(
     default:
         return lbc;
     }
+#endif
 }
 
 /**
@@ -663,10 +712,14 @@ void lb_init_break_context(
         const char *lang)
 {
     lbpCtx->lang = lang;
+#if UB_LANG_FLAGS
+    lbpCtx->fLangCjk = is_lang_cjk(lang);
+    lbpCtx->fLangStrict = ENDS_WITH(lang, "-strict");
+#endif
     lbpCtx->lbpLang = get_lb_prop_lang(lang);
     lbpCtx->lbcCur = resolve_lb_class(
                         get_char_lb_class_lang(ch, lbpCtx->lbpLang),
-                        lbpCtx->lang);
+                        lbpCtx);
     lbpCtx->lbcNew = LBP_Undefined;
     lbpCtx->lbcLast = LBP_Undefined;
     lbpCtx->fLb8aZwj =
@@ -712,11 +765,11 @@ int lb_process_next_char(
     switch (brk)
     {
     case LINEBREAK_MUSTBREAK:
-        lbpCtx->lbcCur = resolve_lb_class(lbpCtx->lbcNew, lbpCtx->lang);
+        lbpCtx->lbcCur = resolve_lb_class(lbpCtx->lbcNew, lbpCtx);
         treat_first_char(lbpCtx);
         break;
     case LINEBREAK_UNDEFINED:
-        lbpCtx->lbcNew = resolve_lb_class(lbpCtx->lbcNew, lbpCtx->lang);
+        lbpCtx->lbcNew = resolve_lb_class(lbpCtx->lbcNew, lbpCtx);
         brk = get_lb_result_lookup(lbpCtx, ch);
         break;
     default:

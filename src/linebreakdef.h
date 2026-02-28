@@ -4,7 +4,7 @@
  * Line breaking in a Unicode sequence.  Designed to be used in a
  * generic text renderer.
  *
- * Copyright (C) 2008-2020 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2008-2026 Wu Yongwei <wuyongwei at gmail dot com>
  * Copyright (C) 2013 Petr Filipsky <philodej at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
@@ -53,6 +53,10 @@
 #define LINEBREAKDEF_H
 
 #include "unibreakdef.h"
+
+#ifndef UB_LANG_FLAGS
+#define UB_LANG_FLAGS 1
+#endif
 
 /**
  * Line break classes.  This is a mapping of Table 1 of Unicode
@@ -151,6 +155,10 @@ struct LineBreakContext
     const char *lang;               /**< Language name */
     const struct LineBreakProperties *lbpLang; /**< Pointer to
                                                     LineBreakProperties */
+#if UB_LANG_FLAGS
+    bool fLangCjk;                  /**< zh/ja/ko language */
+    bool fLangStrict;               /**< -strict suffix */
+#endif
     enum LineBreakClass lbcCur;     /**< Breaking class of current codepoint */
     enum LineBreakClass lbcNew;     /**< Breaking class of next codepoint */
     enum LineBreakClass lbcLast;    /**< Breaking class of last codepoint */
