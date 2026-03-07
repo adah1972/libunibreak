@@ -3,7 +3,7 @@
  * generic text renderer.
  *
  * Copyright (C) 2016-2019 Andreas Röver <roever at users dot sf dot net>
- * Copyright (C) 2024 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2024-2026 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -53,6 +53,10 @@
 #include "indicconjunctbreakdef.h"
 #include "emojidef.h"
 #include "unibreakdef.h"
+
+#ifndef UNIBREAK_LAZY_INCB
+#define UNIBREAK_LAZY_INCB 1
+#endif
 
 enum Rule9cStage
 {
@@ -216,7 +220,20 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
 
         // get class of current character
         current_class = get_char_gb_class(ch);
+#if UNIBREAK_LAZY_INCB
+        if (prev_class == GBP_Extend || prev_class == GBP_ZWJ ||
+            prev_class == GBP_Virama || current_class == GBP_Extend ||
+            current_class == GBP_ZWJ || current_class == GBP_Virama)
+        {
+            current_incb = get_char_incb_class(ch);
+        }
+        else
+        {
+            current_incb = InCB_None;
+        }
+#else
         current_incb = get_char_incb_class(ch);
+#endif
 
         if (prev_class == GBP_Regional_Indicator)
         {
