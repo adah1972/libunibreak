@@ -107,7 +107,7 @@ RELEASE_DEPS = $(patsubst %.o,%.dep,$(RELEASE_OBJS))
 
 CFILES   := linebreak.c linebreakdata.c linebreakdef.c wordbreak.c \
             graphemebreak.c eastasianwidthdef.c emojidef.c \
-	    unibreakbase.c unibreakdef.c
+            unibreakbase.c unibreakdef.c
 CXXFILES :=
 
 LIBS :=
