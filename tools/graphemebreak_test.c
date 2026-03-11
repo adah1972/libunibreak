@@ -1,5 +1,5 @@
 /* Simple program that read the grapheme break test database of the
- * unicode standard and checks the output of libunibreak against the
+ * Unicode standard and checks the output of libunibreak against the
  * desired values of the test file
  */
 

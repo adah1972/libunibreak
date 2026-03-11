@@ -1,7 +1,7 @@
 /* Compilation:
- * gcc wordbreak_test.c `pkg-config --libs --cflags libunibreak`
+ *   cc wordbreak_test.c `pkg-config --libs --cflags libunibreak`
  *
- * Note: Output is not aligned nicely when used with non-ascii chars.
+ * Note: Output is not aligned nicely when used with non-ASCII chars.
  */
 
 #include <stdlib.h>
