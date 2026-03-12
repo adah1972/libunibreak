@@ -62,11 +62,6 @@
 #define LINEBREAK_UNDEFINED -1
 
 /**
- * Size of the second-level index to the line breaking properties.
- */
-#define LINEBREAK_INDEX_SIZE 40
-
-/**
  * Enumeration of break actions.  They are used in the break action
  * pair table #baTable.
  */
