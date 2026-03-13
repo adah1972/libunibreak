@@ -62,6 +62,11 @@
 #define LINEBREAK_UNDEFINED -1
 
 /**
+ * Special value used internally to mark an invalid position.
+ */
+#define INVALID_POS ((size_t)-1)
+
+/**
  * Enumeration of break actions.  They are used in the break action
  * pair table #baTable.
  */
@@ -78,11 +83,11 @@ enum BreakAction
  * Break action pair table.  This is a direct mapping of Table 2 of
  * Unicode Standard Annex 14, Revision 37, except for the following:
  *
- * - CB (manually added as per LB20)
- * - ZWJ (manually adjusted after special processing as per LB8a of
- *   Revision 41)
- * - CL, CP, NS, SY, IS, PR, PO, HY, BA,B2, and RI (manually adjusted as
- *   per LB22 of Revision 45)
+ * - CB is manually added as per LB20
+ * - ZWJ is manually adjusted after special processing as per LB8a of
+ *   Revision 41
+ * - CL, CP, NS, SY, IS, PR, PO, HY, BA,B2, and RI are manually adjusted
+ *   as per LB22 of Revision 45
  */
 static enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* OP */
@@ -591,6 +596,91 @@ static int get_lb_result_simple(
 }
 
 /**
+ * Updates LB25 state.  Breaks may be modified.
+ *
+ * @param[in,out] lbpCtx  pointer to the line breaking context
+ * @param[out] pBrk       pointer to the current break value
+ * @pre                   \a lbpCtx->lbcNew has the line break class for
+ *                        the next character; and \a lbpCtx->eLb25 has
+ *                        the current LB25 state
+ * @post                  \a *pBrk is updated for NOBREAK results; and
+ *                        \a lbpCtx->posLb25Fixup keeps the position for
+ *                        fixup in the "(PR | PO) × (OP | HY) NU" case
+ * @return                the new LB25 state
+ */
+static enum Lb25State update_lb25_state(
+        struct LineBreakContext *lbpCtx, int *pBrk)
+{
+    /* Tailored rules:
+     *
+     * (PR | PO) × NU                               -- pair table
+     * (PR | PO) × (OP | HY) NU                     -- processed below
+     * (OP | HY) × NU                               -- pair table
+     * NU × (NU | SY | IS)                          -- pair table
+     * NU (NU | SY | IS)* × (NU | SY | IS)          -- processed below
+     * NU (NU | SY | IS)* × (CL | CP)               -- pair table
+     * NU (NU | SY | IS)* (CL | CP)? × (PO | PR)    -- processed below
+     */
+    switch (lbpCtx->eLb25)
+    {
+    case LB25_PREFIX:
+        if (lbpCtx->lbcNew == LBP_OP ||
+            lbpCtx->lbcNew == LBP_HY)
+        {
+            lbpCtx->posLb25Fixup = lbpCtx->posLast;
+            return LB25_PREFIXOP;
+        }
+        break;
+    case LB25_PREFIXOP:
+        if (lbpCtx->lbcNew == LBP_NU)
+        {
+            lbpCtx->fLb25Mark = true;
+            return LB25_NUM;
+        }
+        lbpCtx->posLb25Fixup = INVALID_POS;
+        goto prefix_check;
+    case LB25_NUM:
+        if (lbpCtx->lbcNew == LBP_NU ||
+            lbpCtx->lbcNew == LBP_SY ||
+            lbpCtx->lbcNew == LBP_IS)
+        {
+            *pBrk = LINEBREAK_NOBREAK;
+            return LB25_NUM;
+        }
+        if (lbpCtx->lbcNew == LBP_CL ||
+            lbpCtx->lbcNew == LBP_CP)
+        {
+            return LB25_NUMCLOSE;
+        }
+        /* fallthrough */
+    case LB25_NUMCLOSE:
+        if (lbpCtx->lbcNew == LBP_PO ||
+            lbpCtx->lbcNew == LBP_PR)
+        {
+            *pBrk = LINEBREAK_NOBREAK;
+            return LB25_PREFIX;
+        }
+        break;
+    default:
+        break;
+    }
+
+    if (lbpCtx->lbcNew == LBP_NU)
+    {
+        return LB25_NUM;
+    }
+
+prefix_check:
+    if (lbpCtx->lbcNew == LBP_PR ||
+        lbpCtx->lbcNew == LBP_PO)
+    {
+        return LB25_PREFIX;
+    }
+
+    return LB25_NONE;
+}
+
+/**
  * Tells the line break opportunity by table lookup.
  *
  * @param[in,out] lbpCtx  pointer to the line breaking context
@@ -625,6 +715,7 @@ static int get_lb_result_lookup(
         brk = LINEBREAK_ALLOWBREAK;
         if (lbpCtx->lbcLast != LBP_SP)
         {
+            lbpCtx->eLb25 = LB25_NONE;
             brk = LINEBREAK_NOBREAK;
             return brk;                 /* Do not update lbcCur */
         }
@@ -633,6 +724,7 @@ static int get_lb_result_lookup(
         brk = LINEBREAK_NOBREAK;
         if (lbpCtx->lbcLast != LBP_SP)
         {
+            lbpCtx->eLb25 = LB25_NONE;
             return brk;                 /* Do not update lbcCur */
         }
         break;
@@ -647,7 +739,7 @@ static int get_lb_result_lookup(
         brk = LINEBREAK_NOBREAK;
     }
 
-    /* Special processing due to rule LB21a */
+    /* Rule LB21a */
     if (lbpCtx->fLb21aHebrew &&
         (lbpCtx->lbcCur == LBP_HY || lbpCtx->lbcCur == LBP_BA))
     {
@@ -657,6 +749,25 @@ static int get_lb_result_lookup(
     else
     {
         lbpCtx->fLb21aHebrew = (lbpCtx->lbcCur == LBP_HL);
+    }
+
+    /* Rule LB25 */
+    if (lbpCtx->posLast != INVALID_POS) /* Tailoring possible */
+    {
+        /* Allow break for the following cases, but later fixes may
+         * change it again. */
+        if ((lbpCtx->lbcCur == LBP_CL &&
+             (lbpCtx->lbcNew == LBP_PO || lbpCtx->lbcNew == LBP_PR)) ||
+            (lbpCtx->lbcCur == LBP_CP &&
+             (lbpCtx->lbcNew == LBP_PO || lbpCtx->lbcNew == LBP_PR)) ||
+            (lbpCtx->lbcCur == LBP_PO && lbpCtx->lbcNew == LBP_OP) ||
+            (lbpCtx->lbcCur == LBP_PR && lbpCtx->lbcNew == LBP_OP) ||
+            (lbpCtx->lbcCur == LBP_IS && lbpCtx->lbcNew == LBP_NU) ||
+            (lbpCtx->lbcCur == LBP_SY && lbpCtx->lbcNew == LBP_NU))
+        {
+            brk = LINEBREAK_ALLOWBREAK;
+        }
+        lbpCtx->eLb25 = update_lb25_state(lbpCtx, &brk);
     }
 
     /* Rule LB30 */
@@ -717,16 +828,24 @@ void lb_init_break_context(
                         lbpCtx);
     lbpCtx->lbcNew = LBP_Undefined;
     lbpCtx->lbcLast = LBP_Undefined;
+    lbpCtx->posLast = INVALID_POS;
     lbpCtx->fLb8aZwj =
         (get_char_lb_class_lang(ch, lbpCtx->lbpLang) == LBP_ZWJ);
     lbpCtx->fLb21aHebrew = false;
     lbpCtx->cLb30aRI = 0;
+    lbpCtx->eLb25 = LB25_NONE;
+    lbpCtx->posLb25Fixup = INVALID_POS;
+    lbpCtx->fLb25Mark = false;
     treat_first_char(lbpCtx);
 }
 
 /**
  * Updates LineBreakingContext for the next codepoint and returns
  * the detected break.
+ *
+ * This function is deprecated, as it cannot support fixups, as
+ * required by LB25 tailoring (and some more recent rules).  See the
+ * implementation of #set_linebreaks for the fixup logic.
  *
  * @param[in,out] lbpCtx  pointer to the line breaking context
  * @param[in]     ch      Unicode codepoint
@@ -869,7 +988,16 @@ size_t set_linebreaks(
         {
             break;
         }
+        lbCtx.posLast = posLast;
         brks[posLast] = (char)lb_process_next_char(&lbCtx, ch);
+
+        /* Fix-up due to LB25 */
+        if (lbCtx.posLb25Fixup != INVALID_POS && lbCtx.fLb25Mark)
+        {
+            brks[lbCtx.posLb25Fixup] = LINEBREAK_NOBREAK;
+            lbCtx.posLb25Fixup = INVALID_POS;
+            lbCtx.fLb25Mark = false;
+        }
     }
 
     /* After the last character */

@@ -17,7 +17,7 @@ __pycache__
 /config.sub
 /configure
 /depcomp
-/doc
+/doc/html
 /install-sh
 /libtool
 /libunibreak.pc

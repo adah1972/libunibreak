@@ -118,6 +118,19 @@ enum LineBreakClass
     LBP_XX          /**< Unknown */
 };
 
+/**
+ * LB25 state for numeric expression context tracking.
+ * Used for Example 7 regex-based tailoring from UAX \#14-49.
+ */
+enum Lb25State
+{
+    LB25_NONE,       /**< Not in numeric expression */
+    LB25_PREFIX,     /**< Seen PR or PO (prefix) */
+    LB25_PREFIXOP,   /**< Saw (PR|PO) then OP or HY */
+    LB25_NUM,        /**< Inside NU (NU|SY|IS)* */
+    LB25_NUMCLOSE,   /**< Saw NU (NU|SY|IS)* (CL|CP) */
+};
+
 enum BreakOutputType
 {
     LBOT_PER_CODE_UNIT,
@@ -155,16 +168,20 @@ struct LineBreakContext
     const char *lang;               /**< Language name */
     const struct LineBreakProperties *lbpLang; /**< Pointer to
                                                     LineBreakProperties */
+    enum LineBreakClass lbcCur;     /**< Breaking class of current codepoint */
+    enum LineBreakClass lbcNew;     /**< Breaking class of next codepoint */
+    enum LineBreakClass lbcLast;    /**< Breaking class of last codepoint */
+    size_t posLast;                 /**< Last position in input string */
 #if UB_LANG_FLAGS
     bool fLangCjk;                  /**< zh/ja/ko language */
     bool fLangStrict;               /**< -strict suffix */
 #endif
-    enum LineBreakClass lbcCur;     /**< Breaking class of current codepoint */
-    enum LineBreakClass lbcNew;     /**< Breaking class of next codepoint */
-    enum LineBreakClass lbcLast;    /**< Breaking class of last codepoint */
     bool fLb8aZwj;                  /**< Flag for ZWJ (LB8a) */
     bool fLb21aHebrew;              /**< Flag for Hebrew letters (LB21a) */
     int cLb30aRI;                   /**< Count of RI characters (LB30a) */
+    enum Lb25State eLb25;           /**< LB25 state for numeric expression */
+    size_t posLb25Fixup;            /**< Position to fix for LB25 */
+    bool fLb25Mark;                 /**< Flag for pending fixup */
 };
 
 /* Declarations */
