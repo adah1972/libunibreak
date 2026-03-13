@@ -51,10 +51,15 @@
 
 #include <assert.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <string.h>
 #include "eastasianwidthdef.h"
 #include "linebreak.h"
 #include "linebreakdef.h"
+
+#ifndef UB_LB25_OPT_HACK
+#define UB_LB25_OPT_HACK 1
+#endif
 
 /**
  * Special value used internally to indicate an undefined break result.
@@ -754,8 +759,21 @@ static int get_lb_result_lookup(
     /* Rule LB25 */
     if (lbpCtx->posLast != INVALID_POS) /* Tailoring possible */
     {
-        /* Allow break for the following cases, but later fixes may
-         * change it again. */
+#if UB_LB25_OPT_HACK
+        /* This optimization does not work well for all compilers, but
+         * it works on the current versions of dominant compilers on
+         * Linux, macOS, and Windows. */
+        static const uint16_t allow[LBP_PO + 1] = {
+            [LBP_CL] = (1 << LBP_PR) | (1 << LBP_PO),
+            [LBP_CP] = (1 << LBP_PR) | (1 << LBP_PO),
+            [LBP_SY] = (1 << LBP_NU),
+            [LBP_IS] = (1 << LBP_NU),
+            [LBP_PR] = (1 << LBP_OP),
+            [LBP_PO] = (1 << LBP_OP),
+        };
+        if (lbpCtx->lbcCur <= LBP_PO && lbpCtx->lbcNew <= LBP_NU &&
+            (allow[lbpCtx->lbcCur] >> lbpCtx->lbcNew) & 1)
+#else
         if ((lbpCtx->lbcCur == LBP_CL &&
              (lbpCtx->lbcNew == LBP_PO || lbpCtx->lbcNew == LBP_PR)) ||
             (lbpCtx->lbcCur == LBP_CP &&
@@ -764,10 +782,35 @@ static int get_lb_result_lookup(
             (lbpCtx->lbcCur == LBP_PR && lbpCtx->lbcNew == LBP_OP) ||
             (lbpCtx->lbcCur == LBP_IS && lbpCtx->lbcNew == LBP_NU) ||
             (lbpCtx->lbcCur == LBP_SY && lbpCtx->lbcNew == LBP_NU))
+#endif
         {
+            /* Allow break for the above cases, but later fixes may
+             * change it again. */
             brk = LINEBREAK_ALLOWBREAK;
         }
-        lbpCtx->eLb25 = update_lb25_state(lbpCtx, &brk);
+
+        /* The else path is sufficient, but the additional condition may
+         * avoid a function call and boost performance.  Empirical data
+         * shows an improvement from about 2% to 8%. */
+        if (lbpCtx->eLb25 == LB25_NONE)
+        {
+            switch (lbpCtx->lbcNew)
+            {
+            case LBP_PR:
+            case LBP_PO:
+                lbpCtx->eLb25 = LB25_PREFIX;
+                break;
+            case LBP_NU:
+                lbpCtx->eLb25 = LB25_NUM;
+                break;
+            default:
+                break;
+            }
+        }
+        else
+        {
+            lbpCtx->eLb25 = update_lb25_state(lbpCtx, &brk);
+        }
     }
 
     /* Rule LB30 */
