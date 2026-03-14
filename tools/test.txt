@@ -1,6 +1,6 @@
 Combining marks and accented letters behave as expected: Your naïveté amuses me!
-Unbreakable: $(12.35) 2,1234 (12)¢ 12.54¢ (s)he file(s); breakable: ()()
-Unbreakable numerical expression: ‘$9’, ‘$[9]’, ‘$-9’, ‘-9’, ‘9/9’, ‘99’, ‘9,9’, ‘9%’, ‘[9]%’
+Unbreakable: $9 $(12.35) $[9] $-9 (12)¢ 12.54¢ -1/2 99% [9]% 1,234 (s)he file(s)
+Breakable: "()()" "$[" "]%" "/9"
 Hyphenated words are breakable: server-side
 Em dashes can be broken on either side, but not in the middle: A——B
 NOT each space is breakable, like the last one in the following sentence (in English): He did say, “He said, ‘Good morning.’ ”
@@ -8,7 +8,7 @@ Regretfully it does not work for the alternative quoting style due to the ambigu
 Still, the space rule makes my favourite ellipsis style work well, like ‘once upon a time . . .’.
 Here's an apostrophe; and there’s a right single quotation mark.
 Spanish inverted punctuation marks are always opening (e.g.)¡Foo bar!
-There should be no break after Hebrew + Hyphen like א-ת, or between solidus and Hebrew like /ת.
+There should be no break after Hebrew + Hyphen like א-ת, or between solidus and Hebrew like ‘/ת’.
 Lines like this should not have their punctuation broken!… 
 Emojis joined by ZWJs should not be broken: 👩‍❤️‍👩.
 Breaks can occur between Chinese characters, except before or after certain punctuation marks: 「你看過《三國演義》嗎？」他問我。
