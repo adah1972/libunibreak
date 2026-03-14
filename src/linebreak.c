@@ -58,7 +58,14 @@
 #include "linebreakdef.h"
 
 #ifndef UB_LB25_OPT_HACK
+/* See the later `#if UB_LB25_OPT_HACK` for how this optimization
+ * works.  It proves to work well on GCC and MSVC, but not Clang,
+ * which optimizes quite well by itself. */
+#ifndef __clang__
 #define UB_LB25_OPT_HACK 1
+#else
+#define UB_LB25_OPT_HACK 0
+#endif
 #endif
 
 /**
@@ -760,9 +767,8 @@ static int get_lb_result_lookup(
     if (lbpCtx->posLast != INVALID_POS) /* Tailoring possible */
     {
 #if UB_LB25_OPT_HACK
-        /* This optimization does not work well for all compilers, but
-         * it works on the current versions of dominant compilers on
-         * Linux, macOS, and Windows. */
+        /* This hack reduces conditional jumps and works well with the
+         * optimizers of GCC and MSVC. */
         static const uint16_t allow[LBP_PO + 1] = {
             [LBP_CL] = (1 << LBP_PR) | (1 << LBP_PO),
             [LBP_CP] = (1 << LBP_PR) | (1 << LBP_PO),
@@ -774,6 +780,8 @@ static int get_lb_result_lookup(
         if (lbpCtx->lbcCur <= LBP_PO && lbpCtx->lbcNew <= LBP_NU &&
             (allow[lbpCtx->lbcCur] >> lbpCtx->lbcNew) & 1)
 #else
+        /* The Clang optimizer works well with the following condition.
+         * Extra hacks harm the performance. */
         if ((lbpCtx->lbcCur == LBP_CL &&
              (lbpCtx->lbcNew == LBP_PO || lbpCtx->lbcNew == LBP_PR)) ||
             (lbpCtx->lbcCur == LBP_CP &&
@@ -789,9 +797,9 @@ static int get_lb_result_lookup(
             brk = LINEBREAK_ALLOWBREAK;
         }
 
+#if UB_LB25_OPT_HACK
         /* The else path is sufficient, but the additional condition may
-         * avoid a function call and boost performance.  Empirical data
-         * shows an improvement from about 2% to 8%. */
+         * avoid a function call and boost performance. */
         if (lbpCtx->eLb25 == LB25_NONE)
         {
             switch (lbpCtx->lbcNew)
@@ -808,6 +816,7 @@ static int get_lb_result_lookup(
             }
         }
         else
+#endif
         {
             lbpCtx->eLb25 = update_lb25_state(lbpCtx, &brk);
         }
