@@ -939,6 +939,7 @@ int lb_process_next_char(
         brk = get_lb_result_lookup(lbpCtx, ch);
         break;
     default:
+        lbpCtx->eLb25 = LB25_NONE;
         break;
     }
 
