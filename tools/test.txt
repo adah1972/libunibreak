@@ -1,6 +1,7 @@
 Combining marks and accented letters behave as expected: Your naïveté amuses me!
 Unbreakable: $9 $(12.35) $[9] $-9 (12)¢ 12.54¢ -1/2 99% [9]% 1,234 (s)he file(s)
 Breakable: "()()" "$[" "]%" "/9"
+`++` and `--` are operators in C++.
 Hyphenated words are breakable: server-side
 Em dashes can be broken on either side, but not in the middle: A——B
 NOT each space is breakable, like the last one in the following sentence (in English): He did say, “He said, ‘Good morning.’ ”

@@ -745,6 +745,14 @@ static int get_lb_result_lookup(
         break;
     }
 
+    /* Simple rules for programmers: no break between "++", or between
+     * '-' and '`'. */
+    if ((lbpCtx->lbcLast == LBP_PR && ch == '+') ||
+        (lbpCtx->lbcLast == LBP_HY && ch == '`'))
+    {
+        brk = LINEBREAK_NOBREAK;
+    }
+
     /* Special processing due to rule LB8a */
     if (lbpCtx->fLb8aZwj)
     {
