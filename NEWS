@@ -1,3 +1,10 @@
+New in libunibreak 7.0
+
+- Implement LB25 tailoring described in Unicode 15, and reduce skipped
+  tests to one
+- Optimize performance
+- Avoid line breaking between "++" (mostly for "C++")
+
 New in libunibreak 6.1
 
 - Optimize the size of Unicode data
