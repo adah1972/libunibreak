@@ -5,7 +5,7 @@
  *
  * Copyright (C) 2016 Tom Hacohen <tom at stosb dot com>
  * Copyright (C) 2016 Andreas Röver <roever at users dot sf dot net>
- * Copyright (C) 2024 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2024-2026 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -35,8 +35,6 @@
 
 #include "test_skips.h"
 
-#define TEST_LINE_LEN 10000
-
 typedef enum
 {
     TEST_TYPE_LINE,
@@ -44,11 +42,72 @@ typedef enum
     TEST_TYPE_GRAPHEME
 } Test_Type;
 
+/**
+ * Reports an out-of-memory condition and terminates the program.
+ */
+static void oom(void)
+{
+    fprintf(stderr, "Out of memory\n");
+    exit(2);
+}
+
+/**
+ * Reads a line of arbitrary length from \a fp into the buffer pointed to
+ * by \a buf (which is allocated/reallocated as needed).
+ *
+ * @param[in]     fp   input file to read from
+ * @param[in,out] buf  pointer to the line buffer; it is allocated on the
+ *                     first call and reallocated as the line grows
+ * @param[in,out] cap  pointer to the capacity of \a buf
+ * @return             the line buffer on success; \c NULL at end of file
+ */
+static char *read_line(FILE *fp, char **buf, size_t *cap)
+{
+    size_t len = 0;
+
+    if (*buf == NULL)
+    {
+        *cap = 4096;
+        *buf = (char *)malloc(*cap);
+        if (*buf == NULL)
+        {
+            oom();
+        }
+    }
+    for (;;)
+    {
+        if (fgets(*buf + len, (int)(*cap - len), fp) == NULL)
+        {
+            if (len == 0)
+            {
+                return NULL;
+            }
+            return *buf;
+        }
+        len += strlen(*buf + len);
+        if ((*buf)[len - 1] == '\n' || len < *cap - 1)
+        {
+            return *buf;
+        }
+        *cap *= 2;
+        *buf = (char *)realloc(*buf, *cap);
+        if (*buf == NULL)
+        {
+            oom();
+        }
+    }
+}
+
 int main(int argc, char *argv[])
 {
     const char *filename = "";
     FILE *fp;
-    char line[TEST_LINE_LEN];
+    char *line = NULL;
+    size_t lineCap = 0;
+    char *breaksDesired = NULL;
+    char *breaksActual = NULL;
+    utf32_t *txt = NULL;
+    size_t bufCap = 0;
     unsigned int linenumber = 0;
     unsigned int testsSkipped = 0;
     unsigned int testsFailed = 0;
@@ -103,20 +162,13 @@ int main(int argc, char *argv[])
     }
 
     t1 = clock();
-    while (fgets(line, sizeof(line), fp))
+    while (read_line(fp, &line, &lineCap))
     {
         char *linepos = line;
-        char breaksDesired[TEST_LINE_LEN] = { 0 };
-        char breaksActual[TEST_LINE_LEN] = { 0 };
-        utf32_t txt[TEST_LINE_LEN] = { 0 };
+        size_t lineLen = strlen(line);
         int i, len;
 
         linenumber++;
-        if (strlen(line) == TEST_LINE_LEN - 1)
-        {
-            fprintf(stderr, "Input line %u is too long!\n", linenumber);
-            break;
-        }
 
         if (line[0] == '#')
         {
@@ -129,6 +181,22 @@ int main(int argc, char *argv[])
             testSkips++;
             continue;
         }
+
+        /* Grow the reused buffers if the line does not fit. */
+        if (lineLen + 1 > bufCap)
+        {
+            breaksDesired = (char *)realloc(breaksDesired, lineLen + 1);
+            breaksActual = (char *)realloc(breaksActual, lineLen + 1);
+            txt = (utf32_t *)realloc(txt, (lineLen + 1) * sizeof(utf32_t));
+            if (breaksDesired == NULL || breaksActual == NULL || txt == NULL)
+            {
+                oom();
+            }
+            bufCap = lineLen + 1;
+        }
+        memset(breaksDesired, 0, (lineLen + 1) * sizeof(char));
+        memset(breaksActual, 0, (lineLen + 1) * sizeof(char));
+        memset(txt, 0, (lineLen + 1) * sizeof(utf32_t));
 
         len = 0;
         while (*linepos)
@@ -216,6 +284,10 @@ int main(int argc, char *argv[])
     }
     t2 = clock();
 
+    free(line);
+    free(breaksDesired);
+    free(breaksActual);
+    free(txt);
     fclose(fp);
 
     unsigned int testsPassed = testsTotal - testsFailed;
