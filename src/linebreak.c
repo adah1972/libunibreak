@@ -827,6 +827,7 @@ static bool is_lb15b_word_like(enum LineBreakClass lbc)
 {
     switch (lbc)
     {
+    case LBP_SP:
     case LBP_GL:
     case LBP_WJ:
     case LBP_CL:
@@ -835,12 +836,11 @@ static bool is_lb15b_word_like(enum LineBreakClass lbc)
     case LBP_EX:
     case LBP_IS:
     case LBP_SY:
-    case LBP_ZW:
-    case LBP_SP:
     case LBP_BK:
     case LBP_CR:
     case LBP_LF:
     case LBP_NL:
+    case LBP_ZW:
         return false;
     default:
         return true;
