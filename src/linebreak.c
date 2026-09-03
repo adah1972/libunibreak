@@ -31,9 +31,9 @@
  * Unicode 5.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 49, for
- * Unicode 15.0.0:
- *      <URL:http://www.unicode.org/reports/tr14/tr14-49.html>
+ * This library has been updated according to Revision 55, for
+ * Unicode 17.0.0:
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-55.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -56,6 +56,13 @@
 #include "eastasianwidthdef.h"
 #include "linebreak.h"
 #include "linebreakdef.h"
+#include "linebreakauxdata.c"
+
+/**
+ * Codepoint of U+25CC DOTTED CIRCLE, which is treated as an aksara
+ * (like class AK) for the purpose of rule LB28a only.
+ */
+#define LB28A_DOTTED_CIRCLE 0x25CC
 
 #ifndef UB_LB25_OPT_HACK
 /* See the later `#if UB_LB25_OPT_HACK` for how this optimization
@@ -92,14 +99,15 @@ enum BreakAction
 };
 
 /**
- * Break action pair table.  This is a direct mapping of Table 2 of
- * Unicode Standard Annex 14, Revision 37, except for the following:
+ * Break action pair table.  This encodes the pair-level rules as
+ * described in Table 2 of Unicode Standard Annex 14, Revision 37, with
+ * the following manual adjustments:
  *
  * - CB is manually added as per LB20
- * - ZWJ is manually adjusted after special processing as per LB8a of
- *   Revision 41
- * - CL, CP, NS, SY, IS, PR, PO, HY, BA,B2, and RI are manually adjusted
- *   as per LB22 of Revision 45
+ * - ZWJ is manually adjusted after special processing as per LB8a
+ * - CL, CP, NS, SY, IS, PR, PO, HY, BA, B2, and RI are manually
+ *   adjusted as per LB22
+ * - AK, AP, AS, VF, VI, and HH are manually added as per LB28a and LB21
  */
 static enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* OP */
@@ -107,199 +115,313 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
         PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK,
         CMP_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK,
-        PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK },
+        PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK,
+        PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK
+    },
     {   /* CL */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, PRH_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* CP */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, PRH_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* QU */
-        PRH_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
+        IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
-        IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK },
+        IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
+        IND_BRK, IND_BRK, IND_BRK, IND_BRK
+    },
     {   /* GL */
         IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
-        IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK },
+        IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
+        IND_BRK, IND_BRK, IND_BRK, IND_BRK
+    },
     {   /* NS */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* EX */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* SY */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* IS */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* PR */
         IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, IND_BRK,
         IND_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
-        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* PO */
         IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* NU */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* AL */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* HL */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* ID */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* IN */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* HY */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, DIR_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* BA */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, DIR_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* BB */
         IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
-        IND_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK },
+        IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
+        IND_BRK, IND_BRK, IND_BRK, DIR_BRK
+    },
     {   /* B2 */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, PRH_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* ZW */
         DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK
+    },
     {   /* CM */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* WJ */
         IND_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
-        IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK },
+        IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
+        IND_BRK, IND_BRK, IND_BRK, IND_BRK
+    },
     {   /* H2 */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, IND_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* H3 */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* JL */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* JV */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, IND_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* JT */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* RI */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        IND_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        IND_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* EB */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* EM */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* ZWJ */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK, IND_BRK,
         DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
+    {   /* AK */
+        DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
+        PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        IND_BRK, IND_BRK, IND_BRK, DIR_BRK
+    },
+    {   /* AP */
+        DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
+        PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, IND_BRK, DIR_BRK, IND_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
+    {   /* AS */
+        DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
+        PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        IND_BRK, IND_BRK, IND_BRK, DIR_BRK
+    },
+    {   /* VF */
+        DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
+        PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
+    {   /* VI */
+        DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, IND_BRK, PRH_BRK,
+        PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
+    {   /* HH */
+        DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, DIR_BRK, IND_BRK, PRH_BRK,
+        PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, IND_BRK, IND_BRK, IND_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
+        CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK
+    },
     {   /* CB */
         DIR_BRK, PRH_BRK, PRH_BRK, IND_BRK, IND_BRK, DIR_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
         DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, PRH_BRK,
         CMI_BRK, PRH_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
-        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK },
+        DIR_BRK, DIR_BRK, DIR_BRK, IND_BRK, DIR_BRK, DIR_BRK, DIR_BRK,
+        DIR_BRK, DIR_BRK, DIR_BRK, DIR_BRK
+    }
 };
 
 /**
@@ -331,7 +453,6 @@ static __inline bool ends_with(const char *str, const char *suffix,
     }
 }
 
-#if UB_LANG_FLAGS
 static __inline bool is_lang_cjk(const char *lang)
 {
     if (lang == NULL)
@@ -343,9 +464,83 @@ static __inline bool is_lang_cjk(const char *lang)
             strncmp(lang, "ja", 2) == 0 ||
             strncmp(lang, "ko", 2) == 0);
 }
-#endif
 
 #define ENDS_WITH(str, suffix) ends_with((str), (suffix), sizeof(suffix) - 1)
+
+/**
+ * Tells whether a codepoint is a QU quotation mark of General_Category
+ * Pi (initial punctuation).
+ */
+static __inline bool is_pi_qu(utf32_t ch)
+{
+    return ub_bsearch(ch, lb_prop_pi_qu, ARRAY_LEN(lb_prop_pi_qu),
+                      sizeof(struct LineBreakAuxRange)) != NULL;
+}
+
+/**
+ * Tells whether a codepoint is a QU quotation mark of General_Category
+ * Pf (final punctuation).
+ */
+static __inline bool is_pf_qu(utf32_t ch)
+{
+    return ub_bsearch(ch, lb_prop_pf_qu, ARRAY_LEN(lb_prop_pf_qu),
+                      sizeof(struct LineBreakAuxRange)) != NULL;
+}
+
+/**
+ * Tells whether a codepoint is an SA character of General_Category Mn
+ * or Mc (i.e. resolves to CM as per rule LB1).
+ */
+static __inline bool is_sa_cm(utf32_t ch)
+{
+    return ub_bsearch(ch, lb_prop_sa_cm, ARRAY_LEN(lb_prop_sa_cm),
+                      sizeof(struct LineBreakAuxRange)) != NULL;
+}
+
+/**
+ * Tells whether a codepoint is an unassigned extended pictograph (a
+ * "potential emoji", as per rule LB30b).
+ */
+static __inline bool is_potential_emoji(utf32_t ch)
+{
+    /* Potential emojis are unassigned extended pictographs, all in the
+     * Supplementary Symbols and Pictographs block (U+1F000..).  The
+     * threshold is derived from lb_prop_potential_emoji and should be
+     * re-checked when that table is regenerated. */
+    if (ch < 0x1F000)
+    {
+        return false;
+    }
+    return ub_bsearch(ch, lb_prop_potential_emoji,
+                      ARRAY_LEN(lb_prop_potential_emoji),
+                      sizeof(struct LineBreakAuxRange)) != NULL;
+}
+
+/**
+ * Tells whether a codepoint has East Asian Width Fullwidth, Wide, or
+ * Halfwidth (i.e. is "East Asian" for rule LB19a).
+ */
+static __inline bool is_east_asian(utf32_t ch)
+{
+    /* East Asian width F/W/H characters all start at U+1100 (Hangul
+     * Jamo).  The threshold is derived from eaw_prop and should be
+     * re-checked when that table is regenerated. */
+    if (ch < 0x1100)
+    {
+        return false;
+    }
+    enum EastAsianWidthClass eaw = ub_get_char_eaw_class(ch);
+    return eaw == EAW_F || eaw == EAW_W || eaw == EAW_H;
+}
+
+/**
+ * Tells whether a character (identified by its resolved line break
+ * class \a lbc and codepoint \a ch) acts as an aksara for rule LB28a.
+ */
+static __inline bool lb28a_is_aksara(enum LineBreakClass lbc, utf32_t ch)
+{
+    return lbc == LBP_AK || lbc == LBP_AS || ch == LB28A_DOTTED_CIRCLE;
+}
 
 /**
  * Does nothing.  This is kept for binary compatibility.
@@ -464,81 +659,36 @@ static enum LineBreakClass get_char_lb_class_lang(
  * characters.  They are treated in a simplistic way in this
  * implementation.
  *
- * @param lbc   line breaking class to resolve
- * @param lang  language of the text
- * @return      the resolved line breaking class
+ * @param lbc     line breaking class to resolve
+ * @param cjk     whether the language is Chinese, Japanese, or Korean
+ * @param strict  whether the language has the \c -strict suffix
+ * @param ch      the codepoint being resolved (for SA -> CM resolution)
+ * @return        the resolved line breaking class
  */
 static enum LineBreakClass resolve_lb_class(
         enum LineBreakClass lbc,
-        const struct LineBreakContext *lbpCtx)
+        bool cjk,
+        bool strict,
+        utf32_t ch)
 {
-#if UB_LANG_FLAGS
     switch (lbc)
     {
     case LBP_AI:
-        if (lbpCtx->fLangCjk)
-        {
-            return LBP_ID;
-        }
-        else
-        {
-            return LBP_AL;
-        }
+        return cjk ? LBP_ID : LBP_AL;
     case LBP_CJ:
         /* `Strict' and `normal' line breaking.  See
          * <URL:http://www.unicode.org/reports/tr14/#CJ>
          * for details. */
-        if (lbpCtx->fLangStrict)
-        {
-            return LBP_NS;
-        }
-        else
-        {
-            return LBP_ID;
-        }
+        return strict ? LBP_NS : LBP_ID;
     case LBP_SA:
+        /* Rule LB1: SA with General_Category Mn/Mc acts as CM. */
+        return is_sa_cm(ch) ? LBP_CM : LBP_AL;
     case LBP_SG:
     case LBP_XX:
         return LBP_AL;
     default:
         return lbc;
     }
-#else
-    const char *lang = lbpCtx->lang;
-
-    switch (lbc)
-    {
-    case LBP_AI:
-        if (lang != NULL && (strncmp(lang, "zh", 2) == 0 || /* Chinese */
-                             strncmp(lang, "ja", 2) == 0 || /* Japanese */
-                             strncmp(lang, "ko", 2) == 0))  /* Korean */
-        {
-            return LBP_ID;
-        }
-        else
-        {
-            return LBP_AL;
-        }
-    case LBP_CJ:
-        /* `Strict' and `normal' line breaking.  See
-         * <URL:http://www.unicode.org/reports/tr14/#CJ>
-         * for details. */
-        if (ENDS_WITH(lang, "-strict"))
-        {
-            return LBP_NS;
-        }
-        else
-        {
-            return LBP_ID;
-        }
-    case LBP_SA:
-    case LBP_SG:
-    case LBP_XX:
-        return LBP_AL;
-    default:
-        return lbc;
-    }
-#endif
 }
 
 /**
@@ -608,68 +758,44 @@ static int get_lb_result_simple(
 }
 
 /**
- * Updates LB25 state.  Breaks may be modified.
+ * Computes the next LB25 state from the current state and the class of
+ * the character just read.  This is a pure function; the break value and
+ * the fixup position are handled separately in #get_lb_result_decision.
  *
- * @param[in,out] lbpCtx  pointer to the line breaking context
- * @param[out] pBrk       pointer to the current break value
- * @pre                   \a lbpCtx->lbcNew has the line break class for
- *                        the next character; and \a lbpCtx->eLb25 has
- *                        the current LB25 state
- * @post                  \a *pBrk is updated for NOBREAK results; and
- *                        \a lbpCtx->posLb25Fixup keeps the position for
- *                        fixup in the "(PR | PO) × (OP | HY) NU" case
- * @return                the new LB25 state
+ * @param state   current LB25 state
+ * @param lbcNew  line break class of the character just read
+ * @return        the new LB25 state
  */
-static enum Lb25State update_lb25_state(
-        struct LineBreakContext *lbpCtx, int *pBrk)
+static enum Lb25State lb25_transition(
+        enum Lb25State state, enum LineBreakClass lbcNew)
 {
-    /* Tailored rules:
-     *
-     * (PR | PO) × NU                               -- pair table
-     * (PR | PO) × (OP | HY) NU                     -- processed below
-     * (OP | HY) × NU                               -- pair table
-     * NU × (NU | SY | IS)                          -- pair table
-     * NU (NU | SY | IS)* × (NU | SY | IS)          -- processed below
-     * NU (NU | SY | IS)* × (CL | CP)               -- pair table
-     * NU (NU | SY | IS)* (CL | CP)? × (PO | PR)    -- processed below
-     */
-    switch (lbpCtx->eLb25)
+    switch (state)
     {
     case LB25_PREFIX:
-        if (lbpCtx->lbcNew == LBP_OP ||
-            lbpCtx->lbcNew == LBP_HY)
+        if (lbcNew == LBP_OP || lbcNew == LBP_HY)
         {
-            lbpCtx->posLb25Fixup = lbpCtx->posLast;
             return LB25_PREFIXOP;
         }
         break;
     case LB25_PREFIXOP:
-        if (lbpCtx->lbcNew == LBP_NU)
+        if (lbcNew == LBP_NU)
         {
-            lbpCtx->fLb25Mark = true;
             return LB25_NUM;
         }
-        lbpCtx->posLb25Fixup = INVALID_POS;
         goto prefix_check;
     case LB25_NUM:
-        if (lbpCtx->lbcNew == LBP_NU ||
-            lbpCtx->lbcNew == LBP_SY ||
-            lbpCtx->lbcNew == LBP_IS)
+        if (lbcNew == LBP_NU || lbcNew == LBP_SY || lbcNew == LBP_IS)
         {
-            *pBrk = LINEBREAK_NOBREAK;
             return LB25_NUM;
         }
-        if (lbpCtx->lbcNew == LBP_CL ||
-            lbpCtx->lbcNew == LBP_CP)
+        if (lbcNew == LBP_CL || lbcNew == LBP_CP)
         {
             return LB25_NUMCLOSE;
         }
-        /* fallthrough */
+        /* FALLTHROUGH */
     case LB25_NUMCLOSE:
-        if (lbpCtx->lbcNew == LBP_PO ||
-            lbpCtx->lbcNew == LBP_PR)
+        if (lbcNew == LBP_PO || lbcNew == LBP_PR)
         {
-            *pBrk = LINEBREAK_NOBREAK;
             return LB25_PREFIX;
         }
         break;
@@ -677,14 +803,13 @@ static enum Lb25State update_lb25_state(
         break;
     }
 
-    if (lbpCtx->lbcNew == LBP_NU)
+    if (lbcNew == LBP_NU)
     {
         return LB25_NUM;
     }
 
 prefix_check:
-    if (lbpCtx->lbcNew == LBP_PR ||
-        lbpCtx->lbcNew == LBP_PO)
+    if (lbcNew == LBP_PR || lbcNew == LBP_PO)
     {
         return LB25_PREFIX;
     }
@@ -693,21 +818,425 @@ prefix_check:
 }
 
 /**
- * Tells the line break opportunity by table lookup.
+ * Tells whether a resolved line break class is "word-like" for the
+ * purpose of rule LB15b: such a class is not in the follow set
+ * (SP | GL | WJ | CL | QU | CP | EX | IS | SY | BK | CR | LF | NL | ZW
+ * | eot), so a break before a preceding Pf&QU is allowed.
+ */
+static bool is_lb15b_word_like(enum LineBreakClass lbc)
+{
+    switch (lbc)
+    {
+    case LBP_GL:
+    case LBP_WJ:
+    case LBP_CL:
+    case LBP_QU:
+    case LBP_CP:
+    case LBP_EX:
+    case LBP_IS:
+    case LBP_SY:
+    case LBP_ZW:
+    case LBP_SP:
+    case LBP_BK:
+    case LBP_CR:
+    case LBP_LF:
+    case LBP_NL:
+        return false;
+    default:
+        return true;
+    }
+}
+
+/**
+ * Resolves the pending one-character lookahead fixup, based on the class
+ * of the character just read.  This must run for every character,
+ * including spaces and hard breaks, so it is invoked from
+ * #lb_process_next_char rather than from #get_lb_result_lookup.
+ *
+ * Only one lookahead rule can be pending at a time, because their
+ * trigger conditions are mutually exclusive.  When the lookahead fails,
+ * #fPendingRevert is set so that #set_linebreaks restores the original
+ * break value recorded when the tentative break was made.
  *
  * @param[in,out] lbpCtx  pointer to the line breaking context
- * @pre                   \a lbpCtx->lbcCur has the current line break
- *                        class; \a lbpCtx->lbcLast has the line break
- *                        class for the last character; and \a
- *                        lbcCur->lbcNew has the line break class for
- *                        the next character
- * @post                  \a lbpCtx->lbcCur has the updated line break
- *                        class
- * @return                break result, one of #LINEBREAK_MUSTBREAK,
- *                        #LINEBREAK_ALLOWBREAK, and #LINEBREAK_NOBREAK
+ * @param[in]     lbcNew  the (resolved) class of the character just read
+ * @param[in]     ch      the codepoint just read
+ */
+static void resolve_pending_break(
+        struct LineBreakContext *lbpCtx,
+        enum LineBreakClass lbcNew,
+        utf32_t ch)
+{
+    switch (lbpCtx->ePending)
+    {
+    case PENDING_LB15B:
+        /* Revert the tentative NOBREAK before a Pf&QU when the following
+         * char is word-like. */
+        if (is_lb15b_word_like(lbcNew))
+        {
+            lbpCtx->fPendingRevert = true;
+        }
+        break;
+    case PENDING_LB15C:
+        /* Confirm the tentative ALLOWBREAK before IS only when a NU
+         * follows. */
+        if (lbcNew != LBP_NU)
+        {
+            lbpCtx->fPendingRevert = true;
+        }
+        break;
+    case PENDING_LB19A:
+        /* Revert the tentative ALLOWBREAK before a Pi&QU when the
+         * following char is not East Asian. */
+        if (!is_east_asian(ch))
+        {
+            lbpCtx->fPendingRevert = true;
+        }
+        break;
+    case PENDING_LB28A4:
+        /* Revert the tentative NOBREAK between aksaras when a VF does
+         * not follow. */
+        if (lbcNew != LBP_VF)
+        {
+            lbpCtx->fPendingRevert = true;
+        }
+        break;
+    default:
+        break;
+    }
+    lbpCtx->ePending = PENDING_NONE;
+}
+
+/**
+ * Determines the line break opportunity after the pair table lookup.
+ * The rules are applied in ascending UAX #14 order, and the first match
+ * wins (implemented with early returns).  The lookahead rules (LB15b,
+ * LB15c, LB19a, and LB28a sub-rule 4) are applied last because they must
+ * record the break value produced by the lower-precedence rules so that
+ * it can be restored if the lookahead fails.
+ *
+ * @param[in,out] lbpCtx   pointer to the line breaking context
+ * @param[in]     ch       the codepoint being resolved
+ * @param[in]     isCurEA  whether \a ch has East Asian Width F/W/H
+ * @param[in]     brk      the break value from the pair table lookup
+ * @return                 break result, one of #LINEBREAK_MUSTBREAK,
+ *                         #LINEBREAK_ALLOWBREAK, and #LINEBREAK_NOBREAK
+ */
+static int get_lb_result_decision(
+        struct LineBreakContext *lbpCtx, utf32_t ch, bool isCurEA, int brk)
+{
+    bool curAksara = lb28a_is_aksara(lbpCtx->lbcNew, ch);
+    bool curQuPi = (lbpCtx->lbcNew == LBP_QU && is_pi_qu(ch));
+    bool curPfQu = (lbpCtx->lbcNew == LBP_QU && is_pf_qu(ch));
+
+    /* Non-UAX tailoring for programmers: no break between "++", or
+     * between '-' and '`'. */
+    if ((lbpCtx->lbcLast == LBP_PR && ch == '+') ||
+        (lbpCtx->lbcLast == LBP_HY && ch == '`'))
+    {
+        brk = LINEBREAK_NOBREAK;
+    }
+
+    /* Rule LB8a: ZWJ × */
+    if (lbpCtx->fLb8aZwj)
+    {
+        return LINEBREAK_NOBREAK;
+    }
+
+    /* Rule LB15a: no break after an initial Pi&QU, even after spaces */
+    if (lbpCtx->fQuPiInitial)
+    {
+        return LINEBREAK_NOBREAK;
+    }
+
+    /* Rule LB19a: break after a Pf&QU surrounded by East Asian
+     * characters, unless a stronger rule prohibits a break before the
+     * following char. */
+    if (lbpCtx->fPrevQuPf && lbpCtx->fQuPrevEA && isCurEA &&
+        lbpCtx->lbcNew != LBP_CL && lbpCtx->lbcNew != LBP_CP &&
+        lbpCtx->lbcNew != LBP_EX && lbpCtx->lbcNew != LBP_SY &&
+        lbpCtx->lbcNew != LBP_IS && lbpCtx->lbcNew != LBP_ZW &&
+        lbpCtx->lbcNew != LBP_WJ && lbpCtx->lbcNew != LBP_CM)
+    {
+        return LINEBREAK_ALLOWBREAK;
+    }
+
+    /* Rule LB20a: do not break after a word-initial hyphen */
+    if (lbpCtx->fLb20aWordInit && lbpCtx->lbcLast != LBP_SP &&
+        (lbpCtx->lbcNew == LBP_AL || lbpCtx->lbcNew == LBP_HL))
+    {
+        return LINEBREAK_NOBREAK;
+    }
+
+    /* Rule LB21a: HL (HY | HH) × [^HL] */
+    if (lbpCtx->fLb21aHebrew &&
+        (lbpCtx->lbcCur == LBP_HY || lbpCtx->lbcCur == LBP_HH) &&
+        lbpCtx->lbcNew != LBP_HL)
+    {
+        return LINEBREAK_NOBREAK;
+    }
+
+    /* Rule LB25 */
+    if (lbpCtx->posLast != INVALID_POS)
+    {
+#if UB_LB25_OPT_HACK
+        /* This hack reduces conditional jumps and works well with the
+         * optimizers of GCC and MSVC. */
+        static const uint16_t allow[LBP_PO + 1] = {
+            [LBP_CL] = (1 << LBP_PR) | (1 << LBP_PO),
+            [LBP_CP] = (1 << LBP_PR) | (1 << LBP_PO),
+            [LBP_SY] = (1 << LBP_NU),
+            [LBP_PR] = (1 << LBP_OP),
+            [LBP_PO] = (1 << LBP_OP),
+        };
+        if (lbpCtx->lbcCur <= LBP_PO && lbpCtx->lbcNew <= LBP_NU &&
+            (allow[lbpCtx->lbcCur] >> lbpCtx->lbcNew) & 1)
+#else
+        /* The Clang optimizer works well with the following condition.
+         * Extra hacks harm the performance. */
+        if ((lbpCtx->lbcCur == LBP_CL &&
+             (lbpCtx->lbcNew == LBP_PO || lbpCtx->lbcNew == LBP_PR)) ||
+            (lbpCtx->lbcCur == LBP_CP &&
+             (lbpCtx->lbcNew == LBP_PO || lbpCtx->lbcNew == LBP_PR)) ||
+            (lbpCtx->lbcCur == LBP_PO && lbpCtx->lbcNew == LBP_OP) ||
+            (lbpCtx->lbcCur == LBP_PR && lbpCtx->lbcNew == LBP_OP) ||
+            (lbpCtx->lbcCur == LBP_SY && lbpCtx->lbcNew == LBP_NU))
+#endif
+        {
+            /* Allow break for the above cases, but later fixes may
+             * change it again. */
+            brk = LINEBREAK_ALLOWBREAK;
+        }
+
+        /* State-machine effects based on the current LB25 state. */
+        switch (lbpCtx->eLb25)
+        {
+        case LB25_PREFIX:
+            if (lbpCtx->lbcNew == LBP_OP || lbpCtx->lbcNew == LBP_HY)
+            {
+                lbpCtx->posLb25Fixup = lbpCtx->posLast;
+            }
+            break;
+        case LB25_PREFIXOP:
+            if (lbpCtx->lbcNew == LBP_NU)
+            {
+                lbpCtx->fLb25Mark = true;
+            }
+            else
+            {
+                lbpCtx->posLb25Fixup = INVALID_POS;
+            }
+            break;
+        case LB25_NUM:
+            if (lbpCtx->lbcNew == LBP_NU || lbpCtx->lbcNew == LBP_SY ||
+                lbpCtx->lbcNew == LBP_IS)
+            {
+                brk = LINEBREAK_NOBREAK;
+                break;
+            }
+            /* FALLTHROUGH */
+        case LB25_NUMCLOSE:
+            if (lbpCtx->lbcNew == LBP_PO || lbpCtx->lbcNew == LBP_PR)
+            {
+                brk = LINEBREAK_NOBREAK;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    /* Rule LB28a sub-rules 1-3: do not break inside Brahmic
+     * orthographic syllables */
+    if (lbpCtx->lbcLast != LBP_SP)
+    {
+        /* Sub-rule 1: AP x (AK|DOTTED|AS) */
+        if (lbpCtx->lbcCur == LBP_AP && curAksara)
+        {
+            return LINEBREAK_NOBREAK;
+        }
+        /* Sub-rule 2: (AK|DOTTED|AS) x (VF|VI) */
+        if (lbpCtx->fLb28aPrevAksara &&
+            (lbpCtx->lbcNew == LBP_VF || lbpCtx->lbcNew == LBP_VI))
+        {
+            return LINEBREAK_NOBREAK;
+        }
+        /* Sub-rule 3: (AK|DOTTED|AS) VI x (AK|DOTTED) */
+        if (lbpCtx->fLb28aAkVi && curAksara)
+        {
+            return LINEBREAK_NOBREAK;
+        }
+    }
+
+    /* Rule LB30 */
+    if (/* (AL | HL | NU) × [OP-[\p{ea=F}\p{ea=W}\p{ea=H}]] */
+        ((lbpCtx->lbcLast == LBP_AL || lbpCtx->lbcLast == LBP_HL ||
+          lbpCtx->lbcLast == LBP_NU) &&
+         (lbpCtx->lbcNew == LBP_OP && !ub_is_op_east_asian(ch))) ||
+        /* [CP-[\p{ea=F}\p{ea=W}\p{ea=H}]] × (AL | HL | NU)
+           note as of Unicode 15.1, there is no east asian CP
+        */
+        (lbpCtx->lbcLast == LBP_CP &&
+         (lbpCtx->lbcNew == LBP_AL || lbpCtx->lbcNew == LBP_HL ||
+          lbpCtx->lbcNew == LBP_NU)))
+    {
+        return LINEBREAK_NOBREAK;
+    }
+
+    /* Rule LB30a: break between pairs of regional indicators */
+    if (lbpCtx->lbcCur == LBP_RI && lbpCtx->cLb30aRI == 1 &&
+        lbpCtx->lbcNew == LBP_RI)
+    {
+        return LINEBREAK_ALLOWBREAK;
+    }
+
+    /* Rule LB30b: do not break between a potential emoji and EM */
+    if (lbpCtx->fPrevPotentialEmoji && lbpCtx->lbcNew == LBP_EM)
+    {
+        return LINEBREAK_NOBREAK;
+    }
+
+    /* Rule LB15b: no break before a final Pf&QU, even after spaces.
+     * Tentatively suppress the break; it is reverted when the following
+     * char is word-like.  Rule LB8 (ZW) forces a break and takes
+     * precedence, so skip that case. */
+    if (curPfQu && lbpCtx->lbcCur != LBP_ZW)
+    {
+        lbpCtx->ePending = PENDING_LB15B;
+        lbpCtx->posPending = lbpCtx->posLast;
+        lbpCtx->cPendingOrigBrk = (char)brk;
+        return LINEBREAK_NOBREAK;
+    }
+
+    /* Rule LB15c: break before a decimal mark that follows a space.
+     * Tentatively break; it is confirmed only when a NU follows.  Rule
+     * LB8 (ZW) already forces a break and takes precedence. */
+    if (lbpCtx->lbcNew == LBP_IS && lbpCtx->lbcLast == LBP_SP &&
+        lbpCtx->lbcCur != LBP_ZW)
+    {
+        lbpCtx->ePending = PENDING_LB15C;
+        lbpCtx->posPending = lbpCtx->posLast;
+        lbpCtx->cPendingOrigBrk = LINEBREAK_NOBREAK;
+        return LINEBREAK_ALLOWBREAK;
+    }
+
+    /* Rule LB19a: break before a Pi&QU surrounded by East Asian
+     * characters.  Tentatively break; it is reverted if the following
+     * char is not East Asian. */
+    if (curQuPi && lbpCtx->fPrevEA && lbpCtx->lbcLast != LBP_OP)
+    {
+        lbpCtx->ePending = PENDING_LB19A;
+        lbpCtx->posPending = lbpCtx->posLast;
+        lbpCtx->cPendingOrigBrk = LINEBREAK_NOBREAK;
+        return LINEBREAK_ALLOWBREAK;
+    }
+
+    /* Rule LB28a sub-rule 4: (AK|DOTTED|AS) x (AK|DOTTED|AS) VF */
+    if (lbpCtx->lbcLast != LBP_SP && lbpCtx->fLb28aPrevAksara && curAksara)
+    {
+        lbpCtx->ePending = PENDING_LB28A4;
+        lbpCtx->posPending = lbpCtx->posLast;
+        lbpCtx->cPendingOrigBrk = (char)brk;
+        return LINEBREAK_NOBREAK;
+    }
+
+    return brk;
+}
+
+/**
+ * Updates the per-character state flags, unconditionally.  This runs for
+ * every character after #get_lb_result_decision, using the class values
+ * of the character just read to prepare the state for the next one.
+ *
+ * @param[in,out] lbpCtx  pointer to the line breaking context
+ * @param[in]     ch      the codepoint just read
+ */
+static void update_lb_state(
+        struct LineBreakContext *lbpCtx, utf32_t ch)
+{
+    /* Rule LB21a: is the current char a Hebrew letter? */
+    lbpCtx->fLb21aHebrew = (lbpCtx->lbcCur == LBP_HL);
+
+    /* Rule LB25 state machine */
+#if UB_LB25_OPT_HACK
+    /* The else path is sufficient, but the additional condition may
+     * avoid a function call and boost performance. */
+    if (lbpCtx->eLb25 == LB25_NONE)
+    {
+        switch (lbpCtx->lbcNew)
+        {
+        case LBP_PR:
+        case LBP_PO:
+            lbpCtx->eLb25 = LB25_PREFIX;
+            break;
+        case LBP_NU:
+            lbpCtx->eLb25 = LB25_NUM;
+            break;
+        default:
+            break;
+        }
+    }
+    else
+#endif
+    {
+        lbpCtx->eLb25 = lb25_transition(lbpCtx->eLb25, lbpCtx->lbcNew);
+    }
+
+    /* Rule LB30a: track consecutive regional indicators */
+    if (lbpCtx->lbcCur == LBP_RI)
+    {
+        ++lbpCtx->cLb30aRI;
+        if (lbpCtx->cLb30aRI == 2 && lbpCtx->lbcNew == LBP_RI)
+        {
+            lbpCtx->cLb30aRI = 0;
+        }
+    }
+    else
+    {
+        lbpCtx->cLb30aRI = 0;
+    }
+
+    /* Rule LB20a: is the current char a word-initial hyphen? */
+    lbpCtx->fLb20aWordInit =
+        (lbpCtx->lbcNew == LBP_HY || lbpCtx->lbcNew == LBP_HH) &&
+        (lbpCtx->lbcLast == LBP_BK || lbpCtx->lbcLast == LBP_CR ||
+         lbpCtx->lbcLast == LBP_LF || lbpCtx->lbcLast == LBP_NL ||
+         lbpCtx->lbcLast == LBP_SP || lbpCtx->lbcLast == LBP_ZW ||
+         lbpCtx->lbcLast == LBP_CB || lbpCtx->lbcLast == LBP_GL);
+
+    /* Rule LB28a: track aksaras */
+    lbpCtx->fLb28aAkVi =
+        lbpCtx->fLb28aPrevAksara && lbpCtx->lbcNew == LBP_VI;
+    lbpCtx->fLb28aPrevAksara = lb28a_is_aksara(lbpCtx->lbcNew, ch);
+
+    /* Rule LB15a: is the current char an initial Pi&QU? */
+    lbpCtx->fQuPiInitial =
+        (lbpCtx->lbcNew == LBP_QU && is_pi_qu(ch)) &&
+        (lbpCtx->lbcLast == LBP_BK || lbpCtx->lbcLast == LBP_CR ||
+         lbpCtx->lbcLast == LBP_LF || lbpCtx->lbcLast == LBP_NL ||
+         lbpCtx->lbcLast == LBP_OP || lbpCtx->lbcLast == LBP_QU ||
+         lbpCtx->lbcLast == LBP_GL || lbpCtx->lbcLast == LBP_SP ||
+         lbpCtx->lbcLast == LBP_ZW);
+}
+
+/**
+ * Tells the line break opportunity by table lookup.
+ *
+ * @param[in,out] lbpCtx   pointer to the line breaking context
+ * @param[in]     ch       the codepoint being resolved
+ * @param[in]     isCurEA  whether \a ch has East Asian Width F/W/H
+ * @pre                    \a lbpCtx->lbcCur has the current line break
+ *                         class; \a lbpCtx->lbcLast has the line break
+ *                         class for the last character; and \a
+ *                         lbcCur->lbcNew has the line break class for
+ *                         the next character
+ * @post                   \a lbpCtx->lbcCur has the updated line break
+ *                         class
+ * @return                 break result, one of #LINEBREAK_MUSTBREAK,
+ *                         #LINEBREAK_ALLOWBREAK, and #LINEBREAK_NOBREAK
  */
 static int get_lb_result_lookup(
-        struct LineBreakContext *lbpCtx, utf32_t ch)
+        struct LineBreakContext *lbpCtx, utf32_t ch, bool isCurEA)
 {
     int brk = LINEBREAK_UNDEFINED;
 
@@ -728,8 +1257,7 @@ static int get_lb_result_lookup(
         if (lbpCtx->lbcLast != LBP_SP)
         {
             lbpCtx->eLb25 = LB25_NONE;
-            brk = LINEBREAK_NOBREAK;
-            return brk;                 /* Do not update lbcCur */
+            return LINEBREAK_NOBREAK;   /* Do not update lbcCur or state */
         }
         break;
     case CMP_BRK:
@@ -737,7 +1265,7 @@ static int get_lb_result_lookup(
         if (lbpCtx->lbcLast != LBP_SP)
         {
             lbpCtx->eLb25 = LB25_NONE;
-            return brk;                 /* Do not update lbcCur */
+            return LINEBREAK_NOBREAK;   /* Do not update lbcCur or state */
         }
         break;
     case PRH_BRK:
@@ -745,121 +1273,8 @@ static int get_lb_result_lookup(
         break;
     }
 
-    /* Simple rules for programmers: no break between "++", or between
-     * '-' and '`'. */
-    if ((lbpCtx->lbcLast == LBP_PR && ch == '+') ||
-        (lbpCtx->lbcLast == LBP_HY && ch == '`'))
-    {
-        brk = LINEBREAK_NOBREAK;
-    }
-
-    /* Special processing due to rule LB8a */
-    if (lbpCtx->fLb8aZwj)
-    {
-        brk = LINEBREAK_NOBREAK;
-    }
-
-    /* Rule LB21a */
-    if (lbpCtx->fLb21aHebrew &&
-        (lbpCtx->lbcCur == LBP_HY || lbpCtx->lbcCur == LBP_BA))
-    {
-        brk = LINEBREAK_NOBREAK;
-        lbpCtx->fLb21aHebrew = false;
-    }
-    else
-    {
-        lbpCtx->fLb21aHebrew = (lbpCtx->lbcCur == LBP_HL);
-    }
-
-    /* Rule LB25 */
-    if (lbpCtx->posLast != INVALID_POS) /* Tailoring possible */
-    {
-#if UB_LB25_OPT_HACK
-        /* This hack reduces conditional jumps and works well with the
-         * optimizers of GCC and MSVC. */
-        static const uint16_t allow[LBP_PO + 1] = {
-            [LBP_CL] = (1 << LBP_PR) | (1 << LBP_PO),
-            [LBP_CP] = (1 << LBP_PR) | (1 << LBP_PO),
-            [LBP_SY] = (1 << LBP_NU),
-            [LBP_IS] = (1 << LBP_NU),
-            [LBP_PR] = (1 << LBP_OP),
-            [LBP_PO] = (1 << LBP_OP),
-        };
-        if (lbpCtx->lbcCur <= LBP_PO && lbpCtx->lbcNew <= LBP_NU &&
-            (allow[lbpCtx->lbcCur] >> lbpCtx->lbcNew) & 1)
-#else
-        /* The Clang optimizer works well with the following condition.
-         * Extra hacks harm the performance. */
-        if ((lbpCtx->lbcCur == LBP_CL &&
-             (lbpCtx->lbcNew == LBP_PO || lbpCtx->lbcNew == LBP_PR)) ||
-            (lbpCtx->lbcCur == LBP_CP &&
-             (lbpCtx->lbcNew == LBP_PO || lbpCtx->lbcNew == LBP_PR)) ||
-            (lbpCtx->lbcCur == LBP_PO && lbpCtx->lbcNew == LBP_OP) ||
-            (lbpCtx->lbcCur == LBP_PR && lbpCtx->lbcNew == LBP_OP) ||
-            (lbpCtx->lbcCur == LBP_IS && lbpCtx->lbcNew == LBP_NU) ||
-            (lbpCtx->lbcCur == LBP_SY && lbpCtx->lbcNew == LBP_NU))
-#endif
-        {
-            /* Allow break for the above cases, but later fixes may
-             * change it again. */
-            brk = LINEBREAK_ALLOWBREAK;
-        }
-
-#if UB_LB25_OPT_HACK
-        /* The else path is sufficient, but the additional condition may
-         * avoid a function call and boost performance. */
-        if (lbpCtx->eLb25 == LB25_NONE)
-        {
-            switch (lbpCtx->lbcNew)
-            {
-            case LBP_PR:
-            case LBP_PO:
-                lbpCtx->eLb25 = LB25_PREFIX;
-                break;
-            case LBP_NU:
-                lbpCtx->eLb25 = LB25_NUM;
-                break;
-            default:
-                break;
-            }
-        }
-        else
-#endif
-        {
-            lbpCtx->eLb25 = update_lb25_state(lbpCtx, &brk);
-        }
-    }
-
-    /* Rule LB30 */
-    if (/* (AL | HL | NU) × [OP-[\p{ea=F}\p{ea=W}\p{ea=H}]] */
-        ((lbpCtx->lbcLast == LBP_AL || lbpCtx->lbcLast == LBP_HL ||
-          lbpCtx->lbcLast == LBP_NU) &&
-         (lbpCtx->lbcNew == LBP_OP && !ub_is_op_east_asian(ch))) ||
-        /* [CP-[\p{ea=F}\p{ea=W}\p{ea=H}]] × (AL | HL | NU)
-           note as of Unicode 15.1, there is no east asian CP
-        */
-        (lbpCtx->lbcLast == LBP_CP &&
-         (lbpCtx->lbcNew == LBP_AL || lbpCtx->lbcNew == LBP_HL ||
-          lbpCtx->lbcNew == LBP_NU)))
-    {
-        brk = LINEBREAK_NOBREAK;
-    }
-
-    /* Rule LB30a */
-    else if (lbpCtx->lbcCur == LBP_RI)
-    {
-        lbpCtx->cLb30aRI++;
-        if (lbpCtx->cLb30aRI == 2 && lbpCtx->lbcNew == LBP_RI)
-        {
-            brk = LINEBREAK_ALLOWBREAK;
-            lbpCtx->cLb30aRI = 0;
-        }
-    }
-    else
-    {
-        lbpCtx->cLb30aRI = 0;
-    }
-
+    brk = get_lb_result_decision(lbpCtx, ch, isCurEA, brk);
+    update_lb_state(lbpCtx, ch);
     lbpCtx->lbcCur = lbpCtx->lbcNew;
     return brk;
 }
@@ -877,25 +1292,31 @@ void lb_init_break_context(
         utf32_t ch,
         const char *lang)
 {
-    lbpCtx->lang = lang;
-#if UB_LANG_FLAGS
-    lbpCtx->fLangCjk = is_lang_cjk(lang);
-    lbpCtx->fLangStrict = ENDS_WITH(lang, "-strict");
-#endif
-    lbpCtx->lbpLang = get_lb_prop_lang(lang);
-    lbpCtx->lbcCur = resolve_lb_class(
-                        get_char_lb_class_lang(ch, lbpCtx->lbpLang),
-                        lbpCtx);
-    lbpCtx->lbcNew = LBP_Undefined;
-    lbpCtx->lbcLast = LBP_Undefined;
-    lbpCtx->posLast = INVALID_POS;
-    lbpCtx->fLb8aZwj =
-        (get_char_lb_class_lang(ch, lbpCtx->lbpLang) == LBP_ZWJ);
-    lbpCtx->fLb21aHebrew = false;
-    lbpCtx->cLb30aRI = 0;
-    lbpCtx->eLb25 = LB25_NONE;
-    lbpCtx->posLb25Fixup = INVALID_POS;
-    lbpCtx->fLb25Mark = false;
+    bool cjk = is_lang_cjk(lang);
+    bool strict = ENDS_WITH(lang, "-strict");
+    const struct LineBreakProperties *lbpLang = get_lb_prop_lang(lang);
+    enum LineBreakClass rawLbc = get_char_lb_class_lang(ch, lbpLang);
+    enum LineBreakClass lbcCur = resolve_lb_class(rawLbc, cjk, strict, ch);
+
+    /* Members not listed below are zero-initialized (false, 0, etc.). */
+    *lbpCtx = (struct LineBreakContext) {
+        .lbpLang = lbpLang,
+        .posLast = INVALID_POS,
+        .lbcCur = lbcCur,
+        .fLb8aZwj = (rawLbc == LBP_ZWJ),
+        .fLb20aWordInit = (lbcCur == LBP_HY || lbcCur == LBP_HH),
+        .fLb28aPrevAksara = lb28a_is_aksara(lbcCur, ch),
+        .fLangCjk = cjk,
+        .fLangStrict = strict,
+        .fPrevPotentialEmoji = is_potential_emoji(ch),
+        .fQuPiInitial = is_pi_qu(ch),
+        .fPrevQuPi = is_pi_qu(ch),
+        .fPrevQuPf = is_pf_qu(ch),
+        .fPrevEA = is_east_asian(ch),
+        .posPending = INVALID_POS,
+        .posLb25Fixup = INVALID_POS,
+        .cPendingOrigBrk = LINEBREAK_UNDEFINED,
+    };
     treat_first_char(lbpCtx);
 }
 
@@ -935,16 +1356,24 @@ int lb_process_next_char(
     }
 
     lbpCtx->lbcNew = get_char_lb_class_lang(ch, lbpCtx->lbpLang);
+    lbpCtx->lbcNew = resolve_lb_class(lbpCtx->lbcNew, lbpCtx->fLangCjk,
+                                      lbpCtx->fLangStrict, ch);
+    bool isCurEA = is_east_asian(ch);
+    resolve_pending_break(lbpCtx, lbpCtx->lbcNew, ch);
     brk = get_lb_result_simple(lbpCtx);
     switch (brk)
     {
     case LINEBREAK_MUSTBREAK:
-        lbpCtx->lbcCur = resolve_lb_class(lbpCtx->lbcNew, lbpCtx);
+        lbpCtx->lbcCur = lbpCtx->lbcNew;
         treat_first_char(lbpCtx);
+        /* The char after a hard break acts like the start of text. */
+        lbpCtx->fQuPiInitial =
+            lbpCtx->lbcCur == LBP_QU && is_pi_qu(ch);
+        lbpCtx->fLb20aWordInit =
+            lbpCtx->lbcCur == LBP_HY || lbpCtx->lbcCur == LBP_HH;
         break;
     case LINEBREAK_UNDEFINED:
-        lbpCtx->lbcNew = resolve_lb_class(lbpCtx->lbcNew, lbpCtx);
-        brk = get_lb_result_lookup(lbpCtx, ch);
+        brk = get_lb_result_lookup(lbpCtx, ch, isCurEA);
         break;
     default:
         lbpCtx->eLb25 = LB25_NONE;
@@ -953,6 +1382,20 @@ int lb_process_next_char(
 
     /* Special processing due to rule LB8a */
     lbpCtx->fLb8aZwj = lbpCtx->lbcNew == LBP_ZWJ;
+
+    /* Update the quotation/hyphen state, persisting through CM/ZWJ */
+    if (lbpCtx->lbcNew != LBP_CM && lbpCtx->lbcNew != LBP_ZWJ)
+    {
+        lbpCtx->fPrevPotentialEmoji = is_potential_emoji(ch);
+        lbpCtx->fPrevQuPi = lbpCtx->lbcNew == LBP_QU && is_pi_qu(ch);
+        lbpCtx->fPrevQuPf = lbpCtx->lbcNew == LBP_QU && is_pf_qu(ch);
+        if (lbpCtx->lbcNew == LBP_QU)
+        {
+            /* Record whether the char preceding this QU is East Asian. */
+            lbpCtx->fQuPrevEA = lbpCtx->fPrevEA;
+        }
+        lbpCtx->fPrevEA = isCurEA;
+    }
 
     return brk;
 }
@@ -1059,18 +1502,36 @@ size_t set_linebreaks(
             lbCtx.posLb25Fixup = INVALID_POS;
             lbCtx.fLb25Mark = false;
         }
+
+        /* Fix-up (revert) due to a pending lookahead break */
+        if (lbCtx.fPendingRevert)
+        {
+            brks[lbCtx.posPending] = lbCtx.cPendingOrigBrk;
+            lbCtx.fPendingRevert = false;
+            lbCtx.posPending = INVALID_POS;
+        }
     }
+
+    /* Revert any unresolved tentative break (LB28a sub-rule 4, LB15c, or
+     * LB19a).  LB15b needs no revert at end of text, since its NOBREAK
+     * result is correct when no word-like char follows. */
+    switch (lbCtx.ePending)
+    {
+    case PENDING_LB15C:
+    case PENDING_LB19A:
+    case PENDING_LB28A4:
+        brks[lbCtx.posPending] = lbCtx.cPendingOrigBrk;
+        break;
+    default:
+        break;
+    }
+    lbCtx.ePending = PENDING_NONE;
 
     /* After the last character */
     lastBreak = get_lb_result_simple(&lbCtx);
-    if (lastBreak == LINEBREAK_MUSTBREAK)
-    {
-        brks[posLast] = LINEBREAK_MUSTBREAK;
-    }
-    else
-    {
-        brks[posLast] = LINEBREAK_INDETERMINATE;
-    }
+    brks[posLast] = (lastBreak == LINEBREAK_MUSTBREAK)
+                        ? LINEBREAK_MUSTBREAK
+                        : LINEBREAK_INDETERMINATE;
 
     if (outputType == LBOT_PER_CODE_UNIT)
     {

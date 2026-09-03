@@ -25,6 +25,7 @@ EXTRA_DIST = \
 	extract_data.sed \
 	expand_single.sed \
 	linebreakdata1.tmpl \
+	linebreakauxdata.c \
 	wordbreakdata.c \
 	graphemebreakdata.c \
 	indicconjunctbreakdata.c \
@@ -33,6 +34,7 @@ EXTRA_DIST = \
 	Makefile.gcc \
 	Makefile.msvc \
 	generate_linebreakdata.py \
+	generate_linebreak_aux.py \
 	generate_word_break.py \
 	generate_grapheme_break.py \
 	generate_east_asian_width.py \
@@ -54,7 +56,7 @@ install-exec-hook:
 	${LN_S} libunibreak.a $(DESTDIR)/${libdir}/liblinebreak.a
 
 distclean-local:
-	rm -f LineBreak.txt WordBreakData.txt GraphemeBreakData.txt DerivedCoreProperties.txt EastAsianWidth.txt emoji-data.txt
+	rm -f LineBreak.txt WordBreakData.txt GraphemeBreakData.txt DerivedCoreProperties.txt DerivedGeneralCategory.txt EastAsianWidth.txt emoji-data.txt
 
 
 LineBreak.txt:
@@ -68,6 +70,9 @@ GraphemeBreakProperty.txt:
 
 DerivedCoreProperties.txt:
 	wget https://www.unicode.org/Public/UNIDATA/DerivedCoreProperties.txt
+
+DerivedGeneralCategory.txt:
+	wget https://www.unicode.org/Public/UNIDATA/extracted/DerivedGeneralCategory.txt
 
 EastAsianWidth.txt:
 	wget https://www.unicode.org/Public/UNIDATA/EastAsianWidth.txt
@@ -83,6 +88,9 @@ linebreakdata: LineBreak.txt
 	head -2 LineBreak.txt > tmp.txt
 	cat ${srcdir}/linebreakdata1.tmpl tmp.txt tmp.c > ${srcdir}/linebreakdata.c
 	rm tmp.txt tmp.c
+
+linebreakauxdata: DerivedGeneralCategory.txt LineBreak.txt emoji-data.txt
+	${srcdir}/generate_linebreak_aux.py > ${srcdir}/linebreakauxdata.c
 
 wordbreakdata: WordBreakProperty.txt
 	${srcdir}/generate_word_break.py > ${srcdir}/wordbreakdata.c

@@ -29,9 +29,9 @@
  * Unicode 9.0.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-29.html>
  *
- * This library has been updated according to Revision 43, for
- * Unicode 15.1.0:
- *      <URL:https://www.unicode.org/reports/tr29/tr29-43.html>
+ * This library has been updated according to Revision 47, for
+ * Unicode 17.0.0:
+ *      <URL:https://www.unicode.org/reports/tr29/tr29-47.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -55,7 +55,11 @@
 #include "unibreakdef.h"
 
 #ifndef UNIBREAK_LAZY_INCB
-#define UNIBREAK_LAZY_INCB 1
+/* Lazy InCB computation assumes InCB is only non-None for Extend/ZWJ-like
+ * characters.  Since Unicode 16.0 the InCB=Consonant value is assigned to
+ * consonants whose Grapheme_Cluster_Break is Other, so the InCB class must
+ * be looked up for those too.  Disable laziness by default. */
+#define UNIBREAK_LAZY_INCB 0
 #endif
 
 enum Rule9cStage

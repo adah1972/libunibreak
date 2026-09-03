@@ -31,9 +31,9 @@
  * Unicode 5.0.0:
  *      <URL:http://www.unicode.org/reports/tr14/tr14-19.html>
  *
- * This library has been updated according to Revision 49, for
- * Unicode 15.0.0:
- *      <URL:http://www.unicode.org/reports/tr14/tr14-49.html>
+ * This library has been updated according to Revision 55, for
+ * Unicode 17.0.0:
+ *      <URL:http://www.unicode.org/reports/tr14/tr14-55.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -53,10 +53,6 @@
 #define LINEBREAKDEF_H
 
 #include "unibreakdef.h"
-
-#ifndef UB_LANG_FLAGS
-#define UB_LANG_FLAGS 1
-#endif
 
 /**
  * Line break classes.  This is a mapping of Table 1 of Unicode
@@ -101,8 +97,14 @@ enum LineBreakClass
     LBP_EM,         /**< Emoji modifier */
     LBP_ZWJ,        /**< Zero width joiner */
 
-    /* The following break class is treated in the pair table, but it is
-     * not part of Table 2 of UAX #14-37. */
+    /* The following break classes are treated in the pair table, but
+     * they are not part of Table 2 of UAX #14-37. */
+    LBP_AK,         /**< Aksara */
+    LBP_AP,         /**< Aksara Pre-Base */
+    LBP_AS,         /**< Aksara Start */
+    LBP_VF,         /**< Virama Final */
+    LBP_VI,         /**< Virama */
+    LBP_HH,         /**< Unambiguous Hyphen */
     LBP_CB,         /**< Contingent break */
 
     /* The following break classes are not treated in the pair table */
@@ -131,6 +133,19 @@ enum Lb25State
     LB25_NUMCLOSE,   /**< Saw NU (NU|SY|IS)* (CL|CP) */
 };
 
+/**
+ * Identifies which lookahead rule currently has a tentative break
+ * pending resolution by the next character.
+ */
+enum PendingRule
+{
+    PENDING_NONE,       /**< No pending tentative break */
+    PENDING_LB15B,      /**< LB15b: tentative break before a Pf&QU */
+    PENDING_LB15C,      /**< LB15c: tentative break before IS after SP */
+    PENDING_LB19A,      /**< LB19a: tentative break before a Pi&QU */
+    PENDING_LB28A4,     /**< LB28a sub-rule 4: tentative break after aksara */
+};
+
 enum BreakOutputType
 {
     LBOT_PER_CODE_UNIT,
@@ -149,6 +164,17 @@ struct LineBreakProperties
 };
 
 /**
+ * Struct for entries of auxiliary line breaking properties derived from
+ * the General_Category property.  The array of the entries \e must be
+ * sorted.
+ */
+struct LineBreakAuxRange
+{
+    utf32_t start;              /**< Start codepoint */
+    utf32_t end;                /**< End codepoint, inclusive */
+};
+
+/**
  * Struct for association of language-specific line breaking properties
  * with language names.
  */
@@ -162,26 +188,45 @@ struct LineBreakPropertiesLang
 /**
  * Context representing internal state of the line breaking algorithm.
  * This is useful to callers if incremental analysis is wanted.
+ *
+ * The fields are ordered so that the members accessed on every
+ * character sit first, while the rarely used lookahead-fixup state
+ * sits last.
  */
 struct LineBreakContext
 {
-    const char *lang;               /**< Language name */
+    /* --- Hot state (touched on every character) --- */
     const struct LineBreakProperties *lbpLang; /**< Pointer to
                                                     LineBreakProperties */
+    size_t posLast;                 /**< Last position in input string */
     enum LineBreakClass lbcCur;     /**< Breaking class of current codepoint */
     enum LineBreakClass lbcNew;     /**< Breaking class of next codepoint */
     enum LineBreakClass lbcLast;    /**< Breaking class of last codepoint */
-    size_t posLast;                 /**< Last position in input string */
-#if UB_LANG_FLAGS
-    bool fLangCjk;                  /**< zh/ja/ko language */
-    bool fLangStrict;               /**< -strict suffix */
-#endif
+    enum PendingRule ePending;      /**< Pending lookahead rule */
+    enum Lb25State eLb25;           /**< LB25 state for numeric expression */
+    int cLb30aRI;                   /**< Count of RI characters (LB30a) */
+
     bool fLb8aZwj;                  /**< Flag for ZWJ (LB8a) */
     bool fLb21aHebrew;              /**< Flag for Hebrew letters (LB21a) */
-    int cLb30aRI;                   /**< Count of RI characters (LB30a) */
-    enum Lb25State eLb25;           /**< LB25 state for numeric expression */
+    bool fLb20aWordInit;            /**< Previous char is word-initial hyphen */
+    bool fLb28aPrevAksara;          /**< Previous char is aksara (LB28a) */
+    bool fLb28aAkVi;                /**< (AK|◌|AS) VI seen (LB28a) */
+
+    bool fLangCjk;                  /**< zh/ja/ko language */
+    bool fLangStrict;               /**< -strict suffix */
+    bool fPrevPotentialEmoji;       /**< Previous char is potential emoji */
+    bool fQuPiInitial;              /**< Previous Pi QU is in initial context */
+    bool fPrevQuPi;                 /**< Previous char is QU of class Pi */
+    bool fPrevQuPf;                 /**< Previous char is QU of class Pf */
+    bool fPrevEA;                   /**< Previous char is East Asian */
+    bool fQuPrevEA;                 /**< Char before previous QU is East Asian */
+
+    /* --- Lookahead-fixup state (rarely used) --- */
+    size_t posPending;              /**< Position of tentative break */
     size_t posLb25Fixup;            /**< Position to fix for LB25 */
     bool fLb25Mark;                 /**< Flag for pending fixup */
+    char cPendingOrigBrk;           /**< Break value to restore on revert */
+    bool fPendingRevert;            /**< Flag for pending revert */
 };
 
 /* Declarations */

@@ -5,7 +5,7 @@
  * generic text renderer.
  *
  * Copyright (C) 2013-2019 Tom Hacohen <tom at stosb dot com>
- * Copyright (C) 2018-2024 Wu Yongwei <wuyongwei at gmail dot com>
+ * Copyright (C) 2018-2026 Wu Yongwei <wuyongwei at gmail dot com>
  *
  * This software is provided 'as-is', without any express or implied
  * warranty.  In no event will the author be held liable for any damages
@@ -31,9 +31,9 @@
  * Unicode 6.0.0:
  *      <URL:http://www.unicode.org/reports/tr29/tr29-17.html>
  *
- * This library has been updated according to Revision 43, for
- * Unicode 15.1.0:
- *      <URL:http://www.unicode.org/reports/tr29/tr29-43.html>
+ * This library has been updated according to Revision 47, for
+ * Unicode 17.0.0:
+ *      <URL:http://www.unicode.org/reports/tr29/tr29-47.html>
  *
  * The Unicode Terms of Use are available at
  *      <URL:http://www.unicode.org/copyright.html>
@@ -178,6 +178,19 @@ static void set_wordbreaks(
     {
         enum WordBreakClass wbcCur;
         wbcCur = get_char_wb_class(ch);
+
+        /* WB3c: ZWJ × Extended_Pictographic, regardless of the word break
+         * class of the extended pictograph. */
+        if (wbcLast == WBP_ZWJ && ub_is_extended_pictographic(ch))
+        {
+            set_brks_to(s, brks, posLast, posCur, len,
+                        WORDBREAK_NOBREAK, get_next_char);
+            posLast = posCur;
+            wbcLast = wbcCur;
+            posCur = posNext;
+            ch = get_next_char(s, len, &posNext);
+            continue;
+        }
 
         switch (wbcCur)
         {
@@ -428,15 +441,6 @@ static void set_wordbreaks(
             /* Fall through */
 
         case WBP_Any:
-            /* Check for rule WB3c */
-            if (wbcLast == WBP_ZWJ && ub_is_extended_pictographic(ch))
-            {
-                set_brks_to(s, brks, posLast, posCur, len,
-                            WORDBREAK_NOBREAK, get_next_char);
-                posLast = posCur;
-                break;
-            }
-
             /* Allow breaks and reset */
             set_brks_to(s, brks, posLast, posCur, len,
                         WORDBREAK_BREAK, get_next_char);

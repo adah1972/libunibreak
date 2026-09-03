@@ -9,13 +9,12 @@ breaking and word/grapheme breaking algorithms as described in [Unicode
 Standard Annex 14][1] (UAX #14) and [Unicode Standard Annex 29][2] (UAX
 #29).  Check the project's [home page][3] for up-to-date information.
 
-Unicode 15.0 support for line breaking, as well as full Unicode 15.1
-support for word/grapheme breaking, is currently provided.  Full Unicode
-15.1 support for line breaking has not been implemented, mostly because
-some rules (like LB28a of UAX #14-51) are incompatible with the
-incremental line-breaking API (`lb_process_next_char`, introduced in
+Unicode 17.0 support for line breaking, as well as full Unicode 17.0
+support for word/grapheme breaking, is currently provided.  Some rules
+(like LB28a and the quotation rules of UAX #14) are incompatible with
+the incremental line-breaking API (`lb_process_next_char`, introduced in
 libunibreak 1.1).  The current version uses deferred fixups to
-accommodate newer rules, with the incremental API falling back to
+accommodate these rules, with the incremental API falling back to
 conservative behaviour.  This approach is complex, and the incremental
 API may be removed in a future release.
 

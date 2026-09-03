@@ -7,6 +7,5 @@ static const unsigned int testSkipsGrapheme[] = {
 };
 
 static const unsigned int testSkipsLine[] = {
-     7681,  /* Unknown (XX) is treated as AL in this implementation */
-     0
+    0
 };

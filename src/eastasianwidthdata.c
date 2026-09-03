@@ -1,8 +1,8 @@
 /* The content of this file is generated from:
-# EastAsianWidth-15.1.0.txt
-# Date: 2023-07-28, 23:34:08 GMT
-# LineBreak-15.1.0.txt
-# Date: 2023-07-28, 13:19:22 GMT [KW]
+# EastAsianWidth-17.0.0.txt
+# Date: 2025-07-24, 00:12:54 GMT
+# LineBreak-17.0.0.txt
+# Date: 2025-07-29, 13:52:18 GMT
 */
 
 #include "eastasianwidthdef.h"
@@ -166,6 +166,7 @@ static const struct EastAsianWidthProperties eaw_prop[] = {
     {0x2614, 0x2615, EAW_W},
     {0x261C, 0x261C, EAW_A},
     {0x261E, 0x261E, EAW_A},
+    {0x2630, 0x2637, EAW_W},
     {0x2640, 0x2640, EAW_A},
     {0x2642, 0x2642, EAW_A},
     {0x2648, 0x2653, EAW_W},
@@ -175,6 +176,7 @@ static const struct EastAsianWidthProperties eaw_prop[] = {
     {0x266C, 0x266D, EAW_A},
     {0x266F, 0x266F, EAW_A},
     {0x267F, 0x267F, EAW_W},
+    {0x268A, 0x268F, EAW_W},
     {0x2693, 0x2693, EAW_W},
     {0x269E, 0x269F, EAW_A},
     {0x26A1, 0x26A1, EAW_W},
@@ -227,12 +229,11 @@ static const struct EastAsianWidthProperties eaw_prop[] = {
     {0x3099, 0x30FF, EAW_W},
     {0x3105, 0x312F, EAW_W},
     {0x3131, 0x318E, EAW_W},
-    {0x3190, 0x31E3, EAW_W},
+    {0x3190, 0x31E5, EAW_W},
     {0x31EF, 0x321E, EAW_W},
     {0x3220, 0x3247, EAW_W},
     {0x3248, 0x324F, EAW_A},
-    {0x3250, 0x4DBF, EAW_W},
-    {0x4E00, 0xA48C, EAW_W},
+    {0x3250, 0xA48C, EAW_W},
     {0xA490, 0xA4C6, EAW_W},
     {0xA960, 0xA97C, EAW_W},
     {0xAC00, 0xD7A3, EAW_W},
@@ -253,10 +254,10 @@ static const struct EastAsianWidthProperties eaw_prop[] = {
     {0xFFE8, 0xFFEE, EAW_H},
     {0xFFFD, 0xFFFD, EAW_A},
     {0x16FE0, 0x16FE4, EAW_W},
-    {0x16FF0, 0x16FF1, EAW_W},
-    {0x17000, 0x187F7, EAW_W},
-    {0x18800, 0x18CD5, EAW_W},
-    {0x18D00, 0x18D08, EAW_W},
+    {0x16FF0, 0x16FF6, EAW_W},
+    {0x17000, 0x18CD5, EAW_W},
+    {0x18CFF, 0x18D1E, EAW_W},
+    {0x18D80, 0x18DF2, EAW_W},
     {0x1AFF0, 0x1AFF3, EAW_W},
     {0x1AFF5, 0x1AFFB, EAW_W},
     {0x1AFFD, 0x1AFFE, EAW_W},
@@ -266,6 +267,8 @@ static const struct EastAsianWidthProperties eaw_prop[] = {
     {0x1B155, 0x1B155, EAW_W},
     {0x1B164, 0x1B167, EAW_W},
     {0x1B170, 0x1B2FB, EAW_W},
+    {0x1D300, 0x1D356, EAW_W},
+    {0x1D360, 0x1D376, EAW_W},
     {0x1F004, 0x1F004, EAW_W},
     {0x1F0CF, 0x1F0CF, EAW_W},
     {0x1F100, 0x1F10A, EAW_A},
@@ -302,7 +305,7 @@ static const struct EastAsianWidthProperties eaw_prop[] = {
     {0x1F680, 0x1F6C5, EAW_W},
     {0x1F6CC, 0x1F6CC, EAW_W},
     {0x1F6D0, 0x1F6D2, EAW_W},
-    {0x1F6D5, 0x1F6D7, EAW_W},
+    {0x1F6D5, 0x1F6D8, EAW_W},
     {0x1F6DC, 0x1F6DF, EAW_W},
     {0x1F6EB, 0x1F6EC, EAW_W},
     {0x1F6F4, 0x1F6FC, EAW_W},
@@ -312,12 +315,12 @@ static const struct EastAsianWidthProperties eaw_prop[] = {
     {0x1F93C, 0x1F945, EAW_W},
     {0x1F947, 0x1F9FF, EAW_W},
     {0x1FA70, 0x1FA7C, EAW_W},
-    {0x1FA80, 0x1FA88, EAW_W},
-    {0x1FA90, 0x1FABD, EAW_W},
-    {0x1FABF, 0x1FAC5, EAW_W},
-    {0x1FACE, 0x1FADB, EAW_W},
-    {0x1FAE0, 0x1FAE8, EAW_W},
-    {0x1FAF0, 0x1FAF8, EAW_W},
+    {0x1FA80, 0x1FA8A, EAW_W},
+    {0x1FA8E, 0x1FAC6, EAW_W},
+    {0x1FAC8, 0x1FAC8, EAW_W},
+    {0x1FACD, 0x1FADC, EAW_W},
+    {0x1FADF, 0x1FAEA, EAW_W},
+    {0x1FAEF, 0x1FAF8, EAW_W},
     {0x20000, 0x2FFFD, EAW_W},
     {0x30000, 0x3FFFD, EAW_W},
     {0xE0100, 0xE01EF, EAW_A},
