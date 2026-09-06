@@ -14,9 +14,9 @@ support for word/grapheme breaking, is currently provided.  Some rules
 (like LB28a and the quotation rules of UAX #14) require looking ahead,
 and are handled internally with deferred fixups.
 
-  [1]: http://www.unicode.org/reports/tr14/
-  [2]: http://www.unicode.org/reports/tr29/
-  [3]: https://github.com/adah1972/libunibreak
+[1]: http://www.unicode.org/reports/tr14/
+[2]: http://www.unicode.org/reports/tr29/
+[3]: https://github.com/adah1972/libunibreak
 
 
 Licence
@@ -28,8 +28,8 @@ licence.  Please check the file *LICENCE* for details.
 Apart from using the algorithm, part of the code is derived from the
 [Unicode Public Data][4], and the [Unicode Terms of Use][5] may apply.
 
-  [4]: http://www.unicode.org/Public/
-  [5]: http://www.unicode.org/copyright.html
+[4]: http://www.unicode.org/Public/
+[5]: http://www.unicode.org/copyright.html
 
 
 Installation
@@ -78,6 +78,13 @@ Documentation
 Check the generated document *doc/html/linebreak\_8h.html*,
 *doc/html/wordbreak\_8h.html*, and *doc/html/graphemebreak\_8h.html* in
 the downloaded file for the public interfaces exposed to applications.
+
+For the internal architecture of the library, see
+[*doc/architecture.md*](doc/architecture.md).  It documents the
+implementation of the Unicode rules in each break module (including the
+deferred-fixup handling of lookahead rules), the data pipeline that
+regenerates the property tables from the Unicode data files, and the
+conventions followed by the code base.
 
 
 Examples
