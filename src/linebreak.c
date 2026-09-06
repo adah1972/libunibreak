@@ -1256,7 +1256,6 @@ static int get_lb_result_lookup(
         brk = LINEBREAK_ALLOWBREAK;
         if (lbpCtx->lbcLast != LBP_SP)
         {
-            lbpCtx->eLb25 = LB25_NONE;
             return LINEBREAK_NOBREAK;   /* Do not update lbcCur or state */
         }
         break;
@@ -1264,7 +1263,6 @@ static int get_lb_result_lookup(
         brk = LINEBREAK_NOBREAK;
         if (lbpCtx->lbcLast != LBP_SP)
         {
-            lbpCtx->eLb25 = LB25_NONE;
             return LINEBREAK_NOBREAK;   /* Do not update lbcCur or state */
         }
         break;
