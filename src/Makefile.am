@@ -108,11 +108,12 @@ emojidata: emoji-data.txt
 	${srcdir}/generate_extended_pictographic.py > ${srcdir}/emojidata.c
 
 update-test:
-	rm -f WordBreakTest.txt GraphemeBreakTest.txt
-	rm -f ${srcdir}/WordBreakTest.txt ${srcdir}/GraphemeBreakTest.txt
+	rm -f LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt
+	rm -f ${srcdir}/LineBreakTest.txt ${srcdir}/WordBreakTest.txt ${srcdir}/GraphemeBreakTest.txt
+	wget http://www.unicode.org/Public/UNIDATA/auxiliary/LineBreakTest.txt
 	wget http://www.unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.txt
 	wget http://www.unicode.org/Public/UNIDATA/auxiliary/GraphemeBreakTest.txt
-	[ -f ${srcdir}/WordBreakTest.txt ] || mv -f WordBreakTest.txt GraphemeBreakTest.txt ${srcdir}
+	[ -f ${srcdir}/LineBreakTest.txt ] || mv -f LineBreakTest.txt WordBreakTest.txt GraphemeBreakTest.txt ${srcdir}
 
 
 # Tests
