@@ -2,8 +2,6 @@ include_HEADERS = \
 	unibreakbase.h \
 	unibreakdef.h \
 	linebreak.h \
-	linebreakdef.h \
-	eastasianwidthdef.h \
 	graphemebreak.h \
 	wordbreak.h
 lib_LTLIBRARIES = libunibreak.la
@@ -26,10 +24,12 @@ EXTRA_DIST = \
 	expand_single.sed \
 	linebreakdata1.tmpl \
 	linebreakauxdata.c \
+	linebreakdef.h \
 	wordbreakdata.c \
 	graphemebreakdata.c \
 	indicconjunctbreakdata.c \
 	eastasianwidthdata.c \
+	eastasianwidthdef.h \
 	emojidata.c \
 	Makefile.gcc \
 	Makefile.msvc \

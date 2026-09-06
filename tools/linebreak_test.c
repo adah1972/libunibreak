@@ -19,7 +19,7 @@
 #include <string.h>
 #include <iconv.h>
 #include <linebreak.h>
-#include <linebreakdef.h>
+#include <unibreakdef.h>
 
 #define MAXCHARS    16384
 

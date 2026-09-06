@@ -11,12 +11,8 @@ Standard Annex 14][1] (UAX #14) and [Unicode Standard Annex 29][2] (UAX
 
 Unicode 17.0 support for line breaking, as well as full Unicode 17.0
 support for word/grapheme breaking, is currently provided.  Some rules
-(like LB28a and the quotation rules of UAX #14) are incompatible with
-the incremental line-breaking API (`lb_process_next_char`, introduced in
-libunibreak 1.1).  The current version uses deferred fixups to
-accommodate these rules, with the incremental API falling back to
-conservative behaviour.  This approach is complex, and the incremental
-API may be removed in a future release.
+(like LB28a and the quotation rules of UAX #14) require looking ahead,
+and are handled internally with deferred fixups.
 
   [1]: http://www.unicode.org/reports/tr14/
   [2]: http://www.unicode.org/reports/tr29/

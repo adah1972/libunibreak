@@ -235,23 +235,4 @@ extern const unsigned int lb_prop_supplementary_len;
 extern const char lb_prop_bmp[];
 extern const struct LineBreakPropertiesLang lb_prop_lang_map[];
 
-/* Function Prototype */
-void lb_init_break_context(
-        struct LineBreakContext *lbpCtx,
-        utf32_t ch,
-        const char *lang);
-int lb_process_next_char(
-        struct LineBreakContext *lbpCtx,
-        utf32_t ch);
-enum LineBreakClass lb_get_char_class(
-        const struct LineBreakContext *lbpCtx,
-        utf32_t ch);
-size_t set_linebreaks(
-        const void *s,
-        size_t len,
-        const char *lang,
-        enum BreakOutputType outputType,
-        char *brks,
-        get_next_char_t get_next_char);
-
 #endif /* LINEBREAKDEF_H */

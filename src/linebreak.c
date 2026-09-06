@@ -1287,7 +1287,7 @@ static int get_lb_result_lookup(
  * @param[in]     lang    language of the input
  * @post                  the line breaking context is initialized
  */
-void lb_init_break_context(
+static void lb_init_break_context(
         struct LineBreakContext *lbpCtx,
         utf32_t ch,
         const char *lang)
@@ -1324,9 +1324,9 @@ void lb_init_break_context(
  * Updates LineBreakingContext for the next codepoint and returns
  * the detected break.
  *
- * This function is deprecated, as it cannot support fixups, as
- * required by LB25 tailoring (and some more recent rules).  See the
- * implementation of #set_linebreaks for the fixup logic.
+ * This is an internal function, only called from #set_linebreaks; it
+ * cannot support fixups on its own (as required by LB25 tailoring and
+ * some more recent rules).
  *
  * @param[in,out] lbpCtx  pointer to the line breaking context
  * @param[in]     ch      Unicode codepoint
@@ -1334,7 +1334,7 @@ void lb_init_break_context(
  *                        #LINEBREAK_ALLOWBREAK, and #LINEBREAK_NOBREAK
  * @post                  the line breaking context is updated
  */
-int lb_process_next_char(
+static int lb_process_next_char(
         struct LineBreakContext *lbpCtx,
         utf32_t ch )
 {
@@ -1398,23 +1398,6 @@ int lb_process_next_char(
     }
 
     return brk;
-}
-
-/**
- * Gets the line breaking class of a character for a line breaking
- * context.  This function will check the language-specific data first,
- * and then the default data if there is no language-specific property
- * available for the character.
- *
- * @param lbpCtx  pointer to the line breaking context
- * @param ch      character to check
- * @return        the line breaking class if found; \c LBP_XX otherwise
- */
-enum LineBreakClass lb_get_char_class(
-        const struct LineBreakContext *lbpCtx,
-        utf32_t ch)
-{
-    return get_char_lb_class_lang(ch, lbpCtx->lbpLang);
 }
 
 /**
