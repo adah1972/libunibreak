@@ -35,16 +35,7 @@
 #ifndef UNIBREAKDEF_H
 #define UNIBREAKDEF_H
 
-#if defined(_MSC_VER) && _MSC_VER < 1800
-#ifndef __cplusplus
-typedef int bool;
-#define false 0
-#define true 1
-#endif
-#else
 #include <stdbool.h>
-#endif
-
 #include <stddef.h>
 #include "unibreakbase.h"
 
@@ -71,8 +62,8 @@ utf32_t ub_get_next_char_utf8 (const void *sv, size_t len, size_t *ip);
 utf32_t ub_get_next_char_utf16(const void *sv, size_t len, size_t *ip);
 utf32_t ub_get_next_char_utf32(const void *sv, size_t len, size_t *ip);
 
-__inline const void *ub_bsearch(utf32_t ch, const void *ptr, size_t count,
-                                size_t size)
+inline const void *ub_bsearch(utf32_t ch, const void *ptr, size_t count,
+                              size_t size)
 {
     int min = 0;
     int max = (int)(count - 1);;

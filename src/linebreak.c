@@ -433,8 +433,8 @@ static enum BreakAction baTable[LBP_CB][LBP_CB] = {
  * @param suffixLen  length of \a suffix
  * @return           non-zero if true; zero otherwise
  */
-static __inline bool ends_with(const char *str, const char *suffix,
-                               unsigned suffixLen)
+static inline bool ends_with(const char *str, const char *suffix,
+                             unsigned suffixLen)
 {
     size_t len;
     if (str == NULL)
@@ -453,7 +453,7 @@ static __inline bool ends_with(const char *str, const char *suffix,
     }
 }
 
-static __inline bool is_lang_cjk(const char *lang)
+static inline bool is_lang_cjk(const char *lang)
 {
     if (lang == NULL)
     {
@@ -471,7 +471,7 @@ static __inline bool is_lang_cjk(const char *lang)
  * Tells whether a codepoint is a QU quotation mark of General_Category
  * Pi (initial punctuation).
  */
-static __inline bool is_pi_qu(utf32_t ch)
+static inline bool is_pi_qu(utf32_t ch)
 {
     return ub_bsearch(ch, lb_prop_pi_qu, ARRAY_LEN(lb_prop_pi_qu),
                       sizeof(struct LineBreakAuxRange)) != NULL;
@@ -481,7 +481,7 @@ static __inline bool is_pi_qu(utf32_t ch)
  * Tells whether a codepoint is a QU quotation mark of General_Category
  * Pf (final punctuation).
  */
-static __inline bool is_pf_qu(utf32_t ch)
+static inline bool is_pf_qu(utf32_t ch)
 {
     return ub_bsearch(ch, lb_prop_pf_qu, ARRAY_LEN(lb_prop_pf_qu),
                       sizeof(struct LineBreakAuxRange)) != NULL;
@@ -491,7 +491,7 @@ static __inline bool is_pf_qu(utf32_t ch)
  * Tells whether a codepoint is an SA character of General_Category Mn
  * or Mc (i.e. resolves to CM as per rule LB1).
  */
-static __inline bool is_sa_cm(utf32_t ch)
+static inline bool is_sa_cm(utf32_t ch)
 {
     return ub_bsearch(ch, lb_prop_sa_cm, ARRAY_LEN(lb_prop_sa_cm),
                       sizeof(struct LineBreakAuxRange)) != NULL;
@@ -501,7 +501,7 @@ static __inline bool is_sa_cm(utf32_t ch)
  * Tells whether a codepoint is an unassigned extended pictograph (a
  * "potential emoji", as per rule LB30b).
  */
-static __inline bool is_potential_emoji(utf32_t ch)
+static inline bool is_potential_emoji(utf32_t ch)
 {
     /* Potential emojis are unassigned extended pictographs, all in the
      * Supplementary Symbols and Pictographs block (U+1F000..).  The
@@ -520,7 +520,7 @@ static __inline bool is_potential_emoji(utf32_t ch)
  * Tells whether a codepoint has East Asian Width Fullwidth, Wide, or
  * Halfwidth (i.e. is "East Asian" for rule LB19a).
  */
-static __inline bool is_east_asian(utf32_t ch)
+static inline bool is_east_asian(utf32_t ch)
 {
     /* East Asian width F/W/H characters all start at U+1100 (Hangul
      * Jamo).  The threshold is derived from eaw_prop and should be
@@ -537,7 +537,7 @@ static __inline bool is_east_asian(utf32_t ch)
  * Tells whether a character (identified by its resolved line break
  * class \a lbc and codepoint \a ch) acts as an aksara for rule LB28a.
  */
-static __inline bool lb28a_is_aksara(enum LineBreakClass lbc, utf32_t ch)
+static inline bool lb28a_is_aksara(enum LineBreakClass lbc, utf32_t ch)
 {
     return lbc == LBP_AK || lbc == LBP_AS || ch == LB28A_DOTTED_CIRCLE;
 }
