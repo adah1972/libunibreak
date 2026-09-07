@@ -49,9 +49,9 @@ are internal and are not installed.
 Line breaking supports two output modes, selected by
 `enum BreakOutputType`:
 
-- `LBOT_PER_CODE_UNIT` — one result per UTF-8/16 code unit; multi-unit
+- `LBOT_PER_CODE_UNIT` — one result per UTF-8/16 code unit; multi-unit
   code points are marked `LINEBREAK_INSIDEACHAR`.
-- `LBOT_PER_CODE_POINT` — one result per code point.
+- `LBOT_PER_CODE_POINT` — one result per code point.
 
 Word and grapheme breaking always work per code unit, filling the
 in-between code units of a multi-unit code point with
@@ -80,9 +80,9 @@ the typedefs.
 
 Private shared definitions:
 
-- `EOS` (`0xFFFFFFFF`) — end-of-string sentinel.
+- `EOS` (`0xFFFFFFFF`) — end-of-string sentinel.
 - `get_next_char_t` and the three `ub_get_next_char_utf*` decoders.
-- `ub_bsearch` — generic binary search over `{start, end, ...}` range
+- `ub_bsearch` — generic binary search over `{start, end, ...}` range
   tables.
 - `ARRAY_LEN(x)`.
 - A `bool` fallback for MSVC older than VS2013.
@@ -207,23 +207,23 @@ set_linebreaks(s, len, lang, outputType, brks, get_next_char)
 
 `lb_process_next_char` does, per character:
 
-1. **LB9/LB10** — fold combining marks/ZWJ into `lbcLast`.
+1. **LB9/LB10** — fold combining marks/ZWJ into `lbcLast`.
 2. Resolve the class of the new character (`resolve_lb_class`).
-3. `resolve_pending_break` — resolve the lookahead rule that was pending
+3. `resolve_pending_break` — resolve the lookahead rule that was pending
    from the previous character.
-4. `get_lb_result_simple` — the mandatory rules (early exit).
-5. `get_lb_result_lookup` — the pair table + explicit rules (for the
+4. `get_lb_result_simple` — the mandatory rules (early exit).
+5. `get_lb_result_lookup` — the pair table + explicit rules (for the
    `LINEBREAK_UNDEFINED` case).
 6. Update the quotation/ZWJ/EA state flags.
 
 `get_lb_result_lookup` is split into three parts:
 
-1. **Pair table** — `baTable[lbcCur - 1][lbcNew - 1]`, with a special
+1. **Pair table** — `baTable[lbcCur - 1][lbcNew - 1]`, with a special
    early return for combining marks (`CMI_BRK`/`CMP_BRK` when
    `lbcLast != SP`).
-2. **`get_lb_result_decision`** — the explicit rules, applied in
+2. **`get_lb_result_decision`** — the explicit rules, applied in
    ascending UAX #14 order with early returns (first match wins).
-3. **`update_lb_state`** — unconditional per-character state updates.
+3. **`update_lb_state`** — unconditional per-character state updates.
 
 The last thing `get_lb_result_lookup` does is `lbcCur = lbcNew`.
 
@@ -333,17 +333,17 @@ and fixup arming are applied in `get_lb_result_decision`:
 
 | State    | Incoming `lbcNew` | New state | Effect                |
 |----------|-------------------|-----------|-----------------------|
-| NONE     | PR, PO            | PREFIX    | —                     |
-| NONE     | NU                | NUM       | —                     |
+| NONE     | PR, PO            | PREFIX    | —                     |
+| NONE     | NU                | NUM       | —                     |
 | PREFIX   | OP, HY            | PREFIXOP  | record `posLb25Fixup` |
-| PREFIX   | NU                | NUM       | —                     |
+| PREFIX   | NU                | NUM       | —                     |
 | PREFIXOP | NU                | NUM       | set `fLb25Mark`       |
 | PREFIXOP | (else)            | (restart) | clear `posLb25Fixup`  |
 | NUM      | NU, SY, IS        | NUM       | `brk = NOBREAK`       |
-| NUM      | CL, CP            | NUMCLOSE  | —                     |
+| NUM      | CL, CP            | NUMCLOSE  | —                     |
 | NUM      | PO, PR            | PREFIX    | `brk = NOBREAK`       |
 | NUMCLOSE | PO, PR            | PREFIX    | `brk = NOBREAK`       |
-| (any)    | (else)            | (restart) | —                     |
+| (any)    | (else)            | (restart) | —                     |
 
 "(restart)" means re-check for a new start: PR/PO → PREFIX, NU → NUM,
 otherwise NONE.
@@ -379,9 +379,9 @@ current one can be finalized:
 Because the algorithm processes characters one at a time, these rules
 write a **tentative** break and arm a pending record:
 
-- `ePending` — which rule is pending (`PENDING_LB15B/15C/19A/28A4`);
-- `posPending` — the output position of the tentative break;
-- `cPendingOrigBrk` — the break value to restore if the lookahead fails.
+- `ePending` — which rule is pending (`PENDING_LB15B/15C/19A/28A4`);
+- `posPending` — the output position of the tentative break;
+- `cPendingOrigBrk` — the break value to restore if the lookahead fails.
 
 On the next character, `resolve_pending_break` inspects the new
 character's class and either confirms the tentative break or sets
@@ -403,7 +403,7 @@ suffix) drives three things:
 1. **Per-language class overrides** (`linebreakdef.c`).
    `lb_prop_lang_map` maps a language prefix to a small
    `LineBreakProperties` array that overrides the default Line_Break
-   class of a few codepoints — almost all quotation marks (whose default
+   class of a few codepoints — almost all quotation marks (whose default
    class is the ambiguous `QU`).  Languages with data: `en`, `de`, `es`,
    `fr`, `ru`, and `zh`.
 
@@ -420,7 +420,7 @@ suffix) drives three things:
 
 3. **Strict mode** (`resolve_lb_class`).  For `CJ` (conditional Japanese
    starter, small kana), normal mode resolves to `ID` and `-strict` to
-   `NS` — the UAX #14 "Conditional Japanese Starter" tailoring.
+   `NS` — the UAX #14 "Conditional Japanese Starter" tailoring.
 
 `get_char_lb_class_lang` consults the language override first, then
 falls back to the default data for codepoints not listed there.
@@ -431,14 +431,14 @@ falls back to the default data for codepoints not listed there.
 
 `set_wordbreaks` is a pure state machine over the input, using:
 
-- `wbcLast` — the class of the previous character.
-- `wbcSeqStart` — the class that started the current sequence (used to
+- `wbcLast` — the class of the previous character.
+- `wbcSeqStart` — the class that started the current sequence (used to
   defer the decision for a run of characters, e.g. `Numeric MidNum
   Numeric`).
-- `riCounter` — parity for WB15/16 (Regional Indicator pairs).
+- `riCounter` — parity for WB15/16 (Regional Indicator pairs).
 
 `set_brks_to` fills a range of the output with a single break type,
-deferring the write until the sequence is known — this is what allows
+deferring the write until the sequence is known — this is what allows
 rules like WB6/7/11/12 (which depend on what follows a mid-letter/mid-num
 character) to work without lookahead.
 
@@ -485,11 +485,11 @@ Word breaking uses `WBP_Undefined` as the "start of text" sentinel for
 
 Three pieces of state support the rules:
 
-- `rule11Detector` — recognizes the `ExtPict Extend* ZWJ` pattern for
+- `rule11Detector` — recognizes the `ExtPict Extend* ZWJ` pattern for
   GB11 (values 0–3).
-- `rule9cStage` — a small state machine (`R9C_*`) for GB9c, driven by
+- `rule9cStage` — a small state machine (`R9C_*`) for GB9c, driven by
   the InCB class (`InCB_None`/`InCB_Linker`/`InCB_Consonant`).
-- `evenRegionalIndicators` — parity for GB12/GB13.
+- `evenRegionalIndicators` — parity for GB12/GB13.
 
 `UNIBREAK_LAZY_INCB` (default 0) controls whether the InCB lookup is
 skipped for characters that cannot be relevant.  It is disabled because
@@ -503,27 +503,27 @@ Grapheme_Cluster_Break is `Other`, which the lazy assumption would miss.
 When a new Unicode version adds or changes a rule, decide which
 mechanism it needs:
 
-1. **Simple pair rule** — the break depends only on `lbcCur × lbcNew`.
+1. **Simple pair rule** — the break depends only on `lbcCur × lbcNew`.
    Encode it in `baTable` (a `PRH_BRK`/`DIR_BRK`/`IND_BRK` cell).
    Update the `baTable` comment's "manual adjustments" list.
 
-2. **One-character lookback / a single flag** — the break depends on the
+2. **One-character lookback / a single flag** — the break depends on the
    previous character's class.  Add a `bool`/counter field to
    `LineBreakContext`, test it in `get_lb_result_decision` (early
    return), and update it in `update_lb_state`.  Examples: `fLb8aZwj`,
    `fLb21aHebrew`, `cLb30aRI`.
 
-3. **Extended run context** — the break depends on an unbounded run of
+3. **Extended run context** — the break depends on an unbounded run of
    preceding characters.  Add a state-machine `enum` and a transition
    function, mirroring `Lb25State`/`lb25_transition`.  Example: LB25.
 
-4. **One-character lookahead** — the break before the current character
+4. **One-character lookahead** — the break before the current character
    depends on the *next* character.  Add a `PendingRule` value, arm it
    in `get_lb_result_decision` (recording `posPending` and
    `cPendingOrigBrk`), and add the resolution logic to
    `resolve_pending_break`.  Examples: LB15b/15c/19a, LB28a sub-rule 4.
 
-5. **New character class** — add the value to `enum LineBreakClass`
+5. **New character class** — add the value to `enum LineBreakClass`
    (inside the pair-table block if it participates in the table), widen
    `baTable`, and regenerate the data.  Mind the `lbcCur <= LBP_CB`
    asserts and any ordering-dependent indexes (e.g. the LB25 `allow[]`
@@ -534,7 +534,7 @@ General rules:
 - Keep `get_lb_result_decision` rules in **ascending UAX #14 order**
   (first match wins).  Rules with an early return (LB8a through LB30b)
   come before the one-character lookahead arms only because their
-  trigger conditions are disjoint from the arms' — no single boundary
+  trigger conditions are disjoint from the arms' — no single boundary
   can match both, so the early-returning rule decides and the arm never
   fires.
 - One-character lookahead rules (LB15b/15c/19a, LB28a sub-rule 4) are
