@@ -1,3 +1,18 @@
+New in libunibreak 8.0
+
+- Update line breaking to conform to Unicode 17.0 (UAX #14 Revision 55),
+  adding the AK, AP, AS, VF, VI, and HH classes and rules LB12a, LB15a-d,
+  LB19a, LB20a, LB21a, LB21b, LB23a, LB28a, and LB30b
+- Remove the incremental line-breaking API (`lb_init_break_context` and
+  `lb_process_next_char`) and the `lb_get_char_class` function; no longer
+  install the internal `linebreakdef.h` and `eastasianwidthdef.h` headers
+- Update word breaking to conform to Unicode 17.0 (UAX #29 Revision 47),
+  and apply WB3c (ZWJ x Extended_Pictographic) regardless of the word
+  break class of the extended pictograph
+- Update grapheme breaking to conform to Unicode 17.0 (UAX #29 Revision 47)
+- Resolve the SA line breaking class to CM for combining marks (Mn/Mc)
+- Make all Unicode conformance tests pass without skipping any one
+
 New in libunibreak 7.0
 
 - Implement LB25 tailoring described in Unicode 15, and reduce skipped
