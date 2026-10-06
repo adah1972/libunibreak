@@ -116,6 +116,9 @@ TARGET         = libunibreak.a
 DEBUG_TARGET   = $(patsubst %,$(DEBUG)/%,$(TARGET))
 RELEASE_TARGET = $(patsubst %,$(RELEASE)/%,$(TARGET))
 
+$(DEBUG_OBJS) $(DEBUG_DEPS): | $(DEBUG)
+$(RELEASE_OBJS) $(RELEASE_DEPS): | $(RELEASE)
+
 debug:   $(DEBUG) $(DEBUG_TARGET)
 
 release: $(RELEASE) $(RELEASE_TARGET)
