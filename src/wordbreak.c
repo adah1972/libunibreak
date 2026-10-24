@@ -161,6 +161,10 @@ static void set_wordbreaks(
      * it'll be Numeric all the way.
      */
     enum WordBreakClass wbcSeqStart = WBP_Undefined;
+    /* Whether the last character was ZWJ, for WB3c.  WB4 makes a ZWJ
+     * inherit the class of the character before it, so wbcLast cannot
+     * tell. */
+    int isLastZwj = 0;
     utf32_t ch;
     size_t posNext = 0;
     size_t posCur = 0;
@@ -177,16 +181,24 @@ static void set_wordbreaks(
     while (ch != EOS)
     {
         enum WordBreakClass wbcCur;
+        int isZwj;
         wbcCur = get_char_wb_class(ch);
+        isZwj = (wbcCur == WBP_ZWJ);
 
         /* WB3c: ZWJ × Extended_Pictographic, regardless of the word break
          * class of the extended pictograph. */
-        if (wbcLast == WBP_ZWJ && ub_is_extended_pictographic(ch))
+        if (isLastZwj && ub_is_extended_pictographic(ch))
         {
+            /* A pending WB6/7/11/12 sequence needs a letter or digit, not
+             * the extended pictograph, so break there; but not between
+             * the ZWJ and the extended pictograph. */
             set_brks_to(s, brks, posLast, posCur, len,
-                        WORDBREAK_NOBREAK, get_next_char);
+                        WORDBREAK_BREAK, get_next_char);
+            brks[posCur - 1] = WORDBREAK_NOBREAK;
+            wbcSeqStart = wbcCur;
             posLast = posCur;
             wbcLast = wbcCur;
+            isLastZwj = 0;
             posCur = posNext;
             ch = get_next_char(s, len, &posNext);
             continue;
@@ -240,8 +252,7 @@ static void set_wordbreaks(
                 brks[posCur - 1] = WORDBREAK_NOBREAK;
                 /* WB3c and WB3d precede 4, so no intervening Extend
                  * chars allowed. */
-                if (wbcCur != WBP_ZWJ && wbcSeqStart != WBP_ZWJ &&
-                    wbcSeqStart != WBP_WSegSpace)
+                if (wbcSeqStart != WBP_ZWJ && wbcSeqStart != WBP_WSegSpace)
                 {
                     /* "inherit" the previous class. */
                     wbcCur = wbcLast;
@@ -455,6 +466,7 @@ static void set_wordbreaks(
         }
 
         wbcLast = wbcCur;
+        isLastZwj = isZwj;
         posCur = posNext;
         ch = get_next_char(s, len, &posNext);
     }

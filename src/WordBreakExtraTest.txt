@@ -1,0 +1,17 @@
+# Word break tests that WordBreakTest.txt does not cover, in the same
+# format.
+#
+# WB4: ZWJ is ignored like Extend and Format, unless WB3c applies
+÷ 0061 × 200D × 0030 ÷	#  LATIN SMALL LETTER A, ZWJ, DIGIT ZERO (WB9)
+÷ 05D0 × 200D × 0030 ÷	#  HEBREW LETTER ALEF, ZWJ, DIGIT ZERO (WB9)
+÷ 0061 × 200D × 002E × 0062 ÷	#  a, ZWJ, FULL STOP, b (WB6, WB7)
+÷ 0030 × 200D × 002C × 0031 ÷	#  0, ZWJ, COMMA, 1 (WB11, WB12)
+#
+# WB3c: the extended pictograph starts a new sequence
+÷ 0030 × 200D × 1F3F4 ÷ 0660 ÷	#  0, ZWJ, WAVING BLACK FLAG, ARABIC-INDIC DIGIT ZERO
+÷ 202F × 200D × 1F44D ÷ 0061 ÷	#  NARROW NO-BREAK SPACE, ZWJ, THUMBS UP SIGN, a
+#
+# WB6, WB7, WB11 and WB12 need a letter or digit after the MidLetter,
+# MidNumLet or MidNum character, not an extended pictograph
+÷ 0061 ÷ 002E × 200D × 1F44D ÷	#  a, FULL STOP, ZWJ, THUMBS UP SIGN
+÷ 0031 ÷ 002C × 200D × 1F44D ÷	#  1, COMMA, ZWJ, THUMBS UP SIGN
