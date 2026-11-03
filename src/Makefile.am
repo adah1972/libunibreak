@@ -49,6 +49,7 @@ EXTRA_DIST = \
 	LineBreakTest.txt \
 	WordBreakTest.txt \
 	GraphemeBreakTest.txt \
+	LineBreakExtraTest.txt \
 	WordBreakExtraTest.txt
 
 install-exec-hook:
@@ -130,8 +131,10 @@ check: $(check_PROGRAMS)
 	@[ -f LineBreakTest.txt ]     || $(LN_S) ${srcdir}/LineBreakTest.txt .
 	@[ -f WordBreakTest.txt ]     || $(LN_S) ${srcdir}/WordBreakTest.txt .
 	@[ -f GraphemeBreakTest.txt ] || $(LN_S) ${srcdir}/GraphemeBreakTest.txt .
+	@[ -f LineBreakExtraTest.txt ] || $(LN_S) ${srcdir}/LineBreakExtraTest.txt .
 	@[ -f WordBreakExtraTest.txt ] || $(LN_S) ${srcdir}/WordBreakExtraTest.txt .
 	./tests line
+	./tests line LineBreakExtraTest.txt
 	./tests word
 	./tests word WordBreakExtraTest.txt
 	./tests grapheme

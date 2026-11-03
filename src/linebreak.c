@@ -1444,6 +1444,8 @@ size_t set_linebreaks(
     struct LineBreakContext lbCtx;
     size_t posCur = 0;
     size_t posLast = 0;
+    size_t posRevert;
+    char cRevertOrigBrk;
 
     --posLast;  /* To be ++'d later */
     ch = get_next_char(s, len, &posCur);
@@ -1474,6 +1476,12 @@ size_t set_linebreaks(
             break;
         }
         lbCtx.posLast = posLast;
+        /* The tentative break this character resolves, saved before
+         * lb_process_next_char can arm another one (e.g. LB15b after
+         * LB15c or LB19a), which overwrites posPending and
+         * cPendingOrigBrk. */
+        posRevert = lbCtx.posPending;
+        cRevertOrigBrk = lbCtx.cPendingOrigBrk;
         brks[posLast] = (char)lb_process_next_char(&lbCtx, ch);
 
         /* Fix-up due to LB25 */
@@ -1484,12 +1492,13 @@ size_t set_linebreaks(
             lbCtx.fLb25Mark = false;
         }
 
-        /* Fix-up (revert) due to a pending lookahead break */
+        /* Fix-up (revert) due to a pending lookahead break, at the
+         * position saved above; a pending break this character armed
+         * keeps its own position and value. */
         if (lbCtx.fPendingRevert)
         {
-            brks[lbCtx.posPending] = lbCtx.cPendingOrigBrk;
+            brks[posRevert] = cRevertOrigBrk;
             lbCtx.fPendingRevert = false;
-            lbCtx.posPending = INVALID_POS;
         }
     }
 

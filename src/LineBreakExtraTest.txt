@@ -1,0 +1,9 @@
+# Line break tests that LineBreakTest.txt does not cover, in the same
+# format.  Run with: tests line LineBreakExtraTest.txt
+#
+# Issue #50: a char that resolves a pending LB15c/LB19a break while
+# arming a pending LB15b break must not lose the earlier revert (and
+# must not write brks[-1]).  The tentative ALLOWBREAK at the start has
+# to be reverted to NOBREAK.
+× 0020 × 002E × 201D × 0061 ÷	#  SP, FULL STOP, RIGHT DOUBLE QUOTATION MARK, a (LB15b over LB15c)
+× 4E00 × 201C × 201D × 0061 ÷	#  CJK, LEFT and RIGHT DOUBLE QUOTATION MARKS, a (LB15b over LB19a)
