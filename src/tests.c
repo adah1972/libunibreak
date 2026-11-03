@@ -119,8 +119,9 @@ int main(int argc, char *argv[])
     char noBreak, mustBreak, insideChar;
     const unsigned int *testSkips; /* Zero terminated array of line numbers
                                       to skip in the test. */
+    static const unsigned int noTestSkips[] = { 0 };
 
-    if (argc != 2)
+    if (argc != 2 && argc != 3)
     {
         return 1;
     }
@@ -153,6 +154,13 @@ int main(int argc, char *argv[])
         break;
     default:
         return 1;
+    }
+
+    /* An optional second argument names a test file in the same format */
+    if (argc == 3)
+    {
+        filename = argv[2];
+        testSkips = noTestSkips;
     }
 
     if (NULL == (fp = fopen(filename, "r")))

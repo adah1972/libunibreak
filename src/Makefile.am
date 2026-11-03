@@ -48,7 +48,8 @@ EXTRA_DIST = \
 	test_skips.h \
 	LineBreakTest.txt \
 	WordBreakTest.txt \
-	GraphemeBreakTest.txt
+	GraphemeBreakTest.txt \
+	WordBreakExtraTest.txt
 
 install-exec-hook:
 	- [ -f $(DESTDIR)/${libdir}/libunibreak.a ] && \
@@ -129,6 +130,8 @@ check: $(check_PROGRAMS)
 	@[ -f LineBreakTest.txt ]     || $(LN_S) ${srcdir}/LineBreakTest.txt .
 	@[ -f WordBreakTest.txt ]     || $(LN_S) ${srcdir}/WordBreakTest.txt .
 	@[ -f GraphemeBreakTest.txt ] || $(LN_S) ${srcdir}/GraphemeBreakTest.txt .
+	@[ -f WordBreakExtraTest.txt ] || $(LN_S) ${srcdir}/WordBreakExtraTest.txt .
 	./tests line
 	./tests word
+	./tests word WordBreakExtraTest.txt
 	./tests grapheme
