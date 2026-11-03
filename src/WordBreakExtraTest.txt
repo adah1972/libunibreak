@@ -15,3 +15,8 @@
 # MidNumLet or MidNum character, not an extended pictograph
 ÷ 0061 ÷ 002E × 200D × 1F44D ÷	#  a, FULL STOP, ZWJ, THUMBS UP SIGN
 ÷ 0031 ÷ 002C × 200D × 1F44D ÷	#  1, COMMA, ZWJ, THUMBS UP SIGN
+#
+# An extended pictograph that is also ALetter (e.g. U+24C2) must still
+# satisfy WB6/WB7 through its own word break class, not WB11/WB12
+÷ 0061 × 002E × 200D × 24C2 ÷	#  a, FULL STOP, ZWJ, CIRCLED LATIN CAPITAL LETTER M (WB6, WB7)
+÷ 0030 ÷ 002E × 200D × 24C2 × 0031 ÷	#  0, FULL STOP, ZWJ, CIRCLED M, 1 (no WB11/WB12)

@@ -164,7 +164,7 @@ static void set_wordbreaks(
     /* Whether the last character was ZWJ, for WB3c.  WB4 makes a ZWJ
      * inherit the class of the character before it, so wbcLast cannot
      * tell. */
-    int isLastZwj = 0;
+    bool isLastZwj = false;
     utf32_t ch;
     size_t posNext = 0;
     size_t posCur = 0;
@@ -181,27 +181,23 @@ static void set_wordbreaks(
     while (ch != EOS)
     {
         enum WordBreakClass wbcCur;
-        int isZwj;
+        bool isZwj;
         wbcCur = get_char_wb_class(ch);
         isZwj = (wbcCur == WBP_ZWJ);
 
         /* WB3c: ZWJ × Extended_Pictographic, regardless of the word break
-         * class of the extended pictograph. */
+         * class of the extended pictograph.  Force only the boundary
+         * between the ZWJ and the pictograph here, and let the pictograph
+         * fall through to the switch on its own word break class.  Some
+         * extended pictographs are also ALetter (e.g. U+24C2) and must
+         * still satisfy WB6/WB7 (and never WB11/WB12), so a pending
+         * sequence has to be resolved by the normal rules, not joined or
+         * broken unconditionally.  set_brks_to() never overwrites an
+         * existing WORDBREAK_NOBREAK, so the ZWJ × pictograph boundary is
+         * preserved. */
         if (isLastZwj && ub_is_extended_pictographic(ch))
         {
-            /* A pending WB6/7/11/12 sequence needs a letter or digit, not
-             * the extended pictograph, so break there; but not between
-             * the ZWJ and the extended pictograph. */
-            set_brks_to(s, brks, posLast, posCur, len,
-                        WORDBREAK_BREAK, get_next_char);
             brks[posCur - 1] = WORDBREAK_NOBREAK;
-            wbcSeqStart = wbcCur;
-            posLast = posCur;
-            wbcLast = wbcCur;
-            isLastZwj = 0;
-            posCur = posNext;
-            ch = get_next_char(s, len, &posNext);
-            continue;
         }
 
         switch (wbcCur)
