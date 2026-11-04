@@ -174,7 +174,11 @@ static void set_wordbreaks(
     (void)lang;
 
     /* Init brks. */
-    memset(brks, WORDBREAK_BREAK, len);
+    if (len == 0)
+    {
+        return;
+    }
+    memset(brks, WORDBREAK_INSIDEACHAR, len);
 
     ch = get_next_char(s, len, &posNext);
 
@@ -475,6 +479,9 @@ static void set_wordbreaks(
 /**
  * Sets the word breaking information for a UTF-8 input string.
  *
+ * Code units belonging to an incomplete UTF-8 sequence are marked
+ * #WORDBREAK_INSIDEACHAR.
+ *
  * @param[in]  s     input UTF-8 string
  * @param[in]  len   length of the input
  * @param[in]  lang  language of the input (reserved for future use)
@@ -494,6 +501,9 @@ void set_wordbreaks_utf8(
 
 /**
  * Sets the word breaking information for a UTF-16 input string.
+ *
+ * Code units belonging to an incomplete UTF-16 sequence are marked
+ * #WORDBREAK_INSIDEACHAR.
  *
  * @param[in]  s     input UTF-16 string
  * @param[in]  len   length of the input

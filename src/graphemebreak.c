@@ -155,11 +155,21 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
                                          // even
 
     utf32_t ch = get_next_char(s, len, &posNext);
-    enum GraphemeBreakClass current_class = get_char_gb_class(ch);
-    enum IndicConjunctBreakClass current_incb = get_char_incb_class(ch);
+
+    if (len == 0)
+    {
+        return;
+    }
 
     // initialize whole output to inside char
     memset(brks, GRAPHEMEBREAK_INSIDEACHAR, len);
+
+    if (ch == EOS)
+    {
+        return;
+    }
+    enum GraphemeBreakClass current_class = get_char_gb_class(ch);
+    enum IndicConjunctBreakClass current_incb = get_char_incb_class(ch);
 
     while (true)
     {
@@ -314,15 +324,15 @@ static void set_graphemebreaks(const void *s, size_t len, char *brks,
 /**
  * Sets the grapheme breaking information for a UTF-8 input string.
  *
+ * Code units belonging to an incomplete UTF-8 sequence are marked
+ * #GRAPHEMEBREAK_INSIDEACHAR.
+ *
  * @param[in]  s     input UTF-8 string
  * @param[in]  len   length of the input
  * @param[in]  lang  language of the input (reserved for future use)
  * @param[out] brks  pointer to the output breaking data, containing
- *                   #GRAPHEMEBREAK_BREAK or #GRAPHEMEBREAK_NOBREAK.
- *                   First element in output array is for the break behind
- *                   the first character the pointer must point to an
- *                   array with at least as many elements as there
- *                   are characters in the string
+ *                   #GRAPHEMEBREAK_BREAK, #GRAPHEMEBREAK_NOBREAK, or
+ *                   #GRAPHEMEBREAK_INSIDEACHAR
  */
 void set_graphemebreaks_utf8(const utf8_t *s, size_t len, const char *lang,
                              char *brks)
@@ -335,15 +345,15 @@ void set_graphemebreaks_utf8(const utf8_t *s, size_t len, const char *lang,
 /**
  * Sets the grapheme breaking information for a UTF-16 input string.
  *
+ * Code units belonging to an incomplete UTF-16 sequence are marked
+ * #GRAPHEMEBREAK_INSIDEACHAR.
+ *
  * @param[in]  s     input UTF-16 string
  * @param[in]  len   length of the input
  * @param[in]  lang  language of the input (reserved for future use)
  * @param[out] brks  pointer to the output breaking data, containing
- *                   #GRAPHEMEBREAK_BREAK or #GRAPHEMEBREAK_NOBREAK.
- *                   First element in output array is for the break behind
- *                   the first character the pointer must point to an
- *                   array with at least as many elements as there
- *                   are characters in the string
+ *                   #GRAPHEMEBREAK_BREAK, #GRAPHEMEBREAK_NOBREAK, or
+ *                   #GRAPHEMEBREAK_INSIDEACHAR
  */
 void set_graphemebreaks_utf16(const utf16_t *s, size_t len,
                               const char *lang, char *brks)
@@ -360,11 +370,7 @@ void set_graphemebreaks_utf16(const utf16_t *s, size_t len,
  * @param[in]  len   length of the input
  * @param[in]  lang  language of the input (reserved for future use)
  * @param[out] brks  pointer to the output breaking data, containing
- *                   #GRAPHEMEBREAK_BREAK or #GRAPHEMEBREAK_NOBREAK.
- *                   First element in output array is for the break behind
- *                   the first character the pointer must point to an
- *                   array with at least as many elements as there
- *                   are characters in the string
+ *                   #GRAPHEMEBREAK_BREAK or #GRAPHEMEBREAK_NOBREAK
  */
 void set_graphemebreaks_utf32(const utf32_t *s, size_t len,
                               const char *lang, char *brks)

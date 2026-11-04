@@ -39,5 +39,6 @@ __pycache__
 /src/filter_dup
 /src/libunibreak.la
 /src/tests
+/src/tests_incomplete
 /stamp-h1
 tags

@@ -120,12 +120,17 @@ update-test:
 
 # Tests
 
-check_PROGRAMS = tests
+check_PROGRAMS = tests tests_incomplete
 
 tests_SOURCES = tests.c
 tests_CPPFLAGS = -I$(srcdir)
 tests_LDADD = libunibreak.la
 tests_DEPENDENCIES = libunibreak.la
+
+tests_incomplete_SOURCES = tests_incomplete.c
+tests_incomplete_CPPFLAGS = -I$(srcdir)
+tests_incomplete_LDADD = libunibreak.la
+tests_incomplete_DEPENDENCIES = libunibreak.la
 
 check: $(check_PROGRAMS)
 	@[ -f LineBreakTest.txt ]     || $(LN_S) ${srcdir}/LineBreakTest.txt .
@@ -138,3 +143,4 @@ check: $(check_PROGRAMS)
 	./tests word
 	./tests word WordBreakExtraTest.txt
 	./tests grapheme
+	./tests_incomplete

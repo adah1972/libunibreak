@@ -1429,7 +1429,9 @@ static int lb_process_next_char(
  * @param[in] get_next_char  function to get the next UTF-32 character
  * @return       The number of entries in brks filled. This is equal to
  *               the number of code-points or code-units in the source
- *               string, depending on the outputType parameter.
+ *               string, depending on the outputType parameter.  In
+ *               per-code-point mode, only complete code points are
+ *               counted.
  */
 size_t set_linebreaks(
         const void *s,
@@ -1451,6 +1453,14 @@ size_t set_linebreaks(
     ch = get_next_char(s, len, &posCur);
     if (ch == EOS)
     {
+        if (outputType == LBOT_PER_CODE_UNIT)
+        {
+            while (posCur < len)
+            {
+                brks[posCur++] = LINEBREAK_INSIDEACHAR;
+            }
+            return posCur;
+        }
         return 0;
     }
     lb_init_break_context(&lbCtx, ch, lang);
@@ -1543,6 +1553,9 @@ size_t set_linebreaks(
 /**
  * Sets the line breaking information for a UTF-8 input string.
  *
+ * Code units belonging to an incomplete UTF-8 sequence are marked
+ * #LINEBREAK_INSIDEACHAR.
+ *
  * @param[in]  s     input UTF-8 string
  * @param[in]  len   length of the input
  * @param[in]  lang  language of the input
@@ -1586,6 +1599,9 @@ size_t set_linebreaks_utf8_per_code_point(
 
 /**
  * Sets the line breaking information for a UTF-16 input string.
+ *
+ * Code units belonging to an incomplete UTF-16 sequence are marked
+ * #LINEBREAK_INSIDEACHAR.
  *
  * @param[in]  s     input UTF-16 string
  * @param[in]  len   length of the input
