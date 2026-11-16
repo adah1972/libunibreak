@@ -1,3 +1,13 @@
+New in libunibreak 8.0.1
+
+- Fix word breaking after ZWJ, including WB3c handling for extended
+  pictographs that are also ALetter
+- Fix an out-of-bounds write in line breaking for some quotation and
+  decimal-mark sequences
+- Handle empty and incomplete UTF-8/16 input consistently in line, word,
+  and grapheme breaking
+- Fix parallel builds with Makefile.gcc
+
 New in libunibreak 8.0
 
 - Update line breaking to conform to Unicode 17.0 (UAX #14 Revision 55),
